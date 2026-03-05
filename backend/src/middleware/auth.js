@@ -15,7 +15,7 @@ let token;
   }
   
   try{
-    
+
   const decoded = jwt.verify(token, process.env.JWT_SECRET)
     req.user = await User.findById(decoded.id).select('-password')
     if (!req.user) {
@@ -33,6 +33,20 @@ export function adminOnly(req, res, next) {
 
   if (req.user?.role !== 'admin') {
     return res.status(403).json({ success: false, message: 'Admin access required.' })
+  }
+  next()
+}
+
+// Optional auth — attaches user if token present, otherwise continues as guest
+export async function optionalAuth(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1]
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      req.user = await User.findById(decoded.id).select('-password')
+    } catch {
+      // silently ignore invalid token for optional routes
+    }
   }
   next()
 }
