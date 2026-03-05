@@ -23,6 +23,16 @@ export function errorHandler(err, req, res, next) {
     message = `Invalid ${err.path}: ${err.value}`
   }
 
+    // JWT errors
+  if (err.name === 'JsonWebTokenError') {
+    statusCode = 401
+    message = 'Invalid token.'
+  }
+  if (err.name === 'TokenExpiredError') {
+    statusCode = 401
+    message = 'Token expired.'
+  }
+
     res.status(statusCode).json({
     success: false,
     message,
