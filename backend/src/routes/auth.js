@@ -58,7 +58,31 @@ router.post(
 )
 
 // POST /api/auth/login
-router.post()
+router.post(
+   '/login',
+  [
+    body('email').isEmail().withMessage('Valid email required').normalizeEmail(),
+    body('password').notEmpty().withMessage('Password is required'),
+  ],
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, message: errors.array()[0].msg })
+      }
+
+      const { email, password } = req.body
+      const user = await User.findOne({ email }).select('+password')
+      if (!user || !(await user.comparePassword(password))) {
+        return res.status(401).json({ success: false, message: 'Invalid email or password.' })
+      }
+
+      sendToken(user, 200, res)
+    } catch (err) {
+      next(err)
+    }
+  }
+)
 
 // GET /api/auth/me
 router.get('/me', protect, async (req, res) => {
