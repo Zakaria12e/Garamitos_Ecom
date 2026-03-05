@@ -54,3 +54,16 @@ router.put('/:id/role', protect, adminOnly, async (req, res, next) => {
     next(err)
   }
 })
+
+// DELETE /api/users/:id (admin)
+router.delete('/:id', protect, adminOnly, async (req, res, next) => {
+  try {
+    if (req.params.id === req.user._id.toString()) {
+      return res.status(400).json({ success: false, message: 'Cannot delete your own account.' })
+    }
+    await User.findByIdAndDelete(req.params.id)
+    res.json({ success: true, message: 'User deleted.' })
+  } catch (err) {
+    next(err)
+  }
+})
