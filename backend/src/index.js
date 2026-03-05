@@ -1,6 +1,10 @@
 import express from "express";
 import 'dotenv/config'
 import { connectDB } from './config/db.js'
+import { errorHandler, notFound } from './middleware/errorHandler.js'
+import helmet from 'helmet'
+import morgan from 'morgan'
+
 import authRoutes     from './routes/auth.js'
 import productRoutes  from './routes/products.js'
 import orderRoutes    from './routes/orders.js'
@@ -14,6 +18,10 @@ await connectDB()
 const app = express()
 const PORT = process.env.PORT || 5000
 
+// Security & Logging
+app.use(helmet())
+app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'))
+
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true }))
 
@@ -24,6 +32,9 @@ app.use('/api/promo',    promoRoutes)
 app.use('/api/users',    userRoutes)
 app.use('/api/settings', settingsRoutes)
 app.use('/api/products/:productId/reviews', reviewRoutes)
+
+app.use(notFound)
+app.use(errorHandler)
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
