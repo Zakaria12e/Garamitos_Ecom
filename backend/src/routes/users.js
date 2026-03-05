@@ -67,3 +67,13 @@ router.delete('/:id', protect, adminOnly, async (req, res, next) => {
     next(err)
   }
 })
+
+// GET /api/users/me/wishlist
+router.get('/me/wishlist', protect, async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).populate('wishlist')
+    res.json({ success: true, wishlist: user.wishlist })
+  } catch (err) {
+    next(err)
+  }
+})
