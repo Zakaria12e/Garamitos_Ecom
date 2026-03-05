@@ -76,3 +76,13 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
+
+// GET /api/products/featured
+router.get('/featured', async (req, res, next) => {
+  try {
+    const products = await Product.find({ featured: true, isActive: true }).limit(8)
+    res.json({ success: true, products })
+  } catch (err) {
+    next(err)
+  }
+})
