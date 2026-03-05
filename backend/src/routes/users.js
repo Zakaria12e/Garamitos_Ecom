@@ -77,3 +77,24 @@ router.get('/me/wishlist', protect, async (req, res, next) => {
     next(err)
   }
 })
+
+// POST /api/users/me/wishlist/:productId
+router.post('/me/wishlist/:productId', protect, async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id)
+    const pid = req.params.productId
+    const idx = user.wishlist.indexOf(pid)
+
+    if (idx === -1) {
+      user.wishlist.push(pid)
+    } else {
+      user.wishlist.splice(idx, 1)
+    }
+    await user.save()
+    res.json({ success: true, wishlist: user.wishlist })
+  } catch (err) {
+    next(err)
+  }
+})
+
+export default router
