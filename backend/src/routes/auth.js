@@ -110,6 +110,34 @@ router.put(
 )
 
 // POST /api/auth/change-password
-router.post()
+router.post(
+   '/change-password',
+  protect,
+  [
+    body('currentPassword').notEmpty().withMessage('Current password required'),
+    body('newPassword').isLength({ min: 6 }).withMessage('New password must be at least 6 characters'),
+  ],
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, message: errors.array()[0].msg })
+      }
+
+      const user = await User.findById(req.user._id).select('+password')
+      const { currentPassword, newPassword } = req.body
+
+      if (!(await user.comparePassword(currentPassword))) {
+        return res.status(401).json({ success: false, message: 'Current password is incorrect.' })
+      }
+
+      user.password = newPassword
+      await user.save()
+      res.json({ success: true, message: 'Password changed successfully.' })
+    } catch (err) {
+      next(err)
+    }
+  }
+)
 
 export default router
