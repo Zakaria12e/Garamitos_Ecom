@@ -4,6 +4,7 @@ import { connectDB } from './config/db.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import rateLimit from 'express-rate-limit'
 
 import authRoutes     from './routes/auth.js'
 import productRoutes  from './routes/products.js'
@@ -24,6 +25,26 @@ app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'))
 
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true }))
+
+// Global Rate Limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  message: { success: false, message: 'Too many requests. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+})
+app.use('/api', limiter)
+
+// Stricter limiter for auth routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { success: false, message: 'Too many login attempts. Please wait 15 minutes.' },
+})
+app.use('/api/auth/login', authLimiter)
+app.use('/api/auth/register', authLimiter)
+
 
 app.use('/api/auth',     authRoutes)
 app.use('/api/products', productRoutes)
