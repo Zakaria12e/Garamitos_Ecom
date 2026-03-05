@@ -14,12 +14,18 @@ let token;
     return res.status(401).json({ success: false, message: 'Not authenticated. Please log in.' })
   }
   
+  try{
+    
   const decoded = jwt.verify(token, process.env.JWT_SECRET)
     req.user = await User.findById(decoded.id).select('-password')
     if (!req.user) {
       return res.status(401).json({ success: false, message: 'User no longer exists.' })
     }
     next()
+
+    } catch {
+    return res.status(401).json({ success: false, message: 'Invalid or expired token.' })
+  }
 }
 
 // Admin only
