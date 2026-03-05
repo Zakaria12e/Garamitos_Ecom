@@ -1,0 +1,33 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* App container */
+.app {
+  text-align: center;
+  margin-top: 100px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 8px 16px;
+  border: none;
+  background-color: #646cff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
