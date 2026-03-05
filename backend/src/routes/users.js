@@ -26,3 +26,16 @@ try {
     next(err)
   }
 })
+
+// GET /api/users/:id  (admin)
+router.get('/:id', protect, adminOnly, async (req, res, next) => {
+     try {
+    const user = await User.findById(req.params.id).select('-password')
+    if (!user) return res.status(404).json({ success: false, message: 'User not found.' })
+
+    const orders = await Order.find({ user: user._id }).sort({ createdAt: -1 }).limit(10)
+    res.json({ success: true, user, orders })
+  } catch (err) {
+    next(err)
+  }
+})
