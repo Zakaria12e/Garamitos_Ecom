@@ -66,6 +66,57 @@ router.post(
         subtotal += product.price * item.qty
       }
 
+        // Shipping cost (read from DB settings)
+      const siteSettings = await Settings.getGlobal()
+      const shippingCost = subtotal >= siteSettings.freeShippingAt
+        ? 0
+        : siteSettings.shippingPrice
+
+         // Promo code
+      let discount = 0
+      let validatedPromo = null
+
+      if (promoCode) {
+        const promo = await PromoCode.findOne({ code: promoCode.toUpperCase(), isActive: true })
+        if (promo) {
+          if (promo.expiresAt && promo.expiresAt < new Date()) {
+            return res.status(400).json({ success: false, message: 'Promo code has expired.' })
+          }
+          if (promo.usageLimit !== null && promo.usageCount >= promo.usageLimit) {
+            return res.status(400).json({ success: false, message: 'Promo code usage limit reached.' })
+          }
+          discount = promo.type === 'percent'
+            ? (subtotal * promo.value) / 100
+            : promo.value
+
+          promo.usageCount += 1
+          await promo.save()
+          validatedPromo = promo.code
+        }
+      }
+
+      const total = Math.max(0, subtotal + shippingCost - discount)
+
+       // Create order
+      const order = await Order.create({
+        user: req.user?._id || null,
+        items: orderItems,
+        shipping,
+        subtotal,
+        shippingCost,
+        discount,
+        promoCode: validatedPromo,
+        total,
+        statusHistory: [{ status: 'Processing' }],
+      })
+
+      // Decrement stock
+      for (const item of orderItems) {
+        await Product.findByIdAndUpdate(item.productId, { $inc: { stock: -item.qty } })
+      }
+
+      res.status(201).json({ success: true, order })
+
     }catch(err){
         next(err)
     }
