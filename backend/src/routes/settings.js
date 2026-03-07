@@ -27,8 +27,8 @@ router.put('/', protect, adminOnly, async (req, res, next) => {
     const { shippingPrice, freeShippingAt } = req.body
 
     const update = {}
-    if (shippingPrice  !== undefined) update.shippingPrice  = shippingPrice
-    if (freeShippingAt !== undefined) update.freeShippingAt = freeShippingAt
+    if (shippingPrice  !== undefined) update.shippingPrice  = Number(shippingPrice)
+    if (freeShippingAt !== undefined) update.freeShippingAt = Number(freeShippingAt)
 
     const settings = await Settings.findOneAndUpdate(
       { key: 'global' },
