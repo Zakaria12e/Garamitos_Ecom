@@ -174,18 +174,19 @@ router.get('/', protect, adminOnly, async (req, res, next) => {
       filter.$or = [
         { orderNumber: { $regex: search, $options: 'i' } },
         { 'shipping.email': { $regex: search, $options: 'i' } },
-        { 'shipping.name': { $regex: search, $options: 'i' } },
+        { 'shipping.fullName': { $regex: search, $options: 'i' } },
       ]
     }
 
-    const skip = (page - 1) * limit
-    const orders = await Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit)
+    const skip = (Number(page) - 1) * Number(limit)
+    const orders = await Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(Number(limit))
     const total = await Order.countDocuments(filter)
 
     res.json({
       success: true,
       total,
-      page,
+      page: Number(page),
+      pages: Math.ceil(total / Number(limit)),
       orders,
     })
   } catch (err) {
