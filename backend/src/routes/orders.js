@@ -141,3 +141,18 @@ router.get('/lookup', async (req, res, next) => {
   }
 })
 
+// GET /api/orders/my
+// Auth user — their own orders
+router.get('/my', protect, async (req, res, next) => {
+  try {
+    const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 })
+    res.json({ success: true, orders })
+  } catch (err) {
+    next(err)
+  }
+})
+
+
+
+export default router
+
