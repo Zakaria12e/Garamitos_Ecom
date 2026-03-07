@@ -40,3 +40,13 @@ router.post('/validate', async (req, res, next) => {
     next(err)
   }
 })
+
+// GET /api/promo (admin)
+router.get('/', protect, adminOnly, async (req, res, next) => {
+  try {
+    const codes = await PromoCode.find().sort({ createdAt: -1 })
+    res.json({ success: true, codes })
+  } catch (err) {
+    next(err)
+  }
+})
