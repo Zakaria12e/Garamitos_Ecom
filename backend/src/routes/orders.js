@@ -194,5 +194,16 @@ router.get('/', protect, adminOnly, async (req, res, next) => {
   }
 })
 
+// GET /api/orders/:id (admin)
+router.get('/:id', protect, adminOnly, async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id).populate('user', 'name email')
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found.' })
+    res.json({ success: true, order })
+  } catch (err) {
+    next(err)
+  }
+})
+
 export default router
 
