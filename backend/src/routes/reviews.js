@@ -52,4 +52,58 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// POST /api/products/:productId/reviews
+router.post(
+  '/',
+  optionalAuth,
+  [
+    body('name').trim().notEmpty().withMessage('Name is required'),
+    body('email').isEmail().withMessage('Valid email is required'),
+    body('rating').isInt({ min: 1, max: 5 }).withMessage('Rating must be 1–5'),
+    body('body').trim().isLength({ min: 10 }).withMessage('Review must be at least 10 characters'),
+  ],
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, message: errors.array()[0].msg })
+      }
+
+      const { productId } = req.params
+      const { name, email, rating, title, body: reviewBody } = req.body
+
+      // Check for duplicate
+      const existing = await Review.findOne({ product: productId, email: email.toLowerCase() })
+      if (existing) {
+        return res.status(409).json({ success: false, message: 'You have already reviewed this product.' })
+      }
+
+      // Check if verified buyer
+      const order = await Order.findOne({
+        'shipping.email': email.toLowerCase(),
+        'items.productId': productId,
+        status: { $in: ['Delivered', 'Shipped'] },
+      })
+
+      const review = await Review.create({
+        product:  productId,
+        user:     req.user?._id || null,
+        name:     name.trim(),
+        email:    email.toLowerCase(),
+        rating:   Number(rating),
+        title:    (title || '').trim(),
+        body:     reviewBody.trim(),
+        verified: !!order,
+      })
+
+      res.status(201).json({ success: true, review })
+    } catch (err) {
+      if (err.code === 11000) {
+        return res.status(409).json({ success: false, message: 'You have already reviewed this product.' })
+      }
+      next(err)
+    }
+  }
+)
+
 export default router
