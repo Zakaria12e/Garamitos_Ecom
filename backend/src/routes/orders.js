@@ -205,5 +205,28 @@ router.get('/:id', protect, adminOnly, async (req, res, next) => {
   }
 })
 
+// PUT /api/orders/:id/status (admin)
+router.put('/:id/status', protect, adminOnly, async (req, res, next) => {
+  try {
+    const { status, note } = req.body
+    const allowed = ['Processing', 'Shipped', 'Delivered', 'Cancelled']
+
+    if (!allowed.includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status value.' })
+    }
+
+    const order = await Order.findById(req.params.id)
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found.' })
+
+    order.status = status
+    order.statusHistory.push({ status, note: note || '', changedAt: new Date() })
+    await order.save()
+
+    res.json({ success: true, order })
+  } catch (err) {
+    next(err)
+  }
+})
+
 export default router
 
