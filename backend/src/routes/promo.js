@@ -71,3 +71,15 @@ router.put('/:id', protect, adminOnly, async (req, res, next) => {
     next(err)
   }
 })
+
+// DELETE /api/promo/:id (admin)
+router.delete('/:id', protect, adminOnly, async (req, res, next) => {
+  try {
+    await PromoCode.findByIdAndDelete(req.params.id)
+    res.json({ success: true, message: 'Promo code deleted.' })
+  } catch (err) {
+    next(err)
+  }
+})
+
+export default router
