@@ -178,3 +178,20 @@ router.put('/:id', protect, adminOnly, async (req, res, next) => {
     next(err)
   }
 })
+
+// DELETE /api/products/:id (admin — soft delete)
+router.delete('/:id', protect, adminOnly, async (req, res, next) => {
+  try {
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      { isActive: false },
+      { new: true }
+    )
+    if (!product) return res.status(404).json({ success: false, message: 'Product not found.' })
+    res.json({ success: true, message: 'Product removed.' })
+  } catch (err) {
+    next(err)
+  }
+})
+
+export default router
