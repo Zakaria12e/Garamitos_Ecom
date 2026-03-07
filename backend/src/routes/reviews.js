@@ -119,5 +119,20 @@ router.delete('/:id', protect, adminOnly, async (req, res, next) => {
     next(err)
   }
 })
+// PUT /api/products/:productId/reviews/:id/approve (admin)
+router.put('/:id/approve', protect, adminOnly, async (req, res, next) => {
+  try {
+    const review = await Review.findOneAndUpdate(
+      { _id: req.params.id, product: req.params.productId },
+      { approved: req.body.approved ?? true },
+      { new: true }
+    )
+    if (!review) return res.status(404).json({ success: false, message: 'Review not found.' })
+    res.json({ success: true, review })
+  } catch (err) {
+    next(err)
+  }
+})
+
 
 export default router
