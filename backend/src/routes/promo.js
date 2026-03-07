@@ -60,3 +60,14 @@ router.post('/', protect, adminOnly, async (req, res, next) => {
     next(err)
   }
 })
+
+// PUT /api/promo/:id (admin)
+router.put('/:id', protect, adminOnly, async (req, res, next) => {
+  try {
+    const code = await PromoCode.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    if (!code) return res.status(404).json({ success: false, message: 'Promo code not found.' })
+    res.json({ success: true, code })
+  } catch (err) {
+    next(err)
+  }
+})
