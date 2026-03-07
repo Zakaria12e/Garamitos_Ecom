@@ -106,4 +106,18 @@ router.post(
   }
 )
 
+// DELETE /api/products/:productId/reviews/:id (admin)
+router.delete('/:id', protect, adminOnly, async (req, res, next) => {
+  try {
+    const review = await Review.findOneAndDelete({
+      _id: req.params.id,
+      product: req.params.productId,
+    })
+    if (!review) return res.status(404).json({ success: false, message: 'Review not found.' })
+    res.json({ success: true, message: 'Review deleted.' })
+  } catch (err) {
+    next(err)
+  }
+})
+
 export default router
