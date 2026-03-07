@@ -142,6 +142,14 @@ router.post(
   '/',
   protect,
   adminOnly,
+  [
+    body('name').trim().notEmpty().withMessage('Name is required'),
+    body('brand').trim().notEmpty().withMessage('Brand is required'),
+    body('category').notEmpty().withMessage('Category is required'),
+    body('price').isFloat({ min: 0 }).withMessage('Valid price required'),
+    body('stock').isInt({ min: 0 }).withMessage('Valid stock required'),
+    body('image').notEmpty().withMessage('Image URL required'),
+  ],
   async (req, res, next) => {
     try {
       const errors = validationResult(req)
