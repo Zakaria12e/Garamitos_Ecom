@@ -123,3 +123,21 @@ router.post(
    }
 )
 
+// GET /api/orders/lookup?email=x
+// Public — guest order lookup by email
+router.get('/lookup', async (req, res, next) => {
+  try {
+    const { email } = req.query
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email is required.' })
+    }
+
+    const orders = await Order.find({ 'shipping.email': email.toLowerCase() })
+      .sort({ createdAt: -1 })
+
+    res.json({ success: true, orders })
+  } catch (err) {
+    next(err)
+  }
+})
+
