@@ -163,7 +163,35 @@ router.get('/my/:id', protect, async (req, res, next) => {
   }
 })
 
+// GET /api/orders (admin)
+router.get('/', protect, adminOnly, async (req, res, next) => {
+  try {
+    const { status, page = 1, limit = 20, search } = req.query
+    const filter = {}
 
+    if (status) filter.status = status
+    if (search) {
+      filter.$or = [
+        { orderNumber: { $regex: search, $options: 'i' } },
+        { 'shipping.email': { $regex: search, $options: 'i' } },
+        { 'shipping.name': { $regex: search, $options: 'i' } },
+      ]
+    }
+
+    const skip = (page - 1) * limit
+    const orders = await Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit)
+    const total = await Order.countDocuments(filter)
+
+    res.json({
+      success: true,
+      total,
+      page,
+      orders,
+    })
+  } catch (err) {
+    next(err)
+  }
+})
 
 export default router
 
