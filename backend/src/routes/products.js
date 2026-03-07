@@ -86,3 +86,54 @@ router.get('/featured', async (req, res, next) => {
     next(err)
   }
 })
+
+// GET /api/products/categories
+router.get('/categories', async (req, res, next) => {
+  try {
+    const categories = await Product.distinct('category', { isActive: true })
+    res.json({ success: true, categories })
+  } catch (err) {
+    next(err)
+  }
+})
+
+// GET /api/products/brands
+router.get('/brands', async (req, res, next) => {
+  try {
+    const brands = await Product.distinct('brand', { isActive: true })
+    res.json({ success: true, brands })
+  } catch (err) {
+    next(err)
+  }
+})
+
+// GET /api/products/:id
+router.get('/:id', async (req, res, next) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id, isActive: true })
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found.' })
+    }
+    res.json({ success: true, product })
+  } catch (err) {
+    next(err)
+  }
+})
+
+// GET /api/products/:id/related
+router.get('/:id/related', async (req, res, next) => {
+  try {
+    const product = await Product.findById(req.params.id)
+    if (!product) return res.status(404).json({ success: false, message: 'Product not found.' })
+
+    const related = await Product.find({
+      category: product.category,
+      _id: { $ne: product._id },
+      isActive: true,
+    }).limit(4)
+
+    res.json({ success: true, products: related })
+  } catch (err) {
+    next(err)
+  }
+})
