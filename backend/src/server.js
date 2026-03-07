@@ -51,6 +51,12 @@ const authLimiter = rateLimit({
   max: 20,
   message: { success: false, message: 'Too many login attempts. Please wait 15 minutes.' },
 })
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Garamitos API is running'
+  })
+})
 app.use('/api/auth/login', authLimiter)
 app.use('/api/auth/register', authLimiter)
 
