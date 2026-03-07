@@ -137,3 +137,22 @@ router.get('/:id/related', async (req, res, next) => {
     next(err)
   }
 })
+
+router.post(
+  '/',
+  protect,
+  adminOnly,
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, message: errors.array()[0].msg })
+      }
+
+      const product = await Product.create(req.body)
+      res.status(201).json({ success: true, product })
+    } catch (err) {
+      next(err)
+    }
+  }
+)
