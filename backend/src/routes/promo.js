@@ -50,3 +50,13 @@ router.get('/', protect, adminOnly, async (req, res, next) => {
     next(err)
   }
 })
+
+// POST /api/promo (admin)
+router.post('/', protect, adminOnly, async (req, res, next) => {
+  try {
+    const code = await PromoCode.create(req.body)
+    res.status(201).json({ success: true, code })
+  } catch (err) {
+    next(err)
+  }
+})
