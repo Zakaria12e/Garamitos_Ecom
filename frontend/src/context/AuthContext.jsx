@@ -36,4 +36,17 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('sv_token')
     setUser(null)
   }, [])
+
+  // Update profile
+  const updateProfile = useCallback(async (body) => {
+    const data = await authApi.updateMe(body)
+    setUser(data.user)
+    return data.user
+  }, [])
+
+  return (
+    <AuthContext.Provider value={{ user, loading, register, login, logout, updateProfile, isAdmin: user?.role === 'admin' }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
