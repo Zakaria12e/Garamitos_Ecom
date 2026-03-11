@@ -55,3 +55,19 @@ export const productsApi = {
   update:   (id, body) => request(`/products/${id}`, { method: 'PUT', body }),
   delete:   (id)   => request(`/products/${id}`, { method: 'DELETE' }),
 }
+
+// ── Orders ─────────────────────────────────────────────────
+export const ordersApi = {
+  place:       (body)  => request('/orders',             { method: 'POST', body }),
+  lookup:      (email) => request(`/orders/lookup?email=${encodeURIComponent(email)}`),
+  myOrders:    ()      => request('/orders/my'),
+  myOrder:     (id)    => request(`/orders/my/${id}`),
+  // admin
+  all:         (params = {}) => {
+    const qs = new URLSearchParams(params).toString()
+    return request(`/orders?${qs}`)
+  },
+  get:         (id)    => request(`/orders/${id}`),
+  updateStatus:(id, status, note) => request(`/orders/${id}/status`, { method: 'PUT', body: { status, note } }),
+  stats:       ()      => request('/orders/admin/stats'),
+}
