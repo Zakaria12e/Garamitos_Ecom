@@ -24,4 +24,11 @@ export function AuthProvider({ children }) {
     setUser(data.user)
     return data.user
   }, [])
+    // Login
+  const login = useCallback(async (email, password) => {
+    const data = await authApi.login({ email, password })
+    localStorage.setItem('sv_token', data.token)
+    setUser(data.user)
+    return data.user
+  }, [])
 }
