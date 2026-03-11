@@ -36,3 +36,22 @@ export const authApi = {
   updateMe: (body)         => request('/auth/me',              { method: 'PUT',  body }),
   changePassword: (body)   => request('/auth/change-password', { method: 'POST', body }),
 }
+
+// ── Products ───────────────────────────────────────────────
+export const productsApi = {
+  list: (params = {}) => {
+    const qs = new URLSearchParams()
+    Object.entries(params).forEach(([k, v]) => {
+      if (v !== undefined && v !== '' && v !== null) qs.set(k, v)
+    })
+    return request(`/products?${qs}`)
+  },
+  featured:   ()   => request('/products/featured'),
+  categories: ()   => request('/products/categories'),
+  brands:     ()   => request('/products/brands'),
+  get:      (id)   => request(`/products/${id}`),
+  related:  (id)   => request(`/products/${id}/related`),
+  create:   (body) => request('/products',     { method: 'POST',   body }),
+  update:   (id, body) => request(`/products/${id}`, { method: 'PUT', body }),
+  delete:   (id)   => request(`/products/${id}`, { method: 'DELETE' }),
+}
