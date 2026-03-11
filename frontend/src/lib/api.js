@@ -88,3 +88,20 @@ export const usersApi = {
   setRole:   (id, role)    => request(`/users/${id}/role`, { method: 'PUT', body: { role } }),
   delete:    (id)          => request(`/users/${id}`,      { method: 'DELETE' }),
 }
+
+// ── Reviews ────────────────────────────────────────────────
+export const reviewsApi = {
+  list:    (productId, params = {}) => {
+    const qs = new URLSearchParams(params).toString()
+    return request(`/products/${productId}/reviews?${qs}`)
+  },
+  create:  (productId, body) => request(`/products/${productId}/reviews`, { method: 'POST', body }),
+  delete:  (productId, id)   => request(`/products/${productId}/reviews/${id}`, { method: 'DELETE' }),
+  approve: (productId, id, approved) => request(`/products/${productId}/reviews/${id}/approve`, { method: 'PUT', body: { approved } }),
+}
+
+// ── Shipping / Site Settings ───────────────────────────────
+export const settingsApi = {
+  get:  ()     => request('/settings'),
+  save: (body) => request('/settings', { method: 'PUT', body }),
+}
