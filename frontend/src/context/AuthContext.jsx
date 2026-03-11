@@ -31,4 +31,9 @@ export function AuthProvider({ children }) {
     setUser(data.user)
     return data.user
   }, [])
+    // Logout
+  const logout = useCallback(() => {
+    localStorage.removeItem('sv_token')
+    setUser(null)
+  }, [])
 }
