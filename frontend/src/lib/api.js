@@ -71,3 +71,20 @@ export const ordersApi = {
   updateStatus:(id, status, note) => request(`/orders/${id}/status`, { method: 'PUT', body: { status, note } }),
   stats:       ()      => request('/orders/admin/stats'),
 }
+
+// ── Promo ──────────────────────────────────────────────────
+export const promoApi = {
+  validate: (code, subtotal) => request('/promo/validate', { method: 'POST', body: { code, subtotal } }),
+  list:     ()               => request('/promo'),
+  create:   (body)           => request('/promo',      { method: 'POST',   body }),
+  update:   (id, body)       => request(`/promo/${id}`, { method: 'PUT',    body }),
+  delete:   (id)             => request(`/promo/${id}`, { method: 'DELETE' }),
+}
+
+// ── Users (admin) ──────────────────────────────────────────
+export const usersApi = {
+  list:      (params = {}) => request(`/users?${new URLSearchParams(params)}`),
+  get:       (id)          => request(`/users/${id}`),
+  setRole:   (id, role)    => request(`/users/${id}/role`, { method: 'PUT', body: { role } }),
+  delete:    (id)          => request(`/users/${id}`,      { method: 'DELETE' }),
+}
