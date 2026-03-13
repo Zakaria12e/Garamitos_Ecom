@@ -1,6 +1,10 @@
-import { Navigate, Link, useLocation } from 'react-router-dom'
+import { Navigate, Link, Routes, Route, useLocation } from 'react-router-dom'
 import { Loader2, LayoutDashboard, Package, ShoppingBag, Settings } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import Dashboard     from '../components/admin/Dashboard'
+import ProductsAdmin from '../components/admin/ProductsAdmin'
+import OrdersAdmin   from '../components/admin/OrdersAdmin'
+import ShippingAdmin from '../components/admin/ShippingAdmin'
 
 const NAV_LINKS = [
   { to: '/admin',          label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -37,7 +41,14 @@ export default function AdminPage() {
         })}
       </aside>
 
-      <main className="flex-1 min-w-0" />
+      <main className="flex-1 min-w-0">
+        <Routes>
+          <Route index           element={<Dashboard />} />
+          <Route path="products" element={<ProductsAdmin />} />
+          <Route path="orders"   element={<OrdersAdmin />} />
+          <Route path="shipping" element={<ShippingAdmin />} />
+        </Routes>
+      </main>
     </div>
   )
 }
