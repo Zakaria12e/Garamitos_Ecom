@@ -35,5 +35,27 @@ function ProductSkeleton() {
 }
 
 export default function HomePage() {
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const [featured, setFeatured] = useState([])
+  const [security, setSecurity] = useState([])
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => setMounted(true), [])
+
+  useEffect(() => {
+    Promise.all([
+      productsApi.featured(),
+      productsApi.list({ category: 'Surveillance Cameras,Security Systems', limit: 4 }),
+      productsApi.categories(),
+    ]).then(([featuredRes, securityRes, catsRes]) => {
+      setFeatured((featuredRes.products || []).map(normaliseProduct))
+      setSecurity((securityRes.products || []).map(normaliseProduct))
+      setCategories(catsRes.categories || [])
+    }).catch(console.error)
+      .finally(() => setLoading(false))
+  }, [])
+
   return <div />
 }
