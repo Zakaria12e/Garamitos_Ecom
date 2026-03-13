@@ -32,5 +32,28 @@ export default function AuthPage() {
   const { login, register, user } = useAuth()
   const navigate = useNavigate()
 
+  useEffect(() => { if (user) navigate('/') }, [user])
+
+  const set = (key) => (e) => setForm(f => ({ ...f, [key]: e.target.value }))
+
+  const submit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    try {
+      if (mode === 'login') {
+        await login(form.email, form.password)
+      } else {
+        if (!form.name.trim()) { setError('Name is required'); setLoading(false); return }
+        await register(form.name, form.email, form.password)
+      }
+      navigate('/')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return <div />
 }
