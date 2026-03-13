@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, Heart, BarChart2, Sun, Moon, Search, Shield } from 'lucide-react'
+import { ShoppingCart, Heart, BarChart2, Sun, Moon, Search, Shield, User, LogOut } from 'lucide-react'
 import { useApp } from '../../context/AppContext'
+import { useAuth } from '../../context/AuthContext'
 
 export default function Header() {
   const { setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const { state } = useApp()
+  const { user, logout } = useAuth()
   const [search, setSearch] = useState('')
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => setMounted(true), [])
@@ -23,6 +26,12 @@ export default function Header() {
       navigate('/catalog?search=' + encodeURIComponent(search.trim()))
       setSearch('')
     }
+  }
+
+  const handleLogout = () => {
+    logout()
+    setUserMenuOpen(false)
+    navigate('/')
   }
 
   return (
@@ -68,6 +77,37 @@ export default function Header() {
             <ShoppingCart size={15} />
             <AnimatePresence>{cartCount > 0 && <motion.span initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} className="absolute top-0.5 right-0.5 w-4 h-4 bg-black dark:bg-white text-white dark:text-black text-[9px] font-bold rounded-full flex items-center justify-center">{cartCount}</motion.span>}</AnimatePresence>
           </Link>
+
+          <div className="relative">
+            {user ? (
+              <button onClick={() => setUserMenuOpen(!userMenuOpen)} className="flex items-center gap-1.5 p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
+                <div className="w-6 h-6 bg-black dark:bg-white rounded-full flex items-center justify-center">
+                  <span className="text-[10px] font-bold text-white dark:text-black">{user.name?.[0]?.toUpperCase()}</span>
+                </div>
+              </button>
+            ) : (
+              <Link to="/login" className="flex items-center gap-1.5 text-xs px-3 py-1.5 border border-gray-200 dark:border-gray-800 rounded-md hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+                <User size={13} /> Login
+              </Link>
+            )}
+            <AnimatePresence>
+              {userMenuOpen && user && (
+                <motion.div initial={{opacity:0,y:6,scale:0.97}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:6,scale:0.97}} transition={{duration:0.15}}
+                  className="absolute right-0 top-full mt-1.5 w-48 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg overflow-hidden z-50">
+                  <div className="px-3 py-2.5 border-b border-gray-200 dark:border-gray-800">
+                    <p className="text-xs font-semibold truncate">{user.name}</p>
+                    <p className="text-[10px] text-gray-400 truncate">{user.email}</p>
+                  </div>
+                  <Link to="/orders" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+                    <ShoppingCart size={12} /> My Orders
+                  </Link>
+                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors border-t border-gray-200 dark:border-gray-800">
+                    <LogOut size={12} /> Sign Out
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
       </div>
