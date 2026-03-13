@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Loader2, ChevronDown, ChevronUp } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Loader2, ChevronDown, ChevronUp, User, MapPin, CreditCard } from 'lucide-react'
 import { ordersApi } from '../../lib/api'
 import { STATUS_COLORS, ORDER_STATUSES } from '../../constants/admin'
 
@@ -53,6 +53,55 @@ export default function OrderCard({ order, onStatusChange }) {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {expanded && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+            <div className="border-t border-gray-200 dark:border-gray-800">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-gray-800">
+
+                {/* Customer */}
+                <div className="px-4 py-3">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <User size={11} className="text-gray-400" />
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Customer</p>
+                  </div>
+                  <p className="text-xs font-semibold">{order.shipping?.fullName}</p>
+                  <p className="text-[11px] text-gray-500 mt-0.5">{order.shipping?.email}</p>
+                  {order.shipping?.phone && <p className="text-[11px] text-gray-500">{order.shipping.phone}</p>}
+                </div>
+
+                {/* Shipping */}
+                <div className="px-4 py-3">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <MapPin size={11} className="text-gray-400" />
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Shipping</p>
+                  </div>
+                  <p className="text-[11px] text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {order.shipping?.address}<br />
+                    {order.shipping?.city}{order.shipping?.zip ? `, ${order.shipping.zip}` : ''}<br />
+                    {order.shipping?.country}
+                  </p>
+                </div>
+
+                {/* Payment */}
+                <div className="px-4 py-3">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <CreditCard size={11} className="text-gray-400" />
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Payment</p>
+                  </div>
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">Subtotal</span><span>MAD {order.subtotal?.toFixed(2)}</span></div>
+                    {order.discount > 0 && <div className="flex justify-between text-[11px] text-green-600"><span>Discount</span><span>-MAD {order.discount.toFixed(2)}</span></div>}
+                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">Shipping</span><span>{order.shippingCost === 0 ? 'Free' : `MAD ${order.shippingCost?.toFixed(2)}`}</span></div>
+                    <div className="flex justify-between text-xs font-bold pt-1 border-t border-gray-100 dark:border-gray-800"><span>Total</span><span>MAD {order.total.toFixed(2)}</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }
