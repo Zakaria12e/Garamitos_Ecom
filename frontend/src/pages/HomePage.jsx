@@ -107,6 +107,29 @@ export default function HomePage() {
           )}
         </div>
       </section>
+
+      {/* Categories */}
+      {categories.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 py-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-sm font-semibold uppercase tracking-wider">Categories</h2>
+            <Link to="/catalog" className="text-xs text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1">All <ArrowRight size={11} /></Link>
+          </div>
+          <motion.div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            {categories.map((cat) => (
+              <motion.div key={cat} variants={itemVariants}>
+                <Link to={"/catalog?category=" + encodeURIComponent(cat)}
+                  className="flex flex-col items-center gap-2 p-4 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-black dark:hover:border-white hover:bg-gray-50 dark:hover:bg-gray-950 transition-all text-center">
+                  <motion.span className="text-2xl" whileHover={{ scale: 1.2 }} transition={{ type: 'spring', stiffness: 300 }}>
+                    {CATEGORY_ICONS[cat] || '📦'}
+                  </motion.span>
+                  <span className="text-xs font-medium leading-snug">{cat}</span>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
+      )}
     </div>
   )
 }
