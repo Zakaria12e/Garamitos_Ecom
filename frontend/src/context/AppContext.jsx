@@ -64,6 +64,41 @@ case 'CLEAR_CART':
     promoCode: null,
     discount: 0
   }
+
+  case 'TOGGLE_WISHLIST': {
+  const inList = state.wishlist.find(i => i.id === action.product.id)
+
+  return {
+    ...state,
+    wishlist: inList
+      ? state.wishlist.filter(i => i.id !== action.product.id)
+      : [...state.wishlist, action.product]
+  }
+}
+
+case 'TOGGLE_COMPARE': {
+  const inList = state.compareList.find(i => i.id === action.product.id)
+
+  if (inList)
+    return {
+      ...state,
+      compareList: state.compareList.filter(i => i.id !== action.product.id)
+    }
+
+  if (state.compareList.length >= 4)
+    return state
+
+  return {
+    ...state,
+    compareList: [...state.compareList, action.product]
+  }
+}
+
+case 'REMOVE_COMPARE':
+  return {
+    ...state,
+    compareList: state.compareList.filter(i => i.id !== action.id)
+  }
     default:
       return state
   }
