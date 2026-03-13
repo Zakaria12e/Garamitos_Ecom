@@ -96,6 +96,17 @@ export default function AuthPage() {
             {loading ? 'Please wait…' : mode === 'login' ? 'Sign In' : 'Create Account'}
           </button>
         </form>
+
+        {/* Toggle mode */}
+        <p className="text-center text-xs text-gray-500 mt-6">
+          {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
+          <button
+            onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError('') }}
+            className="font-semibold text-black dark:text-white hover:underline"
+          >
+            {mode === 'login' ? 'Sign up' : 'Sign in'}
+          </button>
+        </p>
       </motion.div>
     </div>
   )
