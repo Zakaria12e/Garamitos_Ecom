@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTheme } from 'next-themes'
-import { motion } from 'framer-motion'
-import { Shield, Search, Sun, Moon } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ShoppingCart, Heart, BarChart2, Sun, Moon, Search, Shield } from 'lucide-react'
+import { useApp } from '../../context/AppContext'
 
 export default function Header() {
   const { setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const { state } = useApp()
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => setMounted(true), [])
 
+  const cartCount = state.cart.reduce((s, i) => s + i.qty, 0)
   const isDark = mounted && resolvedTheme === 'dark'
 
   const handleSearch = (e) => {
@@ -50,6 +53,21 @@ export default function Header() {
           <motion.button whileTap={{ scale: 0.9 }} onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')} className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
             {mounted ? (isDark ? <Sun size={15} /> : <Moon size={15} />) : <Moon size={15} />}
           </motion.button>
+
+          <Link to="/wishlist" className="relative p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
+            <Heart size={15} />
+            <AnimatePresence>{state.wishlist.length > 0 && <motion.span initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 dark:bg-red-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center">{state.wishlist.length}</motion.span>}</AnimatePresence>
+          </Link>
+
+          <Link to="/compare" className="relative p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
+            <BarChart2 size={15} />
+            <AnimatePresence>{state.compareList.length > 0 && <motion.span initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} className="absolute top-0.5 right-0.5 w-4 h-4 bg-black dark:bg-white text-white dark:text-black text-[9px] font-bold rounded-full flex items-center justify-center">{state.compareList.length}</motion.span>}</AnimatePresence>
+          </Link>
+
+          <Link to="/cart" className="relative p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
+            <ShoppingCart size={15} />
+            <AnimatePresence>{cartCount > 0 && <motion.span initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} className="absolute top-0.5 right-0.5 w-4 h-4 bg-black dark:bg-white text-white dark:text-black text-[9px] font-bold rounded-full flex items-center justify-center">{cartCount}</motion.span>}</AnimatePresence>
+          </Link>
         </div>
 
       </div>
