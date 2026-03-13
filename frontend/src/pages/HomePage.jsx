@@ -160,6 +160,45 @@ export default function HomePage() {
           ))}
         </motion.div>
       </section>
+
+      {/* Trust badges */}
+      <motion.section className="border-t border-gray-200 dark:border-gray-800" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+        <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { icon: Shield, title: '2-Year Warranty', desc: 'All security products covered' },
+            { icon: Truck, title: 'Free Shipping', desc: 'On orders over $199' },
+            { icon: RotateCcw, title: '30-Day Returns', desc: 'Hassle-free returns' },
+          ].map(({ icon: Icon, title, desc }, i) => (
+            <motion.div key={title} className="flex items-center gap-4" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+              <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-900 flex items-center justify-center shrink-0"><Icon size={18} /></div>
+              <div>
+                <p className="text-sm font-semibold">{title}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+
+      {/* Reviews */}
+      <section className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <h2 className="text-sm font-semibold uppercase tracking-wider mb-6 text-center">Customer Reviews</h2>
+          <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            {[
+              { name: 'Ahmed R.', text: 'The Hikvision dome camera is incredible. Crystal clear footage day and night. Installation was straightforward.', rating: 5 },
+              { name: 'Sarah K.', text: 'Ring Alarm Pro keeps our entire home covered. The eero Wi-Fi 6 built in is a huge bonus — setup was seamless.', rating: 5 },
+              { name: 'James T.', text: 'Great selection of surveillance cameras and competitive prices. Customer support helped me pick the right system.', rating: 4 },
+            ].map((review) => (
+              <motion.div key={review.name} variants={itemVariants} className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+                <div className="flex items-center gap-1 mb-2">{Array.from({ length: review.rating }).map((_, i) => <Star key={i} size={11} className="fill-black dark:fill-white text-black dark:text-white" />)}</div>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">"{review.text}"</p>
+                <p className="text-xs font-semibold">— {review.name}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
     </div>
   )
 }
