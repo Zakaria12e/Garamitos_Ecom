@@ -130,6 +130,36 @@ export default function HomePage() {
           </motion.div>
         </section>
       )}
+
+      {/* Security Spotlight */}
+      <section className="max-w-7xl mx-auto px-4 py-12 border-t border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-sm font-semibold uppercase tracking-wider">🔒 Security Spotlight</h2>
+          <Link to="/catalog?category=Surveillance+Cameras" className="text-xs text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1">View All <ArrowRight size={11} /></Link>
+        </div>
+        <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          {loading ? Array(4).fill(0).map((_, i) => <ProductSkeleton key={i} />) : security.map((p) => (
+            <motion.div key={p.id} variants={itemVariants} whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 300 }}>
+              <ProductCard product={p} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* Featured */}
+      <section className="max-w-7xl mx-auto px-4 py-12 border-t border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-sm font-semibold uppercase tracking-wider">Featured Products</h2>
+          <Link to="/catalog" className="text-xs text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1">View All <ArrowRight size={11} /></Link>
+        </div>
+        <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          {loading ? Array(4).fill(0).map((_, i) => <ProductSkeleton key={i} />) : featured.map((p) => (
+            <motion.div key={p.id} variants={itemVariants} whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 300 }}>
+              <ProductCard product={p} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </section>
     </div>
   )
 }
