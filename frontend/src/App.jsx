@@ -5,6 +5,7 @@ import { AppProvider } from './context/AppContext'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import HomePage from './pages/HomePage'
+import AuthPage from './pages/AuthPage'
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -27,6 +28,7 @@ export default function App() {
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<PageWrapper><HomePage /></PageWrapper>} />
+              <Route path="/login"     element={<PageWrapper><AuthPage /></PageWrapper>} />
             </Routes>
           </AnimatePresence>
         </main>
