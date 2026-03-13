@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { Loader2, Plus } from 'lucide-react'
 import { settingsApi } from '../../lib/api'
 import { useApp } from '../../context/AppContext'
 import { useSettings } from '../../context/SettingsContext'
@@ -60,6 +61,48 @@ export default function ShippingAdmin() {
     }
   }
 
+  const openNewPromo  = () => { setEditingPromo(null); setPromoForm(EMPTY_PROMO_FORM); setShowPromoForm(true) }
+  const openEditPromo = (p) => { setEditingPromo(p); setPromoForm({ ...p, usageLimit: p.usageLimit ?? '' }); setShowPromoForm(true) }
+
+  const handleDeletePromo = async (id) => {
+    if (!confirm('Delete this promo code?')) return
+    const { promoApi } = await import('../../lib/api')
+    await promoApi.delete(id)
+    setPromos(ps => ps.filter(p => p._id !== id))
+  }
+
+  const handleSavePromo = async () => {
+    if (!promoForm.code || !promoForm.value) return
+    setPromoSaving(true)
+    try {
+      const { promoApi } = await import('../../lib/api')
+      const payload = {
+        ...promoForm,
+        value:      Number(promoForm.value),
+        usageLimit: promoForm.usageLimit ? Number(promoForm.usageLimit) : null,
+        code:       promoForm.code.toUpperCase().trim(),
+      }
+      if (editingPromo) {
+        const res = await promoApi.update(editingPromo._id, payload)
+        setPromos(ps => ps.map(p => p._id === editingPromo._id ? res.code : p))
+      } else {
+        const res = await promoApi.create(payload)
+        setPromos(ps => [res.code, ...ps])
+      }
+      setShowPromoForm(false)
+    } catch (err) {
+      alert(err.message)
+    } finally {
+      setPromoSaving(false)
+    }
+  }
+
+  const togglePromoActive = async (promo) => {
+    const { promoApi } = await import('../../lib/api')
+    const res = await promoApi.update(promo._id, { isActive: !promo.isActive })
+    setPromos(ps => ps.map(p => p._id === promo._id ? res.code : p))
+  }
+
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl space-y-8">
 
@@ -92,6 +135,18 @@ export default function ShippingAdmin() {
           </button>
           {saveError && <p className="text-xs text-red-500 mt-1 text-center">{saveError}</p>}
         </div>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-base font-semibold">Promo Codes</h2>
+          <button onClick={openNewPromo} className="bg-black dark:bg-white text-white dark:text-black text-xs px-3 py-1.5 rounded-md font-medium flex items-center gap-1.5">
+            <Plus size={12} /> New Code
+          </button>
+        </div>
+        {promoLoading && (
+          <div className="flex items-center justify-center py-10 text-gray-400"><Loader2 size={18} className="animate-spin" /></div>
+        )}
       </div>
 
     </motion.div>
