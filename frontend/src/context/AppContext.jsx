@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext , useReducer } from 'react'
 
 const AppContext = createContext(null)
 
@@ -20,11 +20,18 @@ function loadState() {
   }
 }
 
+function reducer(state, action) {
+  switch (action.type) {
+    default:
+      return state
+  }
+}
+
 export function AppProvider({ children }) {
-  const state = loadState()
-  
+  const [state, dispatch] = useReducer(reducer, null, loadState)
+
   return (
-    <AppContext.Provider value={{}}>
+    <AppContext.Provider value={{ state, dispatch }}>
       {children}
     </AppContext.Provider>
   )
