@@ -1,11 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTheme } from 'next-themes'
 import { motion } from 'framer-motion'
-import { Shield, Search } from 'lucide-react'
+import { Shield, Search, Sun, Moon } from 'lucide-react'
 
 export default function Header() {
+  const { setTheme, resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
+
+  useEffect(() => setMounted(true), [])
+
+  const isDark = mounted && resolvedTheme === 'dark'
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -38,6 +45,12 @@ export default function Header() {
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search cameras, security..." className="w-full pl-8 pr-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-900 rounded-md border border-transparent focus:border-gray-300 dark:focus:border-gray-700 focus:outline-none transition-colors" />
           </div>
         </form>
+
+        <div className="flex items-center gap-1 ml-auto md:ml-0">
+          <motion.button whileTap={{ scale: 0.9 }} onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')} className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
+            {mounted ? (isDark ? <Sun size={15} /> : <Moon size={15} />) : <Moon size={15} />}
+          </motion.button>
+        </div>
 
       </div>
     </header>
