@@ -1,4 +1,4 @@
-import React, { createContext, useContext , useReducer } from 'react'
+import React, { createContext, useContext , useReducer ,useEffect } from 'react'
 
 const AppContext = createContext(null)
 
@@ -128,6 +128,19 @@ case 'SET_SHIPPING':
 
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, null, loadState)
+
+  useEffect(() => {
+  localStorage.setItem(
+    'sv_cart_state',
+    JSON.stringify({
+      cart: state.cart,
+      wishlist: state.wishlist,
+      compareList: state.compareList,
+      promoCode: state.promoCode,
+      discount: state.discount,
+    })
+  )
+}, [state])
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
