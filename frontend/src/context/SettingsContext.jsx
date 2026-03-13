@@ -19,11 +19,18 @@ export function SettingsProvider({ children }) {
     load()
   }, [load])
 
+  const calcShipping = (subtotal) =>
+    subtotal >= settings.freeShippingAt ? 0 : settings.shippingPrice
+
   return (
-    <SettingsContext.Provider value={{settings, loading, reload: load}}>
+    <SettingsContext.Provider value={{settings, loading, reload: load, calcShipping }}>
       {children}
     </SettingsContext.Provider>
   )
 }
 
-export const useSettings = () => useContext(SettingsContext)
+export const useSettings = () => {
+  const ctx = useContext(SettingsContext)
+  if (!ctx) throw new Error('useSettings must be used inside <SettingsProvider>')
+  return ctx
+}
