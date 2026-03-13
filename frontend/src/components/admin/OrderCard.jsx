@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Loader2, ChevronDown, ChevronUp, User, MapPin, CreditCard } from 'lucide-react'
+import { Loader2, ChevronDown, ChevronUp, User, MapPin, CreditCard, Box } from 'lucide-react'
 import { ordersApi } from '../../lib/api'
 import { STATUS_COLORS, ORDER_STATUSES } from '../../constants/admin'
 
@@ -96,6 +96,33 @@ export default function OrderCard({ order, onStatusChange }) {
                     <div className="flex justify-between text-[11px]"><span className="text-gray-500">Shipping</span><span>{order.shippingCost === 0 ? 'Free' : `MAD ${order.shippingCost?.toFixed(2)}`}</span></div>
                     <div className="flex justify-between text-xs font-bold pt-1 border-t border-gray-100 dark:border-gray-800"><span>Total</span><span>MAD {order.total.toFixed(2)}</span></div>
                   </div>
+                </div>
+              </div>
+
+              {/* Items */}
+              <div className="border-t border-gray-200 dark:border-gray-800 px-4 py-3">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <Box size={11} className="text-gray-400" />
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Items ({order.items?.length})</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {(order.items || []).map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-2.5 bg-gray-50 dark:bg-gray-950 rounded-lg p-2">
+                      <img
+                        src={item.image} alt={item.name}
+                        className="w-12 h-12 rounded object-cover bg-gray-200 dark:bg-gray-800 shrink-0"
+                        onError={e => { e.target.src = 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=200&q=60' }}
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[11px] font-semibold leading-tight truncate">{item.name}</p>
+                        <p className="text-[10px] text-gray-400">{item.brand}</p>
+                        <div className="flex items-center justify-between mt-0.5">
+                          <span className="text-[10px] text-gray-500">Qty: {item.qty}</span>
+                          <span className="text-[11px] font-bold">MAD {(item.price * item.qty).toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
