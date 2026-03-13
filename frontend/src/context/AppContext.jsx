@@ -99,6 +99,28 @@ case 'REMOVE_COMPARE':
     ...state,
     compareList: state.compareList.filter(i => i.id !== action.id)
   }
+
+  case 'APPLY_PROMO':
+  return {
+    ...state,
+    promoCode: action.promo,
+    discount: action.discount
+  }
+
+case 'REMOVE_PROMO':
+  return {
+    ...state,
+    promoCode: null,
+    discount: 0
+  }
+
+case 'SET_SHIPPING':
+  localStorage.setItem('sv_shipping', action.price)
+
+  return {
+    ...state,
+    shippingPrice: action.price
+  }
     default:
       return state
   }
