@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Loader2 } from 'lucide-react'
+import { Loader2, ShoppingBag } from 'lucide-react'
 import { ordersApi } from '../../lib/api'
+import OrderCard from './OrderCard'
 
 export default function OrdersAdmin() {
   const [orders, setOrders]   = useState([])
@@ -31,10 +32,17 @@ export default function OrdersAdmin() {
         </div>
       </div>
 
-      {loading && (
+      {loading ? (
         <div className="flex items-center justify-center py-16 text-gray-400">
           <Loader2 size={18} className="animate-spin mr-2" />
         </div>
+      ) : orders.length === 0 ? (
+        <div className="text-center py-16 border border-dashed border-gray-200 dark:border-gray-800 rounded-lg">
+          <ShoppingBag size={32} className="mx-auto text-gray-300 dark:text-gray-700 mb-3" />
+          <p className="text-xs text-gray-400">No orders yet</p>
+        </div>
+      ) : (
+        orders.map(order => <OrderCard key={order._id} order={order} />)
       )}
     </motion.div>
   )
