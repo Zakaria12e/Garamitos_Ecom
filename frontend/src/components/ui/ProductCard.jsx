@@ -43,6 +43,28 @@ export default function ProductCard({ product }) {
             <span className="text-xs text-gray-400 line-through">{product.originalPrice} MAD</span>
           )}
         </div>
+        <div className="flex items-center gap-1.5">
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => dispatch({ type: 'ADD_TO_CART', product })}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded text-xs font-medium transition-colors ${inCart ? 'bg-gray-100 dark:bg-gray-900 text-gray-500' : 'bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200'}`}
+          >
+            <ShoppingCart size={11} />
+            {inCart ? 'In Cart' : 'Add'}
+          </motion.button>
+          <motion.button whileTap={{ scale: 0.85 }}
+            onClick={() => dispatch({ type: 'TOGGLE_WISHLIST', product })}
+            className={`p-1.5 rounded border transition-colors ${inWishlist ? 'border-gray-300 dark:border-gray-600 text-red-500 dark:text-red-600' : 'border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600'}`}
+          >
+            <Heart size={11} className={inWishlist ? 'fill-current' : ''} />
+          </motion.button>
+          <motion.button whileTap={{ scale: 0.85 }}
+            onClick={() => dispatch({ type: 'TOGGLE_COMPARE', product })}
+            className={`p-1.5 rounded border transition-colors ${inCompare ? 'border-black dark:border-white bg-black dark:bg-white text-white dark:text-black' : 'border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600'}`}
+          >
+            <BarChart2 size={11} />
+          </motion.button>
+        </div>
       </div>
     </div>
   )
