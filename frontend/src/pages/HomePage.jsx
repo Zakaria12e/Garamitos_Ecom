@@ -93,13 +93,13 @@ export default function HomePage() {
             >
               <img
                 key={resolvedTheme}
-                src='/camera-light.png'
+                src='https://res.cloudinary.com/dectxiuco/image/upload/v1773413589/camera-light_rslndm.png'
                 alt=""
                 className="w-full h-full object-contain object-right dark:hidden"
               />
               <img
                 key={resolvedTheme}
-                src='/camera-dark.png'
+                src='https://res.cloudinary.com/dectxiuco/image/upload/v1773413570/camera-dark_trnyzc.png'
                 alt=""
                 className="w-full h-full object-contain object-right hidden dark:block"
               />
