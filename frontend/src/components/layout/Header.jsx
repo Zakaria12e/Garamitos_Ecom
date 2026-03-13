@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, Heart, BarChart2, Sun, Moon, Search, Shield, User, LogOut, Settings } from 'lucide-react'
+import { ShoppingCart, Heart, BarChart2, Sun, Moon, Search, Shield, Menu, X, User, LogOut, Settings } from 'lucide-react'
 import { useApp } from '../../context/AppContext'
 import { useAuth } from '../../context/AuthContext'
 
@@ -12,6 +12,7 @@ export default function Header() {
   const { state } = useApp()
   const { user, logout } = useAuth()
   const [search, setSearch] = useState('')
+  const [mobileOpen, setMobileOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const navigate = useNavigate()
 
@@ -37,7 +38,6 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-4">
-
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <motion.div whileHover={{ scale: 1.1 }} className="w-7 h-7 bg-black dark:bg-white rounded flex items-center justify-center">
             <Shield size={14} className="text-white dark:text-black" />
@@ -68,7 +68,7 @@ export default function Header() {
 
           <Link to="/wishlist" className="relative p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
             <Heart size={15} />
-            <AnimatePresence>{state.wishlist.length > 0 && <motion.span initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 dark:bg-red-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center">{state.wishlist.length}</motion.span>}</AnimatePresence>
+            <AnimatePresence>{state.wishlist.length > 0 && <motion.span initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 dark:bg-red-600 text-white dark:text-white text-[9px] font-bold rounded-full flex items-center justify-center">{state.wishlist.length}</motion.span>}</AnimatePresence>
           </Link>
 
           <Link to="/compare" className="relative p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
@@ -116,9 +116,31 @@ export default function Header() {
               )}
             </AnimatePresence>
           </div>
-        </div>
 
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900">
+            {mobileOpen ? <X size={15} /> : <Menu size={15} />}
+          </button>
+        </div>
       </div>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div initial={{opacity:0,height:0}} animate={{opacity:1,height:'auto'}} exit={{opacity:0,height:0}}
+            className="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black px-4 py-3 flex flex-col gap-3 overflow-hidden">
+            <form onSubmit={handleSearch} className="relative">
+              <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search cameras, security..." className="w-full pl-8 pr-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-900 rounded-md border border-transparent focus:outline-none" />
+            </form>
+            {[['Catalog', '/catalog'], ['Compare', '/compare'], ['Orders', '/orders'], ...(user?.role === 'admin' ? [['Admin', '/admin']] : [])].map(([label, path]) => (
+              <Link key={path} to={path} onClick={() => setMobileOpen(false)} className="text-sm text-gray-600 dark:text-gray-400">{label}</Link>
+            ))}
+            {user
+              ? <button onClick={handleLogout} className="text-sm text-red-500 text-left">Sign Out ({user.name})</button>
+              : <Link to="/login" onClick={() => setMobileOpen(false)} className="text-sm text-gray-600 dark:text-gray-400">Login / Register</Link>
+            }
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   )
 }
