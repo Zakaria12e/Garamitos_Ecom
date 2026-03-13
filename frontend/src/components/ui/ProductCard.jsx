@@ -23,6 +23,27 @@ export default function ProductCard({ product }) {
           <span className="absolute top-2 right-2 bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded">Low Stock</span>
         )}
       </Link>
+      <div className="p-3">
+        <div className="flex items-start justify-between gap-2 mb-1">
+          <div>
+            <p className="text-[10px] text-gray-400 mb-0.5">{product.brand}</p>
+            <Link to={`/product/${product.id}`}>
+              <h3 className="text-xs font-medium leading-snug hover:underline line-clamp-2">{product.name}</h3>
+            </Link>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 mb-2 mt-1">
+          <Star size={10} className="fill-yellow-500 dark:fill-yellow-400 text-yellow-500 dark:text-yellow-400" />
+          <span className="text-[10px] font-medium">{product.rating}</span>
+          <span className="text-[10px] text-gray-400">({product.reviews})</span>
+        </div>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-sm font-semibold">{product.price} MAD</span>
+          {product.originalPrice > product.price && (
+            <span className="text-xs text-gray-400 line-through">{product.originalPrice} MAD</span>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
