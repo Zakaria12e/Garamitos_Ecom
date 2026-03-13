@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { ordersApi, productsApi } from '../../lib/api'
+import { STATUS_COLORS } from '../../constants/admin'
 
 export default function Dashboard() {
   const [stats, setStats]       = useState(null)
@@ -48,6 +49,30 @@ export default function Dashboard() {
             <p className="text-xl font-bold">{card.value}</p>
           </motion.div>
         ))}
+      </div>
+
+      <div className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+          <h3 className="text-xs font-semibold">Recent Orders</h3>
+        </div>
+
+        {(stats?.recentOrders || []).length === 0 ? (
+          <p className="text-center py-8 text-xs text-gray-400">No orders yet</p>
+        ) : (
+          stats.recentOrders.map(order => (
+            <div
+              key={order._id}
+              className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 dark:border-gray-800 last:border-0"
+            >
+              <span className="text-xs font-mono">{order.orderNumber}</span>
+              <span className="text-xs text-gray-500">{order.shipping?.email}</span>
+              <span className="text-xs font-semibold">MAD {order.total.toFixed(2)}</span>
+              <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${STATUS_COLORS[order.status] || STATUS_COLORS.Processing}`}>
+                {order.status}
+              </span>
+            </div>
+          ))
+        )}
       </div>
     </motion.div>
   )
