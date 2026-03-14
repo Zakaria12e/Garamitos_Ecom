@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
 import { categoriesApi } from '../../lib/api'
+import { useTranslation } from 'react-i18next'
 
 const EMPTY_FORM = { name: '', sortOrder: 0, parent: '' }
 
 export default function CategoriesAdmin() {
+  const { t } = useTranslation()
   const [categories, setCategories] = useState([])
   const [loading, setLoading]       = useState(true)
   const [saving, setSaving]         = useState(false)
@@ -54,9 +56,9 @@ export default function CategoriesAdmin() {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-base font-semibold">Categories ({categories.length})</h2>
+        <h2 className="text-base font-semibold">{t('admin.categories.title')} ({categories.length})</h2>
         <button onClick={openNew} className="bg-black dark:bg-white text-white dark:text-black text-xs px-3 py-1.5 rounded-md font-medium flex items-center gap-1.5">
-          <Plus size={12} /> Add Category
+          <Plus size={12} /> {t('admin.categories.addCategory')}
         </button>
       </div>
 
@@ -71,10 +73,10 @@ export default function CategoriesAdmin() {
               initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95 }}
               className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl w-full max-w-sm p-5"
             >
-              <h3 className="text-sm font-semibold mb-4">{editing ? 'Edit Category' : 'New Category'}</h3>
+              <h3 className="text-sm font-semibold mb-4">{editing ? t('admin.categories.editCategory') : t('admin.categories.newCategory')}</h3>
               <div className="space-y-3">
                 <div>
-                  <label className="block text-[10px] text-gray-400 mb-1">Name</label>
+                  <label className="block text-[10px] text-gray-400 mb-1">{t('admin.categories.name')}</label>
                   <input
                     value={form.name}
                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
@@ -82,7 +84,7 @@ export default function CategoriesAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-gray-400 mb-1">Sort Order</label>
+                  <label className="block text-[10px] text-gray-400 mb-1">{t('admin.categories.sortOrder')}</label>
                   <input
                     type="number" min={0}
                     value={form.sortOrder}
@@ -91,13 +93,13 @@ export default function CategoriesAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-gray-400 mb-1">Parent Category (optional)</label>
+                  <label className="block text-[10px] text-gray-400 mb-1">{t('admin.categories.parentCategory')}</label>
                   <select
                     value={form.parent}
                     onChange={e => setForm(f => ({ ...f, parent: e.target.value }))}
                     className="w-full text-xs border border-gray-200 dark:border-gray-800 rounded px-2.5 py-1.5 bg-white dark:bg-black focus:outline-none"
                   >
-                    <option value="">None</option>
+                    <option value="">{t('admin.categories.none')}</option>
                     {categories.filter(c => c._id !== editing?._id).map(c => (
                       <option key={c._id} value={c._id}>{c.name}</option>
                     ))}
@@ -106,11 +108,11 @@ export default function CategoriesAdmin() {
               </div>
               <div className="flex gap-2 mt-4">
                 <button onClick={() => setShowForm(false)} className="flex-1 border border-gray-200 dark:border-gray-800 py-2 rounded text-xs hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors">
-                  Cancel
+                  {t('admin.common.cancel')}
                 </button>
                 <button onClick={handleSubmit} disabled={saving} className="flex-1 bg-black dark:bg-white text-white dark:text-black py-2 rounded text-xs font-medium flex items-center justify-center gap-1.5 disabled:opacity-50">
                   {saving && <Loader2 size={12} className="animate-spin" />}
-                  {editing ? 'Update' : 'Create'}
+                  {editing ? t('admin.common.update') : t('admin.common.create')}
                 </button>
               </div>
             </motion.div>
@@ -135,14 +137,14 @@ export default function CategoriesAdmin() {
                 <p className="text-[10px] text-gray-400">/{c.slug}{c.parent ? ` · parent: ${c.parent.name}` : ''}</p>
               </div>
               <span className={`text-[10px] px-2 py-0.5 rounded-full ${c.isActive ? 'bg-green-100 dark:bg-green-950 text-green-600' : 'bg-gray-100 dark:bg-gray-900 text-gray-400'}`}>
-                {c.isActive ? 'active' : 'inactive'}
+                {c.isActive ? t('admin.categories.active') : t('admin.categories.inactive')}
               </span>
               <div className="flex gap-1">
                 <button onClick={() => openEdit(c)} className="text-xs px-2.5 py-1 border border-gray-200 dark:border-gray-800 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors flex items-center gap-1">
-                  <Pencil size={10} /> Edit
+                  <Pencil size={10} /> {t('admin.common.edit')}
                 </button>
                 <button onClick={() => handleDelete(c._id)} className="text-xs px-2.5 py-1 border border-red-200 dark:border-red-900 text-red-500 rounded hover:bg-red-50 dark:hover:bg-red-950 transition-colors flex items-center gap-1">
-                  <Trash2 size={10} /> Del
+                  <Trash2 size={10} /> {t('admin.common.del')}
                 </button>
               </div>
             </motion.div>
