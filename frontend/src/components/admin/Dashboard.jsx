@@ -65,7 +65,7 @@ export default function Dashboard() {
               className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 dark:border-gray-800 last:border-0"
             >
               <span className="text-xs font-mono">{order.orderNumber}</span>
-              <span className="text-xs text-gray-500">{order.shipping?.email}</span>
+              <span className="hidden sm:block text-xs text-gray-500">{order.shipping?.email}</span>
               <span className="text-xs font-semibold">MAD {order.total.toFixed(2)}</span>
               <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${STATUS_COLORS[order.status] || STATUS_COLORS.Processing}`}>
                 {order.status}
