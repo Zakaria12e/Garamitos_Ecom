@@ -12,8 +12,9 @@ import productRoutes  from './routes/products.js'
 import orderRoutes    from './routes/orders.js'
 import promoRoutes    from './routes/promo.js'
 import userRoutes     from './routes/users.js'
-import settingsRoutes from './routes/settings.js'
-import reviewRoutes   from './routes/reviews.js'
+import settingsRoutes  from './routes/settings.js'
+import reviewRoutes    from './routes/reviews.js'
+import categoryRoutes  from './routes/categories.js'
 
 
 await connectDB()
@@ -66,7 +67,8 @@ app.use('/api/products', productRoutes)
 app.use('/api/orders',   orderRoutes)
 app.use('/api/promo',    promoRoutes)
 app.use('/api/users',    userRoutes)
-app.use('/api/settings', settingsRoutes)
+app.use('/api/settings',    settingsRoutes)
+app.use('/api/categories',  categoryRoutes)
 app.use('/api/products/:productId/reviews', reviewRoutes)
 
 app.use(notFound)
