@@ -99,7 +99,7 @@ export default function ProductsAdmin() {
               <img src={p.image} alt={p.name} className="w-10 h-10 rounded object-cover bg-gray-100 dark:bg-gray-900 shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium truncate">{p.name}</p>
-                <p className="text-[10px] text-gray-400">{p.brand} · {p.category} · Stock: {p.stock}</p>
+                <p className="text-[10px] text-gray-400">{p.brand} · {p.category?.name ?? p.category} · Stock: {p.stock}</p>
               </div>
               <span className="text-sm font-semibold shrink-0">MAD {p.price}</span>
               <div className="flex gap-1 shrink-0">
