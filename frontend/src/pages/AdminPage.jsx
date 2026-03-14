@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { Navigate, Link, Routes, Route, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Package, ShoppingBag, Settings, Tag } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingBag, Settings, Tag, ChevronLeft } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { useTranslation } from 'react-i18next'
 import { Skeleton } from '../components/ui/Skeleton'
@@ -13,6 +15,7 @@ export default function AdminPage() {
   const { user, loading } = useAuth()
   const location = useLocation()
   const { t } = useTranslation()
+  const [collapsed, setCollapsed] = useState(false)
 
   const NAV_LINKS = [
     { to: '/admin',            label: t('admin.nav.dashboard'),  icon: LayoutDashboard, exact: true },
@@ -44,26 +47,90 @@ export default function AdminPage() {
       </main>
     </div>
   )
+
   if (!user || user.role !== 'admin') return <Navigate to="/login" replace />
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 flex flex-col md:flex-row gap-4 md:gap-8">
-      <aside className="md:w-44 md:shrink-0">
-        <p className="hidden md:block text-[10px] text-gray-400 uppercase tracking-wider mb-3">{t('admin.panel')}</p>
-        <div className="flex md:flex-col overflow-x-auto gap-1 pb-1 md:pb-0 scrollbar-none">
+
+      {/* Sidebar */}
+      <motion.aside
+        animate={{ width: collapsed ? 48 : 176 }}
+        transition={{ duration: 0.2, ease: 'easeInOut' }}
+        className="hidden md:flex flex-col shrink-0 overflow-visible"
+      >
+        {/* Header row */}
+        <div className={`flex items-center mb-3 ${collapsed ? 'justify-center' : 'justify-between'}`}>
+          {!collapsed && (
+            <p className="text-[10px] text-gray-400 uppercase tracking-wider">{t('admin.panel')}</p>
+          )}
+          <button
+            onClick={() => setCollapsed(c => !c)}
+            className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+          >
+            <motion.div animate={{ rotate: collapsed ? 180 : 0 }} transition={{ duration: 0.2 }}>
+              <ChevronLeft size={14} />
+            </motion.div>
+          </button>
+        </div>
+
+        {/* Nav links */}
+        <div className="flex flex-col gap-1">
           {NAV_LINKS.map(({ to, label, icon: Icon, exact }) => {
             const isActive = exact
               ? location.pathname === to
               : location.pathname.startsWith(to) && to !== '/admin' || location.pathname === '/admin' && to === '/admin'
+
             return (
-              <Link key={to} to={to}
-                className={`flex items-center gap-2 px-3 py-2 rounded-md text-xs transition-colors shrink-0 ${isActive ? 'bg-black dark:bg-white text-white dark:text-black font-medium' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'}`}>
-                <Icon size={13} />{label}
-              </Link>
+              <div key={to} className="relative group">
+                <Link
+                  to={to}
+                  className={`flex items-center gap-2 px-2.5 py-2 rounded-md text-xs transition-colors ${
+                    collapsed ? 'justify-center' : ''
+                  } ${
+                    isActive
+                      ? 'bg-black dark:bg-white text-white dark:text-black font-medium'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'
+                  }`}
+                >
+                  <Icon size={14} className="shrink-0" />
+                  {!collapsed && <span>{label}</span>}
+                </Link>
+
+                {/* Tooltip when collapsed */}
+                {collapsed && (
+                  <div className="absolute left-full top-1/2 -translate-y-1/2 ms-2 z-50
+                    opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150">
+                    <div className="bg-black dark:bg-white text-white dark:text-black text-xs font-medium
+                      px-2.5 py-1.5 rounded-md whitespace-nowrap shadow-lg">
+                      {label}
+                    </div>
+                  </div>
+                )}
+              </div>
             )
           })}
         </div>
-      </aside>
+      </motion.aside>
+
+      {/* Mobile nav — unchanged horizontal scroll */}
+      <div className="flex md:hidden overflow-x-auto gap-1 pb-1 scrollbar-none">
+        {NAV_LINKS.map(({ to, label, icon: Icon, exact }) => {
+          const isActive = exact
+            ? location.pathname === to
+            : location.pathname.startsWith(to) && to !== '/admin' || location.pathname === '/admin' && to === '/admin'
+          return (
+            <Link key={to} to={to}
+              className={`flex items-center gap-2 px-3 py-2 rounded-md text-xs transition-colors shrink-0 ${
+                isActive
+                  ? 'bg-black dark:bg-white text-white dark:text-black font-medium'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'
+              }`}>
+              <Icon size={13} />{label}
+            </Link>
+          )
+        })}
+      </div>
 
       <main className="flex-1 min-w-0">
         <Routes>
