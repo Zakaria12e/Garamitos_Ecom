@@ -1,23 +1,25 @@
 import { Navigate, Link, Routes, Route, useLocation } from 'react-router-dom'
 import { Loader2, LayoutDashboard, Package, ShoppingBag, Settings, Tag } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { useTranslation } from 'react-i18next'
 import Dashboard        from '../components/admin/Dashboard'
 import ProductsAdmin    from '../components/admin/ProductsAdmin'
 import OrdersAdmin      from '../components/admin/OrdersAdmin'
 import ShippingAdmin    from '../components/admin/ShippingAdmin'
 import CategoriesAdmin  from '../components/admin/CategoriesAdmin'
 
-const NAV_LINKS = [
-  { to: '/admin',            label: 'Dashboard',  icon: LayoutDashboard, exact: true },
-  { to: '/admin/products',   label: 'Products',   icon: Package },
-  { to: '/admin/categories', label: 'Categories', icon: Tag },
-  { to: '/admin/orders',     label: 'Orders',     icon: ShoppingBag },
-  { to: '/admin/shipping',   label: 'Shipping',   icon: Settings },
-]
-
 export default function AdminPage() {
   const { user, loading } = useAuth()
   const location = useLocation()
+  const { t } = useTranslation()
+
+  const NAV_LINKS = [
+    { to: '/admin',            label: t('admin.nav.dashboard'),  icon: LayoutDashboard, exact: true },
+    { to: '/admin/products',   label: t('admin.nav.products'),   icon: Package },
+    { to: '/admin/categories', label: t('admin.nav.categories'), icon: Tag },
+    { to: '/admin/orders',     label: t('admin.nav.orders'),     icon: ShoppingBag },
+    { to: '/admin/shipping',   label: t('admin.nav.shipping'),   icon: Settings },
+  ]
 
   if (loading) return (
     <div className="flex items-center justify-center py-24">
@@ -29,7 +31,7 @@ export default function AdminPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 flex flex-col md:flex-row gap-4 md:gap-8">
       <aside className="md:w-44 md:shrink-0">
-        <p className="hidden md:block text-[10px] text-gray-400 uppercase tracking-wider mb-3">Admin Panel</p>
+        <p className="hidden md:block text-[10px] text-gray-400 uppercase tracking-wider mb-3">{t('admin.panel')}</p>
         <div className="flex md:flex-col overflow-x-auto gap-1 pb-1 md:pb-0 scrollbar-none">
           {NAV_LINKS.map(({ to, label, icon: Icon, exact }) => {
             const isActive = exact
