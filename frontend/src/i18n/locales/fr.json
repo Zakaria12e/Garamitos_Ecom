@@ -12,6 +12,7 @@
   "auth": {
     "logout": "Déconnexion",
     "myOrders": "Mes commandes",
+    "settings": "Paramètres",
     "adminPanel": "Panneau admin"
   },
   "product": {

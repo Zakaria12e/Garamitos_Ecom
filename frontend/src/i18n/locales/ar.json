@@ -12,6 +12,7 @@
   "auth": {
     "logout": "تسجيل الخروج",
     "myOrders": "طلباتي",
+    "settings": "الإعدادات",
     "adminPanel": "لوحة التحكم"
   },
   "product": {

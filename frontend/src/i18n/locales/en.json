@@ -12,6 +12,7 @@
   "auth": {
     "logout": "Sign Out",
     "myOrders": "My Orders",
+    "settings": "Settings",
     "adminPanel": "Admin Panel"
   },
   "product": {
