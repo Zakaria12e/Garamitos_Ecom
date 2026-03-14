@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "catalog": "Catalogue",
+    "compare": "Comparer",
+    "orders": "Mes commandes",
+    "admin": "Admin",
+    "login": "Connexion"
+  },
+  "header": {
+    "search": "Rechercher caméras, sécurité..."
+  },
+  "auth": {
+    "logout": "Déconnexion",
+    "myOrders": "Mes commandes",
+    "adminPanel": "Panneau admin"
+  },
+  "product": {
+    "addToCart": "Ajouter au panier",
+    "addToWishlist": "Ajouter aux favoris",
+    "inStock": "En stock",
+    "outOfStock": "Rupture de stock",
+    "price": "Prix",
+    "brand": "Marque",
+    "category": "Catégorie",
+    "stock": "Stock"
+  },
+  "cart": {
+    "title": "Panier",
+    "empty": "Votre panier est vide",
+    "total": "Total",
+    "checkout": "Commander",
+    "remove": "Supprimer"
+  },
+  "checkout": {
+    "fullName": "Nom complet",
+    "email": "Email",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "city": "Ville",
+    "country": "Pays",
+    "placeOrder": "Passer la commande",
+    "shipping": "Livraison",
+    "discount": "Réduction",
+    "subtotal": "Sous-total",
+    "promoCode": "Code promo",
+    "apply": "Appliquer",
+    "freeShipping": "Livraison gratuite"
+  },
+  "orders": {
+    "title": "Mes commandes",
+    "empty": "Aucune commande pour l'instant",
+    "orderNumber": "Commande n°",
+    "status": "Statut",
+    "total": "Total",
+    "date": "Date",
+    "Processing": "En traitement",
+    "Shipped": "Expédié",
+    "Delivered": "Livré",
+    "Cancelled": "Annulé"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "search": "Rechercher",
+    "noResults": "Aucun résultat"
+  }
+}
