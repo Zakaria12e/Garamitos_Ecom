@@ -1,22 +1,29 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
-import { productsApi, normaliseProduct } from '../../lib/api'
+import { productsApi, categoriesApi, normaliseProduct } from '../../lib/api'
 import { EMPTY_PRODUCT_FORM } from '../../constants/admin'
 import ProductFormModal from './ProductFormModal'
 
 export default function ProductsAdmin() {
-  const [products, setProducts] = useState([])
-  const [loading, setLoading]   = useState(true)
-  const [saving, setSaving]     = useState(false)
-  const [showForm, setShowForm] = useState(false)
-  const [editing, setEditing]   = useState(null)
-  const [form, setForm]         = useState(EMPTY_PRODUCT_FORM)
+  const [products, setProducts]   = useState([])
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading]     = useState(true)
+  const [saving, setSaving]       = useState(false)
+  const [showForm, setShowForm]   = useState(false)
+  const [editing, setEditing]     = useState(null)
+  const [form, setForm]           = useState(EMPTY_PRODUCT_FORM)
 
   const load = () => {
     setLoading(true)
-    productsApi.list({ limit: 100 })
-      .then(d => setProducts((d.products || []).map(normaliseProduct)))
+    Promise.all([
+      productsApi.list({ limit: 100 }),
+      categoriesApi.list(),
+    ])
+      .then(([pd, cd]) => {
+        setProducts((pd.products || []).map(normaliseProduct))
+        setCategories(cd.categories || [])
+      })
       .catch(console.error)
       .finally(() => setLoading(false))
   }
@@ -74,6 +81,7 @@ export default function ProductsAdmin() {
         onClose={() => setShowForm(false)}
         onSubmit={handleSubmit}
         saving={saving}
+        categories={categories}
       />
 
       {loading ? (
