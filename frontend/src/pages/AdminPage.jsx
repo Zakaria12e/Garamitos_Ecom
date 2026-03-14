@@ -27,20 +27,22 @@ export default function AdminPage() {
   if (!user || user.role !== 'admin') return <Navigate to="/login" replace />
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 flex gap-8">
-      <aside className="w-44 shrink-0">
-        <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-3">Admin Panel</p>
-        {NAV_LINKS.map(({ to, label, icon: Icon, exact }) => {
-          const isActive = exact
-            ? location.pathname === to
-            : location.pathname.startsWith(to) && to !== '/admin' || location.pathname === '/admin' && to === '/admin'
-          return (
-            <Link key={to} to={to}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md mb-1 text-xs transition-colors ${isActive ? 'bg-black dark:bg-white text-white dark:text-black font-medium' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'}`}>
-              <Icon size={13} />{label}
-            </Link>
-          )
-        })}
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 flex flex-col md:flex-row gap-4 md:gap-8">
+      <aside className="md:w-44 md:shrink-0">
+        <p className="hidden md:block text-[10px] text-gray-400 uppercase tracking-wider mb-3">Admin Panel</p>
+        <div className="flex md:flex-col overflow-x-auto gap-1 pb-1 md:pb-0 scrollbar-none">
+          {NAV_LINKS.map(({ to, label, icon: Icon, exact }) => {
+            const isActive = exact
+              ? location.pathname === to
+              : location.pathname.startsWith(to) && to !== '/admin' || location.pathname === '/admin' && to === '/admin'
+            return (
+              <Link key={to} to={to}
+                className={`flex items-center gap-2 px-3 py-2 rounded-md text-xs transition-colors shrink-0 ${isActive ? 'bg-black dark:bg-white text-white dark:text-black font-medium' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'}`}>
+                <Icon size={13} />{label}
+              </Link>
+            )
+          })}
+        </div>
       </aside>
 
       <main className="flex-1 min-w-0">
