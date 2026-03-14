@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
+import { Plus, Pencil, Trash2 } from 'lucide-react'
+import { Skeleton } from '../ui/Skeleton'
 import { productsApi, categoriesApi, normaliseProduct } from '../../lib/api'
 import { EMPTY_PRODUCT_FORM } from '../../constants/admin'
 import ProductFormModal from './ProductFormModal'
@@ -87,8 +88,19 @@ export default function ProductsAdmin() {
       />
 
       {loading ? (
-        <div className="flex items-center justify-center py-16 text-gray-400">
-          <Loader2 size={18} className="animate-spin mr-2" />
+        <div className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+          {Array(6).fill(0).map((_, i) => (
+            <div key={i} className={`flex items-center gap-3 px-4 py-2.5 ${i > 0 ? 'border-t border-gray-200 dark:border-gray-800' : ''}`}>
+              <Skeleton className="w-10 h-10 rounded shrink-0" />
+              <div className="flex-1 space-y-1.5">
+                <Skeleton className="h-3 w-40" />
+                <Skeleton className="h-2.5 w-28" />
+              </div>
+              <Skeleton className="h-4 w-16 shrink-0" />
+              <Skeleton className="h-7 w-14 rounded shrink-0" />
+              <Skeleton className="h-7 w-12 rounded shrink-0" />
+            </div>
+          ))}
         </div>
       ) : (
         <div className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
