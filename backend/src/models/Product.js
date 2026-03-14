@@ -13,9 +13,9 @@ const productSchema = new mongoose.Schema(
       trim: true,
     },
     category: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
       required: [true, 'Category is required'],
-      enum: ['Surveillance Cameras', 'Smart Home', 'Security Systems', 'Accessories'],
     },
     price: {
       type: Number,
