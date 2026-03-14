@@ -106,6 +106,9 @@ export default function Header() {
                   <Link to="/orders" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
                     <ShoppingCart size={12} /> My Orders
                   </Link>
+                  <Link to="/settings" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+                    <Settings size={12} /> Settings
+                  </Link>
                   {user.role === 'admin' && (
                     <Link to="/admin" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
                       <Settings size={12} /> Admin Panel
