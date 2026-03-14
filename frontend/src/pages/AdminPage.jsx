@@ -15,7 +15,7 @@ export default function AdminPage() {
   const { user, loading } = useAuth()
   const location = useLocation()
   const { t } = useTranslation()
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(() => localStorage.getItem('admin_sidebar') === 'collapsed')
 
   const NAV_LINKS = [
     { to: '/admin',            label: t('admin.nav.dashboard'),  icon: LayoutDashboard, exact: true },
@@ -65,7 +65,11 @@ export default function AdminPage() {
             <p className="text-[10px] text-gray-400 uppercase tracking-wider">{t('admin.panel')}</p>
           )}
           <button
-            onClick={() => setCollapsed(c => !c)}
+            onClick={() => setCollapsed(c => {
+              const next = !c
+              localStorage.setItem('admin_sidebar', next ? 'collapsed' : 'expanded')
+              return next
+            })}
             className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
           >
             <motion.div animate={{ rotate: collapsed ? 180 : 0 }} transition={{ duration: 0.2 }}>
@@ -99,7 +103,7 @@ export default function AdminPage() {
 
                 {/* Tooltip when collapsed */}
                 {collapsed && (
-                  <div className="absolute left-full top-1/2 -translate-y-1/2 ms-2 z-50
+                  <div className="absolute ltr:left-full rtl:right-full top-1/2 -translate-y-1/2 ltr:ms-2 rtl:me-2 z-50
                     opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150">
                     <div className="bg-black dark:bg-white text-white dark:text-black text-xs font-medium
                       px-2.5 py-1.5 rounded-md whitespace-nowrap shadow-lg">
