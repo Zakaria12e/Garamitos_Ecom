@@ -1,6 +1,7 @@
 import express from 'express'
 import { body, query, validationResult } from 'express-validator'
 import Product from '../models/Product.js'
+import Category from '../models/Category.js'
 import { protect, adminOnly } from '../middleware/auth.js'
 
 const router = express.Router()
@@ -27,10 +28,14 @@ router.get('/', async (req, res, next) => {
       filter.$text = { $search: search }
     }
 
-    // Category — support multiple categories via comma-separated values
+    // Category — accept comma-separated slugs or ObjectIds
     if (category) {
-      const cats = category.split(',').map(c => c.trim())
-      filter.category = cats.length === 1 ? cats[0] : { $in: cats }
+      const values = category.split(',').map(c => c.trim())
+      const isObjectId = v => /^[a-f\d]{24}$/i.test(v)
+      const categoryIds = values.every(isObjectId)
+        ? values
+        : (await Category.find({ slug: { $in: values }, isActive: true }).select('_id')).map(c => c._id)
+      filter.category = categoryIds.length === 1 ? categoryIds[0] : { $in: categoryIds }
     }
 
     // Brand — comma-separated too
