@@ -70,6 +70,7 @@ export const ordersApi = {
   get:         (id)    => request(`/orders/${id}`),
   updateStatus:(id, status, note) => request(`/orders/${id}/status`, { method: 'PUT', body: { status, note } }),
   stats:       ()      => request('/orders/admin/stats'),
+  revenue:     (period = 'month') => request(`/orders/admin/revenue?period=${period}`),
 }
 
 // ── Promo ──────────────────────────────────────────────────
