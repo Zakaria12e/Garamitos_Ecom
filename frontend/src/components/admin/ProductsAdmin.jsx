@@ -4,8 +4,10 @@ import { Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
 import { productsApi, categoriesApi, normaliseProduct } from '../../lib/api'
 import { EMPTY_PRODUCT_FORM } from '../../constants/admin'
 import ProductFormModal from './ProductFormModal'
+import { useTranslation } from 'react-i18next'
 
 export default function ProductsAdmin() {
+  const { t } = useTranslation()
   const [products, setProducts]   = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading]     = useState(true)
@@ -67,9 +69,9 @@ export default function ProductsAdmin() {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-base font-semibold">Products ({products.length})</h2>
+        <h2 className="text-base font-semibold">{t('admin.products.title')} ({products.length})</h2>
         <button onClick={openNew} className="bg-black dark:bg-white text-white dark:text-black text-xs px-3 py-1.5 rounded-md font-medium flex items-center gap-1.5">
-          <Plus size={12} /> Add Product
+          <Plus size={12} /> {t('admin.products.addProduct')}
         </button>
       </div>
 
@@ -104,10 +106,10 @@ export default function ProductsAdmin() {
               <span className="text-sm font-semibold shrink-0">MAD {p.price}</span>
               <div className="flex gap-1 shrink-0">
                 <button onClick={() => openEdit(p)} className="text-xs px-2.5 py-1 border border-gray-200 dark:border-gray-800 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors flex items-center gap-1">
-                  <Pencil size={10} /> Edit
+                  <Pencil size={10} /> {t('admin.common.edit')}
                 </button>
                 <button onClick={() => handleDelete(p._id || p.id)} className="text-xs px-2.5 py-1 border border-red-200 dark:border-red-900 text-red-500 rounded hover:bg-red-50 dark:hover:bg-red-950 transition-colors flex items-center gap-1">
-                  <Trash2 size={10} /> Del
+                  <Trash2 size={10} /> {t('admin.common.del')}
                 </button>
               </div>
             </motion.div>
