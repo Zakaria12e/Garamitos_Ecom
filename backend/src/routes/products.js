@@ -95,7 +95,7 @@ router.get('/featured', async (req, res, next) => {
 // GET /api/products/categories
 router.get('/categories', async (req, res, next) => {
   try {
-    const categories = await Product.distinct('category', { isActive: true })
+    const categories = await Category.find({ isActive: true }).sort({ sortOrder: 1, name: 1 }).select('name slug')
     res.json({ success: true, categories })
   } catch (err) {
     next(err)
@@ -150,7 +150,7 @@ router.post(
   [
     body('name').trim().notEmpty().withMessage('Name is required'),
     body('brand').trim().notEmpty().withMessage('Brand is required'),
-    body('category').notEmpty().withMessage('Category is required'),
+    body('category').isMongoId().withMessage('Valid category ID is required'),
     body('price').isFloat({ min: 0 }).withMessage('Valid price required'),
     body('stock').isInt({ min: 0 }).withMessage('Valid stock required'),
     body('image').notEmpty().withMessage('Image URL required'),
