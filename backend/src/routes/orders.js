@@ -212,7 +212,7 @@ router.get('/admin/stats', protect, adminOnly, async (req, res, next) => {
           },
         },
       ]),
-      Order.find().sort({ createdAt: -1 }).limit(5).select('orderNumber status total createdAt shipping.fullName'),
+      Order.find().sort({ createdAt: -1 }).limit(5).select('orderNumber status total createdAt shipping.fullName shipping.email'),
     ])
 
     const byStatus = {}
