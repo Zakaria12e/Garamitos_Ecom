@@ -69,7 +69,7 @@ const productSchema = new mongoose.Schema(
 )
 
 // Indexes for fast filtering
-productSchema.index({ category: 1 })
+productSchema.index({ category: 1, isActive: 1 })
 productSchema.index({ brand: 1 })
 productSchema.index({ price: 1 })
 productSchema.index({ featured: 1 })
