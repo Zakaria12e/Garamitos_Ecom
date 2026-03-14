@@ -59,6 +59,24 @@
     "Delivered": "تم التسليم",
     "Cancelled": "ملغي"
   },
+  "footer": {
+    "tagline": "تقنية مراقبة وذكاء منزلي متميزة للمحترفين والهواة.",
+    "shopTitle": "المتجر",
+    "accountTitle": "الحساب",
+    "copyright": "جميع الحقوق محفوظة.",
+    "categories": {
+      "surveillance": "كاميرات المراقبة",
+      "drones": "الطائرات المسيّرة",
+      "smartHome": "المنزل الذكي",
+      "audio": "معدات الصوت"
+    },
+    "links": {
+      "orders": "الطلبات",
+      "wishlist": "المفضلة",
+      "compare": "المقارنة",
+      "cart": "السلة"
+    }
+  },
   "common": {
     "loading": "جاري التحميل...",
     "save": "حفظ",

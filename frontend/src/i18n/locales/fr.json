@@ -59,6 +59,24 @@
     "Delivered": "Livré",
     "Cancelled": "Annulé"
   },
+  "footer": {
+    "tagline": "Technologie de surveillance et maison connectée haut de gamme pour professionnels et passionnés.",
+    "shopTitle": "Boutique",
+    "accountTitle": "Compte",
+    "copyright": "Tous droits réservés.",
+    "categories": {
+      "surveillance": "Caméras de surveillance",
+      "drones": "Drones",
+      "smartHome": "Maison intelligente",
+      "audio": "Équipement audio"
+    },
+    "links": {
+      "orders": "Commandes",
+      "wishlist": "Favoris",
+      "compare": "Comparer",
+      "cart": "Panier"
+    }
+  },
   "common": {
     "loading": "Chargement...",
     "save": "Enregistrer",

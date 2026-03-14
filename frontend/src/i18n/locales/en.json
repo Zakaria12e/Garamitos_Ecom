@@ -59,6 +59,24 @@
     "Delivered": "Delivered",
     "Cancelled": "Cancelled"
   },
+  "footer": {
+    "tagline": "Premium surveillance and smart home tech for professionals and enthusiasts.",
+    "shopTitle": "Shop",
+    "accountTitle": "Account",
+    "copyright": "All rights reserved.",
+    "categories": {
+      "surveillance": "Surveillance Cameras",
+      "drones": "Drones",
+      "smartHome": "Smart Home",
+      "audio": "Audio Equipment"
+    },
+    "links": {
+      "orders": "Orders",
+      "wishlist": "Wishlist",
+      "compare": "Compare",
+      "cart": "Cart"
+    }
+  },
   "common": {
     "loading": "Loading...",
     "save": "Save",
