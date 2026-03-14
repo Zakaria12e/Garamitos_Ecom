@@ -5,11 +5,6 @@ export const STATUS_COLORS = {
   Cancelled:  'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-400',
 }
 
-export const PRODUCT_CATEGORIES = [
-  'Surveillance Cameras', 'Smart Home', 'Drones',
-  'Security Systems', 'Audio Equipment',
-]
-
 export const EMPTY_PRODUCT_FORM = {
   name: '', brand: '', category: 'Surveillance Cameras',
   price: '', originalPrice: '', stock: '', description: '',
