@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
+import { Plus, Pencil, Trash2 } from 'lucide-react'
+import { Skeleton } from '../ui/Skeleton'
 import { categoriesApi } from '../../lib/api'
 import { useTranslation } from 'react-i18next'
 
@@ -121,8 +122,18 @@ export default function CategoriesAdmin() {
       </AnimatePresence>
 
       {loading ? (
-        <div className="flex items-center justify-center py-16 text-gray-400">
-          <Loader2 size={18} className="animate-spin mr-2" />
+        <div className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+          {Array(5).fill(0).map((_, i) => (
+            <div key={i} className={`flex items-center gap-3 px-4 py-2.5 flex-wrap ${i > 0 ? 'border-t border-gray-200 dark:border-gray-800' : ''}`}>
+              <div className="flex-1 space-y-1.5">
+                <Skeleton className="h-3 w-32" />
+                <Skeleton className="h-2.5 w-24" />
+              </div>
+              <Skeleton className="h-5 w-14 rounded-full" />
+              <Skeleton className="h-7 w-14 rounded" />
+              <Skeleton className="h-7 w-12 rounded" />
+            </div>
+          ))}
         </div>
       ) : (
         <div className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
