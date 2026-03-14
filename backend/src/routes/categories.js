@@ -33,6 +33,70 @@ router.get('/:slug', async (req, res, next) => {
   }
 })
 
+// PUT /api/categories/:id (admin)
+router.put(
+  '/:id',
+  protect,
+  adminOnly,
+  [
+    body('name').optional().trim().notEmpty().withMessage('Category name cannot be empty'),
+    body('sortOrder').optional().isInt({ min: 0 }).withMessage('Sort order must be a non-negative integer'),
+    body('parent').optional({ nullable: true }).isMongoId().withMessage('Invalid parent category ID'),
+  ],
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, message: errors.array()[0].msg })
+      }
+
+      // Re-generate slug when name changes
+      if (req.body.name) {
+        req.body.slug = req.body.name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '')
+      }
+
+      const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      }).populate('parent', 'name slug')
+
+      if (!category) {
+        return res.status(404).json({ success: false, message: 'Category not found.' })
+      }
+
+      res.json({ success: true, category })
+    } catch (err) {
+      next(err)
+    }
+  }
+)
+
+// DELETE /api/categories/:id (admin)
+router.delete('/:id', protect, adminOnly, async (req, res, next) => {
+  try {
+    // Block deletion if subcategories exist
+    const hasChildren = await Category.exists({ parent: req.params.id })
+    if (hasChildren) {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot delete a category that has subcategories. Remove them first.',
+      })
+    }
+
+    const category = await Category.findByIdAndDelete(req.params.id)
+    if (!category) {
+      return res.status(404).json({ success: false, message: 'Category not found.' })
+    }
+
+    res.json({ success: true, message: 'Category deleted.' })
+  } catch (err) {
+    next(err)
+  }
+})
+
 // POST /api/categories (admin)
 router.post(
   '/',
