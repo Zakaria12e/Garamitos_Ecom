@@ -194,6 +194,47 @@ router.get('/', protect, adminOnly, async (req, res, next) => {
   }
 })
 
+// GET /api/orders/admin/stats (admin)
+router.get('/admin/stats', protect, adminOnly, async (req, res, next) => {
+  try {
+    const [statusCounts, revenueAgg, recentOrders] = await Promise.all([
+      Order.aggregate([
+        { $group: { _id: '$status', count: { $sum: 1 } } },
+      ]),
+      Order.aggregate([
+        { $match: { status: { $ne: 'Cancelled' } } },
+        {
+          $group: {
+            _id: null,
+            totalRevenue: { $sum: '$total' },
+            totalOrders: { $sum: 1 },
+            avgOrderValue: { $avg: '$total' },
+          },
+        },
+      ]),
+      Order.find().sort({ createdAt: -1 }).limit(5).select('orderNumber status total createdAt shipping.fullName'),
+    ])
+
+    const byStatus = {}
+    for (const s of statusCounts) byStatus[s._id] = s.count
+
+    const { totalRevenue = 0, totalOrders = 0, avgOrderValue = 0 } = revenueAgg[0] || {}
+
+    res.json({
+      success: true,
+      stats: {
+        totalRevenue,
+        totalOrders,
+        avgOrderValue,
+        byStatus,
+        recentOrders,
+      },
+    })
+  } catch (err) {
+    next(err)
+  }
+})
+
 // GET /api/orders/:id (admin)
 router.get('/:id', protect, adminOnly, async (req, res, next) => {
   try {
