@@ -70,7 +70,7 @@ export default function Dashboard() {
               <span className="hidden sm:block text-xs text-gray-500">{order.shipping?.email}</span>
               <span className="text-xs font-semibold">MAD {order.total.toFixed(2)}</span>
               <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${STATUS_COLORS[order.status] || STATUS_COLORS.Processing}`}>
-                {order.status}
+                {t(`orders.${order.status}`, order.status)}
               </span>
             </div>
           ))

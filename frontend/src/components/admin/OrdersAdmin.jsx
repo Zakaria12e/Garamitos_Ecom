@@ -3,8 +3,10 @@ import { motion } from 'framer-motion'
 import { Loader2, ShoppingBag } from 'lucide-react'
 import { ordersApi } from '../../lib/api'
 import OrderCard from './OrderCard'
+import { useTranslation } from 'react-i18next'
 
 export default function OrdersAdmin() {
+  const { t } = useTranslation()
   const [orders, setOrders]   = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch]   = useState('')
@@ -21,12 +23,12 @@ export default function OrdersAdmin() {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
       <div className="flex items-center justify-between mb-5 gap-3">
-        <h2 className="text-base font-semibold shrink-0">Orders ({orders.length})</h2>
+        <h2 className="text-base font-semibold shrink-0">{t('admin.orders.title')} ({orders.length})</h2>
         <div className="relative max-w-xs w-full">
           <input
             value={search}
             onChange={e => { setSearch(e.target.value); load(e.target.value) }}
-            placeholder="Search by order # or email…"
+            placeholder={t('admin.orders.searchPlaceholder')}
             className="w-full text-xs border border-gray-200 dark:border-gray-800 rounded-md pl-3 pr-3 py-1.5 bg-transparent focus:outline-none focus:border-black dark:focus:border-white"
           />
         </div>
@@ -39,7 +41,7 @@ export default function OrdersAdmin() {
       ) : orders.length === 0 ? (
         <div className="text-center py-16 border border-dashed border-gray-200 dark:border-gray-800 rounded-lg">
           <ShoppingBag size={32} className="mx-auto text-gray-300 dark:text-gray-700 mb-3" />
-          <p className="text-xs text-gray-400">No orders yet</p>
+          <p className="text-xs text-gray-400">{t('admin.orders.noOrders')}</p>
         </div>
       ) : (
         orders.map(order => <OrderCard key={order._id} order={order} />)

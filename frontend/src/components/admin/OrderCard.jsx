@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, ChevronDown, ChevronUp, User, MapPin, CreditCard, Box } from 'lucide-react'
 import { ordersApi } from '../../lib/api'
 import { STATUS_COLORS, ORDER_STATUSES } from '../../constants/admin'
+import { useTranslation } from 'react-i18next'
 
 export default function OrderCard({ order, onStatusChange }) {
+  const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const [status, setStatus]     = useState(order.status)
   const [saving, setSaving]     = useState(false)
@@ -32,7 +34,7 @@ export default function OrderCard({ order, onStatusChange }) {
           <div className="min-w-0">
             <p className="text-xs font-mono font-semibold">{order.orderNumber}</p>
             <p className="text-[10px] text-gray-400">
-              {new Date(order.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} · {order.items?.length} item(s)
+              {new Date(order.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} · {order.items?.length} {t('admin.orders.items')}
             </p>
           </div>
         </div>
@@ -40,14 +42,14 @@ export default function OrderCard({ order, onStatusChange }) {
         <div className="flex items-center gap-3 shrink-0">
           <span className="text-sm font-bold">MAD {order.total.toFixed(2)}</span>
           <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${STATUS_COLORS[status] || STATUS_COLORS.Processing}`}>
-            {status}
+            {t(`orders.${status}`, status)}
           </span>
           <div className="relative">
             <select
               value={status} onChange={e => handleStatus(e.target.value)} disabled={saving}
               className="text-xs border border-gray-200 dark:border-gray-800 rounded px-2 py-1 bg-white dark:bg-black focus:outline-none disabled:opacity-50"
             >
-              {ORDER_STATUSES.map(s => <option key={s}>{s}</option>)}
+              {ORDER_STATUSES.map(s => <option key={s} value={s}>{t(`orders.${s}`, s)}</option>)}
             </select>
             {saving && <Loader2 size={10} className="absolute right-6 top-1/2 -translate-y-1/2 animate-spin text-gray-400" />}
           </div>
@@ -64,7 +66,7 @@ export default function OrderCard({ order, onStatusChange }) {
                 <div className="px-4 py-3">
                   <div className="flex items-center gap-1.5 mb-2">
                     <User size={11} className="text-gray-400" />
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Customer</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">{t('admin.orders.customer')}</p>
                   </div>
                   <p className="text-xs font-semibold">{order.shipping?.fullName}</p>
                   <p className="text-[11px] text-gray-500 mt-0.5">{order.shipping?.email}</p>
@@ -75,7 +77,7 @@ export default function OrderCard({ order, onStatusChange }) {
                 <div className="px-4 py-3">
                   <div className="flex items-center gap-1.5 mb-2">
                     <MapPin size={11} className="text-gray-400" />
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Shipping</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">{t('admin.orders.shipping')}</p>
                   </div>
                   <p className="text-[11px] text-gray-700 dark:text-gray-300 leading-relaxed">
                     {order.shipping?.address}<br />
@@ -88,13 +90,13 @@ export default function OrderCard({ order, onStatusChange }) {
                 <div className="px-4 py-3">
                   <div className="flex items-center gap-1.5 mb-2">
                     <CreditCard size={11} className="text-gray-400" />
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Payment</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">{t('admin.orders.payment')}</p>
                   </div>
                   <div className="space-y-0.5">
-                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">Subtotal</span><span>MAD {order.subtotal?.toFixed(2)}</span></div>
-                    {order.discount > 0 && <div className="flex justify-between text-[11px] text-green-600"><span>Discount</span><span>-MAD {order.discount.toFixed(2)}</span></div>}
-                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">Shipping</span><span>{order.shippingCost === 0 ? 'Free' : `MAD ${order.shippingCost?.toFixed(2)}`}</span></div>
-                    <div className="flex justify-between text-xs font-bold pt-1 border-t border-gray-100 dark:border-gray-800"><span>Total</span><span>MAD {order.total.toFixed(2)}</span></div>
+                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">{t('admin.orders.subtotal')}</span><span>MAD {order.subtotal?.toFixed(2)}</span></div>
+                    {order.discount > 0 && <div className="flex justify-between text-[11px] text-green-600"><span>{t('admin.orders.discount')}</span><span>-MAD {order.discount.toFixed(2)}</span></div>}
+                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">{t('admin.orders.shipping')}</span><span>{order.shippingCost === 0 ? t('admin.orders.free') : `MAD ${order.shippingCost?.toFixed(2)}`}</span></div>
+                    <div className="flex justify-between text-xs font-bold pt-1 border-t border-gray-100 dark:border-gray-800"><span>{t('admin.orders.total')}</span><span>MAD {order.total.toFixed(2)}</span></div>
                   </div>
                 </div>
               </div>
@@ -103,7 +105,7 @@ export default function OrderCard({ order, onStatusChange }) {
               <div className="border-t border-gray-200 dark:border-gray-800 px-4 py-3">
                 <div className="flex items-center gap-1.5 mb-3">
                   <Box size={11} className="text-gray-400" />
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Items ({order.items?.length})</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">{t('admin.orders.itemsSection')} ({order.items?.length})</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                   {(order.items || []).map((item, idx) => (
@@ -117,7 +119,7 @@ export default function OrderCard({ order, onStatusChange }) {
                         <p className="text-[11px] font-semibold leading-tight truncate">{item.name}</p>
                         <p className="text-[10px] text-gray-400">{item.brand}</p>
                         <div className="flex items-center justify-between mt-0.5">
-                          <span className="text-[10px] text-gray-500">Qty: {item.qty}</span>
+                          <span className="text-[10px] text-gray-500">{t('admin.orders.qty')}: {item.qty}</span>
                           <span className="text-[11px] font-bold">MAD {(item.price * item.qty).toFixed(2)}</span>
                         </div>
                       </div>
