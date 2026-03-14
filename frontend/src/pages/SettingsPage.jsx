@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Loader2, User, CheckCircle } from 'lucide-react'
+import { Loader2, User, Lock, CheckCircle } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { authApi } from '../lib/api'
 
@@ -54,6 +54,11 @@ export default function SettingsPage() {
   const [profileSaved, setProfileSaved]   = useState(false)
   const [profileError, setProfileError]   = useState('')
 
+  const [passwords, setPasswords]         = useState({ current: '', next: '', confirm: '' })
+  const [passSaving, setPassSaving]       = useState(false)
+  const [passSaved, setPassSaved]         = useState(false)
+  const [passError, setPassError]         = useState('')
+
   if (!user) return <Navigate to="/login" replace />
 
   const handleProfileSubmit = async (e) => {
@@ -69,6 +74,26 @@ export default function SettingsPage() {
       setProfileError(err.message || 'Failed to update profile.')
     } finally {
       setProfileSaving(false)
+    }
+  }
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault()
+    setPassError('')
+    if (passwords.next !== passwords.confirm) {
+      setPassError('New passwords do not match.')
+      return
+    }
+    setPassSaving(true)
+    try {
+      await authApi.changePassword({ currentPassword: passwords.current, newPassword: passwords.next })
+      setPasswords({ current: '', next: '', confirm: '' })
+      setPassSaved(true)
+      setTimeout(() => setPassSaved(false), 2500)
+    } catch (err) {
+      setPassError(err.message || 'Failed to change password.')
+    } finally {
+      setPassSaving(false)
     }
   }
 
@@ -92,9 +117,21 @@ export default function SettingsPage() {
             </div>
           </form>
         </SectionCard>
+
+        <SectionCard icon={Lock} title="Security">
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <Field label="Current Password" type="password" value={passwords.current} onChange={e => setPasswords(p => ({ ...p, current: e.target.value }))} required />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Field label="New Password" type="password" value={passwords.next} onChange={e => setPasswords(p => ({ ...p, next: e.target.value }))} required />
+              <Field label="Confirm New Password" type="password" value={passwords.confirm} onChange={e => setPasswords(p => ({ ...p, confirm: e.target.value }))} required />
+            </div>
+            {passError && <p className="text-xs text-red-500">{passError}</p>}
+            <div className="flex justify-end">
+              <SaveButton loading={passSaving} saved={passSaved} label="Update Password" />
+            </div>
+          </form>
+        </SectionCard>
       </motion.div>
     </div>
   )
 }
-
-export { SectionCard }
