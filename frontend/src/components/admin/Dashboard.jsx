@@ -3,8 +3,10 @@ import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { ordersApi, productsApi } from '../../lib/api'
 import { STATUS_COLORS } from '../../constants/admin'
+import { useTranslation } from 'react-i18next'
 
 export default function Dashboard() {
+  const { t } = useTranslation()
   const [stats, setStats]       = useState(null)
   const [products, setProducts] = useState([])
   const [loading, setLoading]   = useState(true)
@@ -26,15 +28,15 @@ export default function Dashboard() {
   )
 
   const cards = [
-    { label: 'Total Revenue', value: `${(stats?.totalRevenue || 0).toFixed(2)} MAD` },
-    { label: 'Total Orders',  value: stats?.totalOrders || 0 },
-    { label: 'Products',      value: products.length },
-    { label: 'Processing',    value: stats?.byStatus?.Processing || 0 },
+    { label: t('admin.dashboard.totalRevenue'), value: `${(stats?.totalRevenue || 0).toFixed(2)} MAD` },
+    { label: t('admin.dashboard.totalOrders'),  value: stats?.totalOrders || 0 },
+    { label: t('admin.dashboard.products'),     value: products.length },
+    { label: t('admin.dashboard.processing'),   value: stats?.byStatus?.Processing || 0 },
   ]
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-      <h2 className="text-base font-semibold mb-5">Dashboard</h2>
+      <h2 className="text-base font-semibold mb-5">{t('admin.dashboard.title')}</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {cards.map((card, i) => (
@@ -53,11 +55,11 @@ export default function Dashboard() {
 
       <div className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
-          <h3 className="text-xs font-semibold">Recent Orders</h3>
+          <h3 className="text-xs font-semibold">{t('admin.dashboard.recentOrders')}</h3>
         </div>
 
         {(stats?.recentOrders || []).length === 0 ? (
-          <p className="text-center py-8 text-xs text-gray-400">No orders yet</p>
+          <p className="text-center py-8 text-xs text-gray-400">{t('admin.dashboard.noOrders')}</p>
         ) : (
           stats.recentOrders.map(order => (
             <div
