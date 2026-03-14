@@ -13,6 +13,15 @@ const categorySchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
+    parent: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      default: null,
+    },
+    sortOrder: {
+      type: Number,
+      default: 0,
+    },
     isActive: {
       type: Boolean,
       default: true,
@@ -31,5 +40,9 @@ categorySchema.pre('save', function (next) {
   }
   next()
 })
+
+categorySchema.index({ slug: 1 })
+categorySchema.index({ parent: 1 })
+categorySchema.index({ sortOrder: 1, name: 1 })
 
 export default mongoose.model('Category', categorySchema)
