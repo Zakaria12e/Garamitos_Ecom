@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Loader2, Plus, Pencil } from 'lucide-react'
+import { Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
 import { categoriesApi } from '../../lib/api'
 
 const EMPTY_FORM = { name: '', sortOrder: 0, parent: '' }
@@ -24,6 +24,16 @@ export default function CategoriesAdmin() {
 
   const openNew  = () => { setEditing(null); setForm(EMPTY_FORM); setShowForm(true) }
   const openEdit = (c) => { setEditing(c); setForm({ name: c.name, sortOrder: c.sortOrder, parent: c.parent?._id || '' }); setShowForm(true) }
+
+  const handleDelete = async (id) => {
+    if (!confirm('Delete this category?')) return
+    try {
+      await categoriesApi.delete(id)
+      load()
+    } catch (err) {
+      alert(err.message)
+    }
+  }
 
   const handleSubmit = async () => {
     setSaving(true)
@@ -127,9 +137,14 @@ export default function CategoriesAdmin() {
               <span className={`text-[10px] px-2 py-0.5 rounded-full ${c.isActive ? 'bg-green-100 dark:bg-green-950 text-green-600' : 'bg-gray-100 dark:bg-gray-900 text-gray-400'}`}>
                 {c.isActive ? 'active' : 'inactive'}
               </span>
-              <button onClick={() => openEdit(c)} className="text-xs px-2.5 py-1 border border-gray-200 dark:border-gray-800 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors flex items-center gap-1">
-                <Pencil size={10} /> Edit
-              </button>
+              <div className="flex gap-1">
+                <button onClick={() => openEdit(c)} className="text-xs px-2.5 py-1 border border-gray-200 dark:border-gray-800 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors flex items-center gap-1">
+                  <Pencil size={10} /> Edit
+                </button>
+                <button onClick={() => handleDelete(c._id)} className="text-xs px-2.5 py-1 border border-red-200 dark:border-red-900 text-red-500 rounded hover:bg-red-50 dark:hover:bg-red-950 transition-colors flex items-center gap-1">
+                  <Trash2 size={10} /> Del
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
