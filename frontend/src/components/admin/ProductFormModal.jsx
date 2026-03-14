@@ -36,7 +36,7 @@ export default function ProductFormModal({ show, editing, form, setForm, onClose
               <div>
                 <label className="block text-[10px] text-gray-400 mb-1">Category</label>
                 <select
-                  value={form.category}
+                  value={typeof form.category === 'object' ? form.category?._id : form.category}
                   onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
                   className="w-full text-xs border border-gray-200 dark:border-gray-800 rounded px-2.5 py-1.5 bg-white dark:bg-black focus:outline-none"
                 >
