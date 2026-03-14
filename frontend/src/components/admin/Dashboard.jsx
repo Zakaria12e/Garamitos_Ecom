@@ -29,7 +29,7 @@ export default function Dashboard() {
     { label: 'Total Revenue', value: `${(stats?.totalRevenue || 0).toFixed(2)} MAD` },
     { label: 'Total Orders',  value: stats?.totalOrders || 0 },
     { label: 'Products',      value: products.length },
-    { label: 'Processing',    value: stats?.statusBreakdown?.Processing || 0 },
+    { label: 'Processing',    value: stats?.byStatus?.Processing || 0 },
   ]
 
   return (
