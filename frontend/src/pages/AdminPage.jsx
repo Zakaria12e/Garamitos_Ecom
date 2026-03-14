@@ -1,7 +1,8 @@
 import { Navigate, Link, Routes, Route, useLocation } from 'react-router-dom'
-import { Loader2, LayoutDashboard, Package, ShoppingBag, Settings, Tag } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingBag, Settings, Tag } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useTranslation } from 'react-i18next'
+import { Skeleton } from '../components/ui/Skeleton'
 import Dashboard        from '../components/admin/Dashboard'
 import ProductsAdmin    from '../components/admin/ProductsAdmin'
 import OrdersAdmin      from '../components/admin/OrdersAdmin'
@@ -22,8 +23,25 @@ export default function AdminPage() {
   ]
 
   if (loading) return (
-    <div className="flex items-center justify-center py-24">
-      <Loader2 size={20} className="animate-spin text-gray-400" />
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 flex flex-col md:flex-row gap-4 md:gap-8">
+      <aside className="md:w-44 md:shrink-0 space-y-1">
+        <Skeleton className="h-2.5 w-20 mb-3 hidden md:block" />
+        {Array(5).fill(0).map((_, i) => (
+          <Skeleton key={i} className="h-8 w-full rounded-md" />
+        ))}
+      </aside>
+      <main className="flex-1 min-w-0 space-y-6">
+        <Skeleton className="h-5 w-28" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Array(4).fill(0).map((_, i) => (
+            <div key={i} className="border border-gray-200 dark:border-gray-800 rounded-xl p-4 space-y-2">
+              <Skeleton className="h-2.5 w-20" />
+              <Skeleton className="h-7 w-24" />
+            </div>
+          ))}
+        </div>
+        <Skeleton className="h-64 w-full rounded-xl" />
+      </main>
     </div>
   )
   if (!user || user.role !== 'admin') return <Navigate to="/login" replace />
