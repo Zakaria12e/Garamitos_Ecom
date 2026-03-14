@@ -1,6 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
-import { PRODUCT_CATEGORIES } from '../../constants/admin'
 
 function Field({ label, ...props }) {
   return (
@@ -14,7 +13,7 @@ function Field({ label, ...props }) {
   )
 }
 
-export default function ProductFormModal({ show, editing, form, setForm, onClose, onSubmit, saving }) {
+export default function ProductFormModal({ show, editing, form, setForm, onClose, onSubmit, saving, categories = [] }) {
   if (!show) return null
 
   return (
@@ -41,7 +40,10 @@ export default function ProductFormModal({ show, editing, form, setForm, onClose
                   onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
                   className="w-full text-xs border border-gray-200 dark:border-gray-800 rounded px-2.5 py-1.5 bg-white dark:bg-black focus:outline-none"
                 >
-                  {PRODUCT_CATEGORIES.map(c => <option key={c}>{c}</option>)}
+                  <option value="">Select category</option>
+                  {categories.map(c => (
+                    <option key={c._id} value={c._id}>{c.name}</option>
+                  ))}
                 </select>
               </div>
             </div>
