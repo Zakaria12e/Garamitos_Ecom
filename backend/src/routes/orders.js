@@ -235,6 +235,63 @@ router.get('/admin/stats', protect, adminOnly, async (req, res, next) => {
   }
 })
 
+// GET /api/orders/admin/revenue?period=day|month|year (admin)
+router.get('/admin/revenue', protect, adminOnly, async (req, res, next) => {
+  try {
+    const { period = 'month' } = req.query
+
+    const now = new Date()
+    let startDate, dateFormat, labelFn
+
+    if (period === 'day') {
+      startDate = new Date(now)
+      startDate.setDate(now.getDate() - 29)
+      dateFormat = '%Y-%m-%d'
+      labelFn = (str) => {
+        const [, m, d] = str.split('-')
+        return `${d}/${m}`
+      }
+    } else if (period === 'year') {
+      startDate = new Date(now)
+      startDate.setFullYear(now.getFullYear() - 4)
+      dateFormat = '%Y'
+      labelFn = (str) => str
+    } else {
+      startDate = new Date(now)
+      startDate.setMonth(now.getMonth() - 11)
+      dateFormat = '%Y-%m'
+      labelFn = (str) => {
+        const [y, m] = str.split('-')
+        return `${new Date(y, m - 1).toLocaleString('en', { month: 'short' })} ${y}`
+      }
+    }
+
+    startDate.setHours(0, 0, 0, 0)
+
+    const data = await Order.aggregate([
+      { $match: { createdAt: { $gte: startDate } } },
+      {
+        $group: {
+          _id:     { $dateToString: { format: dateFormat, date: '$createdAt' } },
+          revenue: { $sum: '$total' },
+          orders:  { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ])
+
+    const points = data.map(d => ({
+      label:   labelFn(d._id),
+      revenue: parseFloat(d.revenue.toFixed(2)),
+      orders:  d.orders,
+    }))
+
+    res.json({ success: true, points })
+  } catch (err) {
+    next(err)
+  }
+})
+
 // GET /api/orders/:id (admin)
 router.get('/:id', protect, adminOnly, async (req, res, next) => {
   try {
