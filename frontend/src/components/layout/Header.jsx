@@ -98,7 +98,7 @@ export default function Header() {
             <AnimatePresence>
               {userMenuOpen && user && (
                 <motion.div initial={{opacity:0,y:6,scale:0.97}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:6,scale:0.97}} transition={{duration:0.15}}
-                  className="absolute right-0 top-full mt-1.5 w-48 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg overflow-hidden z-50">
+                  className="absolute end-0 top-full mt-1.5 w-48 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg overflow-hidden z-50">
                   <div className="px-3 py-2.5 border-b border-gray-200 dark:border-gray-800">
                     <p className="text-xs font-semibold truncate">{user.name}</p>
                     <p className="text-[10px] text-gray-400 truncate">{user.email}</p>
