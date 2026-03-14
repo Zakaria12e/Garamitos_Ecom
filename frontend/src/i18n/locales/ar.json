@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "catalog": "المتجر",
+    "compare": "مقارنة",
+    "orders": "طلباتي",
+    "admin": "لوحة التحكم",
+    "login": "تسجيل الدخول"
+  },
+  "header": {
+    "search": "ابحث عن كاميرات، أنظمة أمان..."
+  },
+  "auth": {
+    "logout": "تسجيل الخروج",
+    "myOrders": "طلباتي",
+    "adminPanel": "لوحة التحكم"
+  },
+  "product": {
+    "addToCart": "أضف إلى السلة",
+    "addToWishlist": "أضف إلى المفضلة",
+    "inStock": "متوفر",
+    "outOfStock": "نفذ من المخزون",
+    "price": "السعر",
+    "brand": "الماركة",
+    "category": "الفئة",
+    "stock": "المخزون"
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "empty": "سلتك فارغة",
+    "total": "المجموع",
+    "checkout": "إتمام الشراء",
+    "remove": "إزالة"
+  },
+  "checkout": {
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "address": "العنوان",
+    "city": "المدينة",
+    "country": "الدولة",
+    "placeOrder": "تأكيد الطلب",
+    "shipping": "تكلفة الشحن",
+    "discount": "الخصم",
+    "subtotal": "المجموع الجزئي",
+    "promoCode": "كود الخصم",
+    "apply": "تطبيق",
+    "freeShipping": "شحن مجاني"
+  },
+  "orders": {
+    "title": "طلباتي",
+    "empty": "لا توجد طلبات بعد",
+    "orderNumber": "رقم الطلب",
+    "status": "الحالة",
+    "total": "المجموع",
+    "date": "التاريخ",
+    "Processing": "قيد المعالجة",
+    "Shipped": "تم الشحن",
+    "Delivered": "تم التسليم",
+    "Cancelled": "ملغي"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "search": "بحث",
+    "noResults": "لا توجد نتائج"
+  }
+}
