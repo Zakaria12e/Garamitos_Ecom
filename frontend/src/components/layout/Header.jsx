@@ -134,7 +134,7 @@ export default function Header() {
             className="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black px-4 py-3 flex flex-col gap-3 overflow-hidden">
             <form onSubmit={handleSearch} className="relative">
               <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search cameras, security..." className="w-full pl-8 pr-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-900 rounded-md border border-transparent focus:outline-none" />
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('header.search')} className="w-full pl-8 pr-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-900 rounded-md border border-transparent focus:outline-none" />
             </form>
             {[[t('nav.catalog'), '/catalog'], [t('nav.compare'), '/compare'], [t('nav.orders'), '/orders'], ...(user?.role === 'admin' ? [[t('nav.admin'), '/admin']] : [])].map(([label, path]) => (
               <Link key={path} to={path} onClick={() => setMobileOpen(false)} className="text-sm text-gray-600 dark:text-gray-400">{label}</Link>
