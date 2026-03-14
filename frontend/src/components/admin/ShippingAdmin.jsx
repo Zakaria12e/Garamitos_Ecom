@@ -110,7 +110,7 @@ export default function ShippingAdmin() {
       <div>
         <h2 className="text-base font-semibold mb-4">Shipping Settings</h2>
         <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-5 space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium mb-1">Shipping Price (MAD)</label>
               <p className="text-[10px] text-gray-400 mb-2">Charged when order is below the free threshold.</p>
