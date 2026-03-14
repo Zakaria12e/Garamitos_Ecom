@@ -128,7 +128,7 @@ export default function CategoriesAdmin() {
             <motion.div
               key={c._id}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.02 }}
-              className={`flex items-center gap-3 px-4 py-2.5 ${i > 0 ? 'border-t border-gray-200 dark:border-gray-800' : ''}`}
+              className={`flex items-center gap-3 px-4 py-2.5 flex-wrap ${i > 0 ? 'border-t border-gray-200 dark:border-gray-800' : ''}`}
             >
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium">{c.name}</p>
