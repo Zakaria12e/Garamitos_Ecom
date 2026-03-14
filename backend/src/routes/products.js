@@ -66,7 +66,7 @@ router.get('/', async (req, res, next) => {
 
     const skip = (Number(page) - 1) * Number(limit)
     const [products, total] = await Promise.all([
-      Product.find(filter).sort(sortQuery).skip(skip).limit(Number(limit)),
+      Product.find(filter).populate('category', 'name slug').sort(sortQuery).skip(skip).limit(Number(limit)),
       Product.countDocuments(filter),
     ])
 
@@ -85,7 +85,7 @@ router.get('/', async (req, res, next) => {
 // GET /api/products/featured
 router.get('/featured', async (req, res, next) => {
   try {
-    const products = await Product.find({ featured: true, isActive: true }).limit(8)
+    const products = await Product.find({ featured: true, isActive: true }).populate('category', 'name slug').limit(8)
     res.json({ success: true, products })
   } catch (err) {
     next(err)
@@ -115,7 +115,7 @@ router.get('/brands', async (req, res, next) => {
 // GET /api/products/:id
 router.get('/:id', async (req, res, next) => {
   try {
-    const product = await Product.findOne({ _id: req.params.id, isActive: true })
+    const product = await Product.findOne({ _id: req.params.id, isActive: true }).populate('category', 'name slug')
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found.' })
     }
@@ -135,7 +135,7 @@ router.get('/:id/related', async (req, res, next) => {
       category: product.category,
       _id: { $ne: product._id },
       isActive: true,
-    }).limit(4)
+    }).populate('category', 'name slug').limit(4)
 
     res.json({ success: true, products: related })
   } catch (err) {
