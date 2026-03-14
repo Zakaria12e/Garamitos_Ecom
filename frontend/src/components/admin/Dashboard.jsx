@@ -61,7 +61,7 @@ export default function Dashboard() {
   const [stats, setStats]             = useState(null)
   const [products, setProducts]       = useState([])
   const [loading, setLoading]         = useState(true)
-  const [period, setPeriod]           = useState('month')
+  const [period, setPeriod]           = useState('day')
   const [revenueData, setRevenueData] = useState([])
   const [revenueLoading, setRevenueLoading] = useState(true)
 

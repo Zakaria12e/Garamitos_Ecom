@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
+import { Skeleton } from '../ui/Skeleton'
 import { settingsApi } from '../../lib/api'
 import { useApp } from '../../context/AppContext'
 import { useSettings } from '../../context/SettingsContext'
@@ -195,7 +196,24 @@ export default function ShippingAdmin() {
         </AnimatePresence>
 
         {promoLoading ? (
-          <div className="flex items-center justify-center py-10 text-gray-400"><Loader2 size={18} className="animate-spin" /></div>
+          <div className="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
+            {Array(4).fill(0).map((_, i) => (
+              <div key={i} className={`flex items-center gap-3 px-4 py-3 flex-wrap ${i > 0 ? 'border-t border-gray-200 dark:border-gray-800' : ''}`}>
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <Skeleton className="h-8 w-24 rounded-md" />
+                  <div className="space-y-1.5">
+                    <Skeleton className="h-3 w-28" />
+                    <Skeleton className="h-2.5 w-20" />
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Skeleton className="h-6 w-14 rounded" />
+                  <Skeleton className="h-7 w-14 rounded" />
+                  <Skeleton className="h-7 w-12 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : promos.length === 0 ? (
           <div className="border border-dashed border-gray-200 dark:border-gray-800 rounded-xl py-10 text-center text-xs text-gray-400">
             {t('admin.shipping.noPromos')}
