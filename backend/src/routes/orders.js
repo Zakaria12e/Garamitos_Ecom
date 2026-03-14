@@ -202,7 +202,7 @@ router.get('/admin/stats', protect, adminOnly, async (req, res, next) => {
         { $group: { _id: '$status', count: { $sum: 1 } } },
       ]),
       Order.aggregate([
-        { $match: { status: { $ne: 'Cancelled' } } },
+        { $match: { status: 'Delivered' } },
         {
           $group: {
             _id: null,
