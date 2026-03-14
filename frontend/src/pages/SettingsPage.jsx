@@ -1,9 +1,16 @@
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Loader2, User, Lock, CheckCircle } from 'lucide-react'
+import { Loader2, User, Lock, Globe, CheckCircle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { authApi } from '../lib/api'
+
+const LANGS = [
+  { code: 'ar', label: 'العربية', flag: '🇲🇦' },
+  { code: 'en', label: 'English',  flag: '🇬🇧' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+]
 
 function Field({ label, ...props }) {
   return (
@@ -48,6 +55,7 @@ function SectionCard({ icon: Icon, title, children }) {
 
 export default function SettingsPage() {
   const { user, setUser } = useAuth()
+  const { i18n } = useTranslation()
 
   const [profile, setProfile]             = useState({ name: user?.name || '', email: user?.email || '' })
   const [profileSaving, setProfileSaving] = useState(false)
@@ -130,6 +138,28 @@ export default function SettingsPage() {
               <SaveButton loading={passSaving} saved={passSaved} label="Update Password" />
             </div>
           </form>
+        </SectionCard>
+
+        <SectionCard icon={Globe} title="Preferences">
+          <div>
+            <p className="text-xs font-medium mb-3">Language</p>
+            <div className="grid grid-cols-3 gap-3">
+              {LANGS.map(({ code, label, flag }) => (
+                <button
+                  key={code}
+                  onClick={() => i18n.changeLanguage(code)}
+                  className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg border text-sm transition-all ${
+                    i18n.language === code
+                      ? 'border-black dark:border-white bg-black dark:bg-white text-white dark:text-black font-medium'
+                      : 'border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600'
+                  }`}
+                >
+                  <span className="text-base">{flag}</span>
+                  <span className="text-xs">{label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </SectionCard>
       </motion.div>
     </div>
