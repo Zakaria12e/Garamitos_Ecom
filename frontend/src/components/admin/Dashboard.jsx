@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Loader2 } from 'lucide-react'
+import { Skeleton } from '../ui/Skeleton'
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer,
@@ -84,8 +84,39 @@ export default function Dashboard() {
   }, [period])
 
   if (loading) return (
-    <div className="flex items-center justify-center py-16 text-gray-400">
-      <Loader2 size={18} className="animate-spin mr-2" />
+    <div className="space-y-6">
+      <Skeleton className="h-5 w-28" />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {Array(4).fill(0).map((_, i) => (
+          <div key={i} className="border border-gray-200 dark:border-gray-800 rounded-xl p-4 space-y-2">
+            <Skeleton className="h-2.5 w-20" />
+            <Skeleton className="h-7 w-24" />
+          </div>
+        ))}
+      </div>
+      <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-5 space-y-4">
+        <Skeleton className="h-8 w-40" />
+        <Skeleton className="h-56 w-full" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-4 space-y-3">
+          <Skeleton className="h-3 w-28" />
+          <Skeleton className="h-36 w-full" />
+        </div>
+        <div className="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+            <Skeleton className="h-3 w-24" />
+          </div>
+          {Array(5).fill(0).map((_, i) => (
+            <div key={i} className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 dark:border-gray-800 last:border-0 gap-3">
+              <Skeleton className="h-3 w-20" />
+              <Skeleton className="h-3 w-28 hidden sm:block" />
+              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-5 w-16 rounded-full" />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 
@@ -143,9 +174,7 @@ export default function Dashboard() {
         </div>
 
         {revenueLoading ? (
-          <div className="flex items-center justify-center h-56 text-gray-400">
-            <Loader2 size={18} className="animate-spin" />
-          </div>
+          <Skeleton className="h-56 w-full" />
         ) : revenueData.length === 0 ? (
           <div className="flex items-center justify-center h-56 text-xs text-gray-400">
             {t('admin.dashboard.noOrders')}
