@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "catalog": "Catalog",
+    "compare": "Compare",
+    "orders": "My Orders",
+    "admin": "Admin",
+    "login": "Login"
+  },
+  "header": {
+    "search": "Search cameras, security..."
+  },
+  "auth": {
+    "logout": "Sign Out",
+    "myOrders": "My Orders",
+    "adminPanel": "Admin Panel"
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "addToWishlist": "Add to Wishlist",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "price": "Price",
+    "brand": "Brand",
+    "category": "Category",
+    "stock": "Stock"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "total": "Total",
+    "checkout": "Checkout",
+    "remove": "Remove"
+  },
+  "checkout": {
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "country": "Country",
+    "placeOrder": "Place Order",
+    "shipping": "Shipping",
+    "discount": "Discount",
+    "subtotal": "Subtotal",
+    "promoCode": "Promo Code",
+    "apply": "Apply",
+    "freeShipping": "Free Shipping"
+  },
+  "orders": {
+    "title": "My Orders",
+    "empty": "No orders yet",
+    "orderNumber": "Order #",
+    "status": "Status",
+    "total": "Total",
+    "date": "Date",
+    "Processing": "Processing",
+    "Shipped": "Shipped",
+    "Delivered": "Delivered",
+    "Cancelled": "Cancelled"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "noResults": "No results found"
+  }
+}
