@@ -100,6 +100,15 @@ export const reviewsApi = {
   approve: (productId, id, approved) => request(`/products/${productId}/reviews/${id}/approve`, { method: 'PUT', body: { approved } }),
 }
 
+// ── Categories ─────────────────────────────────────────────
+export const categoriesApi = {
+  list:   ()           => request('/categories'),
+  get:    (slug)       => request(`/categories/${slug}`),
+  create: (body)       => request('/categories',      { method: 'POST',   body }),
+  update: (id, body)   => request(`/categories/${id}`, { method: 'PUT',    body }),
+  delete: (id)         => request(`/categories/${id}`, { method: 'DELETE' }),
+}
+
 // ── Shipping / Site Settings ───────────────────────────────
 export const settingsApi = {
   get:  ()     => request('/settings'),
