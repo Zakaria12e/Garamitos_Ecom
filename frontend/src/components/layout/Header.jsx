@@ -92,7 +92,7 @@ export default function Header() {
               </button>
             ) : (
               <Link to="/login" className="flex items-center gap-1.5 text-xs px-3 py-1.5 border border-gray-200 dark:border-gray-800 rounded-md hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                <User size={13} /> Login
+                <User size={13} /> {t('nav.login')}
               </Link>
             )}
             <AnimatePresence>
@@ -115,7 +115,7 @@ export default function Header() {
                     </Link>
                   )}
                   <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors border-t border-gray-200 dark:border-gray-800">
-                    <LogOut size={12} /> Sign Out
+                    <LogOut size={12} /> {t('auth.logout')}
                   </button>
                 </motion.div>
               )}
