@@ -75,7 +75,14 @@
       "products": "Products",
       "processing": "Processing",
       "recentOrders": "Recent Orders",
-      "noOrders": "No orders yet"
+      "ordersByStatus": "Orders by Status",
+      "totalRevenueChart": "Total Revenue",
+      "noOrders": "No orders yet",
+      "period": {
+        "day": "30 Days",
+        "month": "12 Months",
+        "year": "5 Years"
+      }
     },
     "products": {
       "title": "Products",

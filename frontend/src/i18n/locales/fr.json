@@ -75,7 +75,14 @@
       "products": "Produits",
       "processing": "En traitement",
       "recentOrders": "Commandes récentes",
-      "noOrders": "Aucune commande pour l'instant"
+      "ordersByStatus": "Commandes par statut",
+      "totalRevenueChart": "Chiffre d'affaires total",
+      "noOrders": "Aucune commande pour l'instant",
+      "period": {
+        "day": "30 jours",
+        "month": "12 mois",
+        "year": "5 ans"
+      }
     },
     "products": {
       "title": "Produits",

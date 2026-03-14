@@ -75,7 +75,14 @@
       "products": "المنتجات",
       "processing": "قيد المعالجة",
       "recentOrders": "الطلبات الأخيرة",
-      "noOrders": "لا توجد طلبات بعد"
+      "ordersByStatus": "الطلبات حسب الحالة",
+      "totalRevenueChart": "إجمالي الإيرادات",
+      "noOrders": "لا توجد طلبات بعد",
+      "period": {
+        "day": "30 يوماً",
+        "month": "12 شهراً",
+        "year": "5 سنوات"
+      }
     },
     "products": {
       "title": "المنتجات",
