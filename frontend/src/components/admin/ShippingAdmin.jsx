@@ -117,7 +117,7 @@ export default function ShippingAdmin() {
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium">MAD</span>
                 <input type="number" value={price} onChange={e => setPrice(e.target.value)} step="1" min="0"
-                  className="w-full text-sm border border-gray-200 dark:border-gray-800 rounded-md pl-9 pr-3 py-2 bg-transparent focus:outline-none focus:border-black dark:focus:border-white" />
+                  className="w-full text-sm border border-gray-200 dark:border-gray-800 rounded-md pl-12 pr-3 py-2 bg-transparent focus:outline-none focus:border-black dark:focus:border-white" />
               </div>
             </div>
             <div>
@@ -126,7 +126,7 @@ export default function ShippingAdmin() {
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium">MAD</span>
                 <input type="number" value={freeThreshold} onChange={e => setFreeThreshold(e.target.value)} step="1" min="0"
-                  className="w-full text-sm border border-gray-200 dark:border-gray-800 rounded-md pl-9 pr-3 py-2 bg-transparent focus:outline-none focus:border-black dark:focus:border-white" />
+                  className="w-full text-sm border border-gray-200 dark:border-gray-800 rounded-md pl-12 pr-3 py-2 bg-transparent focus:outline-none focus:border-black dark:focus:border-white" />
               </div>
             </div>
           </div>
