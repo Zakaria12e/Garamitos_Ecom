@@ -6,7 +6,7 @@ export const STATUS_COLORS = {
 }
 
 export const EMPTY_PRODUCT_FORM = {
-  name: '', brand: '', category: 'Surveillance Cameras',
+  name: '', brand: '', category: '',
   price: '', originalPrice: '', stock: '', description: '',
   image: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80',
   rating: 4.5, reviews: 0, featured: false,
