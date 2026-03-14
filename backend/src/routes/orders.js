@@ -269,7 +269,7 @@ router.get('/admin/revenue', protect, adminOnly, async (req, res, next) => {
     startDate.setHours(0, 0, 0, 0)
 
     const data = await Order.aggregate([
-      { $match: { createdAt: { $gte: startDate } } },
+      { $match: { status: 'Delivered', createdAt: { $gte: startDate } } },
       {
         $group: {
           _id:     { $dateToString: { format: dateFormat, date: '$createdAt' } },
