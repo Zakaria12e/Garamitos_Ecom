@@ -231,6 +231,7 @@
   },
   "common": {
     "loading": "Loading...",
+    "currency": "MAD",
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",

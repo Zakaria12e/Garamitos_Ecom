@@ -106,7 +106,7 @@ export default function CartPage() {
                     <p className="text-xs font-medium truncate hover:underline">{item.name}</p>
                   </Link>
                   <p className="text-xs text-gray-400">{item.brand}</p>
-                  <p className="text-xs font-semibold mt-0.5">{item.price} MAD</p>
+                  <p className="text-xs font-semibold mt-0.5">{item.price} {t('common.currency')}</p>
                 </div>
                 <div className="flex items-center border border-gray-200 dark:border-gray-800 rounded overflow-hidden">
                   <button
@@ -123,7 +123,7 @@ export default function CartPage() {
                     <Plus size={11} />
                   </button>
                 </div>
-                <p className="text-xs font-semibold w-16 text-right">{(item.price * item.qty).toFixed(2)} MAD</p>
+                <p className="text-xs font-semibold w-16 text-right">{(item.price * item.qty).toFixed(2)} {t('common.currency')}</p>
                 <button
                   onClick={() => dispatch({ type: 'REMOVE_FROM_CART', id: item.id })}
                   className="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
@@ -142,24 +142,24 @@ export default function CartPage() {
             <div className="space-y-2 text-xs mb-4">
               <div className="flex justify-between">
                 <span className="text-gray-500">{t('cart.subtotal')}</span>
-                <span>{subtotal.toFixed(2)} MAD</span>
+                <span>{subtotal.toFixed(2)} {t('common.currency')}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">{t('cart.shipping')}</span>
                 <span className={shipping === 0 ? 'text-green-600 dark:text-green-400 font-medium' : ''}>
-                  {settingsLoading ? '…' : shipping === 0 ? t('cart.free') : shipping.toFixed(2) + ' MAD'}
+                  {settingsLoading ? '…' : shipping === 0 ? t('cart.free') : `${shipping.toFixed(2)} ${t('common.currency')}`}
                 </span>
               </div>
               {state.discount > 0 && (
                 <div className="flex justify-between text-green-600 dark:text-green-400">
                   <span>{t('cart.discount')} ({state.promoCode?.code})</span>
-                  <span>-{state.discount.toFixed(2)} MAD</span>
+                  <span>-{state.discount.toFixed(2)} {t('common.currency')}</span>
                 </div>
               )}
             </div>
             <div className="border-t border-gray-200 dark:border-gray-800 pt-3 flex justify-between font-semibold text-sm mb-4">
               <span>{t('cart.total')}</span>
-              <span>{total.toFixed(2)} MAD</span>
+              <span>{total.toFixed(2)} {t('common.currency')}</span>
             </div>
             <button
               onClick={() => navigate('/checkout')}

@@ -163,10 +163,10 @@ export default function ProductPage() {
 
           {/* Price */}
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl font-bold">{product.price} MAD</span>
+            <span className="text-2xl font-bold">{product.price} {t('common.currency')}</span>
             {product.originalPrice > product.price && (
               <>
-                <span className="text-sm text-gray-400 line-through">{product.originalPrice} MAD</span>
+                <span className="text-sm text-gray-400 line-through">{product.originalPrice} {t('common.currency')}</span>
                 <span className="text-xs bg-black dark:bg-white text-white dark:text-black px-2 py-0.5 rounded font-medium">
                   -{Math.round((1 - product.price / product.originalPrice) * 100)}%
                 </span>

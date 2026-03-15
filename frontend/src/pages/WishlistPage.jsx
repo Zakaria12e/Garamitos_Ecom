@@ -35,7 +35,7 @@ export default function WishlistPage() {
               <Link to={'/product/' + product.id}>
                 <h3 className="text-xs font-medium hover:underline line-clamp-2">{product.name}</h3>
               </Link>
-              <p className="text-sm font-semibold mt-1 mb-3">{product.price} MAD</p>
+              <p className="text-sm font-semibold mt-1 mb-3">{product.price} {t('common.currency')}</p>
               <div className="flex gap-1.5">
                 <button
                   onClick={() => {

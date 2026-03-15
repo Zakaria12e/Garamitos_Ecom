@@ -40,7 +40,7 @@ export default function OrderCard({ order, onStatusChange }) {
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
-          <span className="text-sm font-bold">MAD {order.total.toFixed(2)}</span>
+          <span className="text-sm font-bold">{t('common.currency')} {order.total.toFixed(2)}</span>
           <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${STATUS_COLORS[status] || STATUS_COLORS.Processing}`}>
             {t(`orders.${status}`, status)}
           </span>
@@ -100,10 +100,10 @@ export default function OrderCard({ order, onStatusChange }) {
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">{t('admin.orders.payment')}</p>
                   </div>
                   <div className="space-y-0.5">
-                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">{t('admin.orders.subtotal')}</span><span>MAD {order.subtotal?.toFixed(2)}</span></div>
-                    {order.discount > 0 && <div className="flex justify-between text-[11px] text-green-600"><span>{t('admin.orders.discount')}</span><span>-MAD {order.discount.toFixed(2)}</span></div>}
-                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">{t('admin.orders.shipping')}</span><span>{order.shippingCost === 0 ? t('admin.orders.free') : `MAD ${order.shippingCost?.toFixed(2)}`}</span></div>
-                    <div className="flex justify-between text-xs font-bold pt-1 border-t border-gray-100 dark:border-gray-800"><span>{t('admin.orders.total')}</span><span>MAD {order.total.toFixed(2)}</span></div>
+                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">{t('admin.orders.subtotal')}</span><span>{t('common.currency')} {order.subtotal?.toFixed(2)}</span></div>
+                    {order.discount > 0 && <div className="flex justify-between text-[11px] text-green-600"><span>{t('admin.orders.discount')}</span><span>-{t('common.currency')} {order.discount.toFixed(2)}</span></div>}
+                    <div className="flex justify-between text-[11px]"><span className="text-gray-500">{t('admin.orders.shipping')}</span><span>{order.shippingCost === 0 ? t('admin.orders.free') : `${t('common.currency')} ${order.shippingCost?.toFixed(2)}`}</span></div>
+                    <div className="flex justify-between text-xs font-bold pt-1 border-t border-gray-100 dark:border-gray-800"><span>{t('admin.orders.total')}</span><span>{t('common.currency')} {order.total.toFixed(2)}</span></div>
                   </div>
                 </div>
               </div>
@@ -127,7 +127,7 @@ export default function OrderCard({ order, onStatusChange }) {
                         <p className="text-[10px] text-gray-400">{item.brand}</p>
                         <div className="flex items-center justify-between mt-0.5">
                           <span className="text-[10px] text-gray-500">{t('admin.orders.qty')}: {item.qty}</span>
-                          <span className="text-[11px] font-bold">MAD {(item.price * item.qty).toFixed(2)}</span>
+                          <span className="text-[11px] font-bold">{t('common.currency')} {(item.price * item.qty).toFixed(2)}</span>
                         </div>
                       </div>
                     </div>

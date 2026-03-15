@@ -201,7 +201,7 @@ export default function ProductsAdmin() {
                 <p className="text-xs font-medium truncate">{p.name}</p>
                 <p className="text-[10px] text-gray-400">{p.brand} · {p.category?.name ?? p.category} · Stock: {p.stock}</p>
               </div>
-              <span className="text-sm font-semibold shrink-0">MAD {p.price}</span>
+              <span className="text-sm font-semibold shrink-0">{t('common.currency')} {p.price}</span>
               <ActionsMenu
                 onEdit={() => openEdit(p)}
                 onDelete={() => setDeleteTarget(p)}

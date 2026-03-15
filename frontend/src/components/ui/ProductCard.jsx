@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Heart, BarChart2, ShoppingCart, Star } from 'lucide-react'
 import { useApp } from '../../context/AppContext'
+import { useTranslation } from 'react-i18next'
 
 export default function ProductCard({ product }) {
   const { state, dispatch } = useApp()
+  const { t } = useTranslation()
   const inWishlist = state.wishlist.some(i => i.id === product.id)
   const inCompare = state.compareList.some(i => i.id === product.id)
   const inCart = state.cart.some(i => i.id === product.id)
@@ -38,9 +40,9 @@ export default function ProductCard({ product }) {
           <span className="text-[10px] text-gray-400">({product.reviews})</span>
         </div>
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-sm font-semibold">{product.price} MAD</span>
+          <span className="text-sm font-semibold">{product.price} {t('common.currency')}</span>
           {product.originalPrice > product.price && (
-            <span className="text-xs text-gray-400 line-through">{product.originalPrice} MAD</span>
+            <span className="text-xs text-gray-400 line-through">{product.originalPrice} {t('common.currency')}</span>
           )}
         </div>
         <div className="flex items-center gap-1.5">

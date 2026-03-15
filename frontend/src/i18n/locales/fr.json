@@ -231,6 +231,7 @@
   },
   "common": {
     "loading": "Chargement...",
+    "currency": "MAD",
     "save": "Enregistrer",
     "cancel": "Annuler",
     "delete": "Supprimer",
