@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { SlidersHorizontal, X, ChevronDown, Loader2 } from 'lucide-react'
+import { SlidersHorizontal, X, ChevronDown } from 'lucide-react'
 import { productsApi, normaliseProduct } from '../lib/api'
 import ProductCard from '../components/ui/ProductCard'
+import { ProductCardSkeleton } from '../components/ui/Skeleton'
 import { useTranslation } from 'react-i18next'
 
 export default function CatalogPage() {
@@ -149,8 +150,8 @@ export default function CatalogPage() {
 
         <div className="flex-1">
           {loading ? (
-            <div className="flex items-center justify-center py-20 text-gray-400">
-              <Loader2 size={20} className="animate-spin mr-2" /> {t('common.loading')}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {Array.from({ length: 8 }).map((_, i) => <ProductCardSkeleton key={i} />)}
             </div>
           ) : products.length === 0 ? (
             <div className="text-center py-20 text-gray-400"><p className="text-sm">{t('catalog.noProducts')}</p></div>
