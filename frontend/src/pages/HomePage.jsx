@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, BadgeCheck, Truck, RotateCcw, Star } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { productsApi, normaliseProduct } from '../lib/api'
+import { productsApi, reviewsApi, normaliseProduct } from '../lib/api'
 import { useSettings } from '../context/SettingsContext'
 import ProductCard from '../components/ui/ProductCard'
 
@@ -49,22 +49,16 @@ function ProductSkeleton() {
   )
 }
 
-const STATS = [
-  { key: 'products', value: '500+' },
-  { key: 'brands',   value: '80+' },
-  { key: 'customers', value: '12k+' },
-  { key: 'support',  value: '24/7' },
-]
-
 export default function HomePage() {
   const { t } = useTranslation()
   const { settings } = useSettings()
-  const [featured, setFeatured]     = useState([])
+  const [featured, setFeatured]       = useState([])
   const [newArrivals, setNewArrivals] = useState([])
-  const [categories, setCategories] = useState([])
-  const [loading, setLoading]       = useState(true)
-  const [email, setEmail]           = useState('')
-  const [subscribed, setSubscribed] = useState(false)
+  const [categories, setCategories]   = useState([])
+  const [reviews, setReviews]         = useState([])
+  const [loading, setLoading]         = useState(true)
+  const [email, setEmail]             = useState('')
+  const [subscribed, setSubscribed]   = useState(false)
 
   useEffect(() => {
     Promise.all([
@@ -72,9 +66,17 @@ export default function HomePage() {
       productsApi.list({ sort: 'newest', limit: 4 }),
       productsApi.categories(),
     ]).then(([featuredRes, newRes, catsRes]) => {
-      setFeatured((featuredRes.products || []).map(normaliseProduct))
+      const featuredList = (featuredRes.products || []).map(normaliseProduct)
+      setFeatured(featuredList)
       setNewArrivals((newRes.products || []).map(normaliseProduct))
       setCategories(catsRes.categories || [])
+
+      // fetch reviews from first 3 featured products
+      const ids = featuredList.slice(0, 3).map(p => p._id || p.id).filter(Boolean)
+      return Promise.all(ids.map(id => reviewsApi.list(id, { limit: 1, sort: 'highest' })))
+    }).then(results => {
+      const flat = results.flatMap(r => r.reviews || []).slice(0, 3)
+      setReviews(flat)
     }).catch(console.error)
       .finally(() => setLoading(false))
   }, [])
@@ -112,22 +114,6 @@ export default function HomePage() {
               </Link>
             </div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* ── Stats bar ── */}
-      <section className="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
-        <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {STATS.map(({ key, value }, i) => (
-            <motion.div
-              key={key}
-              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-              className="text-center"
-            >
-              <p className="text-2xl font-bold">{value}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{t(`home.stats.${key}`)}</p>
-            </motion.div>
-          ))}
         </div>
       </section>
 
@@ -223,28 +209,26 @@ export default function HomePage() {
       </section>
 
       {/* ── Reviews ── */}
-      <section className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <h2 className="text-sm font-semibold uppercase tracking-wider mb-6 text-center">{t('home.reviews.title')}</h2>
-          <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            {[
-              { name: 'Karim B.', text: 'Livraison rapide et matériaux de très bonne qualité. Le ciment Portland que j\'ai commandé était exactement ce qu\'il me fallait pour mon chantier.', rating: 5 },
-              { name: 'Hassan M.', text: 'Grande sélection d\'outillage électroportatif. J\'ai trouvé la perceuse que je cherchais depuis longtemps à un prix compétitif.', rating: 5 },
-              { name: 'Fatima Z.', text: 'Service client excellent, ils m\'ont aidé à choisir les bons tuyaux pour ma plomberie. Je recommande vivement.', rating: 4 },
-            ].map((review) => (
-              <motion.div key={review.name} variants={itemVariants} className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg p-4">
-                <div className="flex items-center gap-1 mb-2">
-                  {Array.from({ length: review.rating }).map((_, i) => (
-                    <Star key={i} size={11} className="fill-black dark:fill-white text-black dark:text-white" />
-                  ))}
-                </div>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">"{review.text}"</p>
-                <p className="text-xs font-semibold">— {review.name}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {reviews.length > 0 && (
+        <section className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
+          <div className="max-w-7xl mx-auto px-4 py-12">
+            <h2 className="text-sm font-semibold uppercase tracking-wider mb-6 text-center">{t('home.reviews.title')}</h2>
+            <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              {reviews.map((review) => (
+                <motion.div key={review._id} variants={itemVariants} className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+                  <div className="flex items-center gap-1 mb-2">
+                    {Array.from({ length: review.rating }).map((_, i) => (
+                      <Star key={i} size={11} className="fill-black dark:fill-white text-black dark:text-white" />
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">"{review.body}"</p>
+                  <p className="text-xs font-semibold">— {review.name}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* ── Newsletter ── */}
       <section className="border-t border-gray-200 dark:border-gray-800">
