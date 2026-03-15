@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, Heart, BarChart2, Sun, Moon, Search, Shield, Menu, X, User, LogOut, Settings } from 'lucide-react'
+import { ShoppingCart, Heart, BarChart2, Sun, Moon, Search, Shield, Menu, X, User, LogOut, Settings, LayoutDashboard } from 'lucide-react'
 import { useApp } from '../../context/AppContext'
 import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from 'react-i18next'
@@ -111,7 +111,7 @@ export default function Header() {
                   </Link>
                   {user.role === 'admin' && (
                     <Link to="/admin" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                      <Settings size={12} /> {t('auth.adminPanel')}
+                      <LayoutDashboard size={12} /> {t('auth.adminPanel')}
                     </Link>
                   )}
                   <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors border-t border-gray-200 dark:border-gray-800">
