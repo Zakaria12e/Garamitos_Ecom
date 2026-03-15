@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Field, SelectField } from './CheckoutFields'
-import { MOROCCAN_CITIES } from '../../constants/checkout'
+import { Field } from './CheckoutFields'
 
 export default function ShippingForm({ shipping, setShipping, onContinue }) {
   const { t } = useTranslation()
@@ -30,7 +29,7 @@ export default function ShippingForm({ shipping, setShipping, onContinue }) {
         <div className="col-span-2">
           <Field label={t('checkout.address')} value={shipping.address} onChange={e => setShipping(s => ({ ...s, address: e.target.value }))} placeholder="123 Main St" />
         </div>
-        <SelectField label={t('checkout.city')} value={shipping.city} onChange={e => setShipping(s => ({ ...s, city: e.target.value }))} options={MOROCCAN_CITIES} />
+        <Field label={t('checkout.city')} value={shipping.city} onChange={e => setShipping(s => ({ ...s, city: e.target.value }))} placeholder={t('checkout.city')} />
         <Field label={t('checkout.zip')} value={shipping.zip} onChange={e => setShipping(s => ({ ...s, zip: e.target.value }))} placeholder="10001" />
         <div className="col-span-2">
           <label className="block text-xs font-medium mb-1">{t('checkout.country')}</label>
