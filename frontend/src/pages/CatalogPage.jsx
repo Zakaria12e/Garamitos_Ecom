@@ -5,15 +5,19 @@ import { SlidersHorizontal, X, ChevronDown, Loader2 } from 'lucide-react'
 import { productsApi, normaliseProduct } from '../lib/api'
 import ProductCard from '../components/ui/ProductCard'
 
-const CATEGORIES = ['Surveillance Cameras', 'Smart Home', 'Drones', 'Security Systems', 'Audio Equipment']
-const BRANDS     = ['Axis', 'DJI', 'Sonos', 'Ring', 'Nest', 'Bose', 'Arlo', 'Hikvision']
-
 export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [products, setProducts] = useState([])
-  const [total, setTotal]       = useState(0)
-  const [loading, setLoading]   = useState(true)
+  const [products, setProducts]   = useState([])
+  const [total, setTotal]         = useState(0)
+  const [loading, setLoading]     = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [categories, setCategories] = useState([])
+  const [brands, setBrands]         = useState([])
+
+  useEffect(() => {
+    productsApi.categories().then(d => setCategories(d.categories || [])).catch(console.error)
+    productsApi.brands().then(d => setBrands(d.brands || [])).catch(console.error)
+  }, [])
 
   const searchQ        = searchParams.get('search') || ''
   const selectedCats   = searchParams.getAll('category')
@@ -67,16 +71,16 @@ export default function CatalogPage() {
     <div className="space-y-6">
       <div>
         <h3 className="text-xs font-semibold uppercase tracking-wider mb-3">Categories</h3>
-        {CATEGORIES.map(cat => (
-          <label key={cat} className="flex items-center gap-2 mb-2 cursor-pointer">
-            <input type="checkbox" checked={selectedCats.includes(cat)} onChange={() => toggleMulti('category', cat)} className="accent-black dark:accent-white" />
-            <span className="text-xs">{cat}</span>
+        {categories.map(cat => (
+          <label key={cat.slug} className="flex items-center gap-2 mb-2 cursor-pointer">
+            <input type="checkbox" checked={selectedCats.includes(cat.slug)} onChange={() => toggleMulti('category', cat.slug)} className="accent-black dark:accent-white" />
+            <span className="text-xs">{cat.name}</span>
           </label>
         ))}
       </div>
       <div>
         <h3 className="text-xs font-semibold uppercase tracking-wider mb-3">Brands</h3>
-        {BRANDS.map(brand => (
+        {brands.map(brand => (
           <label key={brand} className="flex items-center gap-2 mb-2 cursor-pointer">
             <input type="checkbox" checked={selectedBrands.includes(brand)} onChange={() => toggleMulti('brand', brand)} className="accent-black dark:accent-white" />
             <span className="text-xs">{brand}</span>
