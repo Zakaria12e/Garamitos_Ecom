@@ -28,10 +28,24 @@
   },
   "cart": {
     "title": "سلة التسوق",
+    "titleCount": "سلة التسوق ({{count}} عناصر)",
     "empty": "سلتك فارغة",
+    "browseProducts": "تصفح المنتجات",
     "total": "المجموع",
+    "subtotal": "المجموع الجزئي",
+    "shipping": "الشحن",
+    "discount": "الخصم",
+    "free": "مجاني",
     "checkout": "إتمام الشراء",
-    "remove": "إزالة"
+    "remove": "إزالة",
+    "freeShippingProgress": "أضف <strong>{{amount}} درهم</strong> للحصول على شحن مجاني",
+    "freeShippingUnlocked": "🎉 لقد حصلت على شحن مجاني!",
+    "freeShippingNote": "شحن مجاني للطلبات فوق {{amount}} درهم",
+    "orderSummary": "ملخص الطلب",
+    "promoCode": "كود الخصم",
+    "enterCode": "أدخل الكود",
+    "apply": "تطبيق",
+    "invalidPromo": "كود خصم غير صالح"
   },
   "checkout": {
     "fullName": "الاسم الكامل",

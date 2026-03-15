@@ -28,10 +28,24 @@
   },
   "cart": {
     "title": "Panier",
+    "titleCount": "Panier ({{count}} articles)",
     "empty": "Votre panier est vide",
+    "browseProducts": "Voir les produits",
     "total": "Total",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "discount": "Réduction",
+    "free": "Gratuit",
     "checkout": "Commander",
-    "remove": "Supprimer"
+    "remove": "Supprimer",
+    "freeShippingProgress": "Ajoutez <strong>{{amount}} MAD</strong> pour la livraison gratuite",
+    "freeShippingUnlocked": "🎉 Vous avez débloqué la livraison gratuite !",
+    "freeShippingNote": "Livraison gratuite dès {{amount}} MAD",
+    "orderSummary": "Récapitulatif",
+    "promoCode": "Code promo",
+    "enterCode": "Entrez le code",
+    "apply": "Appliquer",
+    "invalidPromo": "Code promo invalide"
   },
   "checkout": {
     "fullName": "Nom complet",

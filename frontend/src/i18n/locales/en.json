@@ -28,10 +28,24 @@
   },
   "cart": {
     "title": "Shopping Cart",
+    "titleCount": "Shopping Cart ({{count}} items)",
     "empty": "Your cart is empty",
+    "browseProducts": "Browse Products",
     "total": "Total",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "discount": "Discount",
+    "free": "Free",
     "checkout": "Checkout",
-    "remove": "Remove"
+    "remove": "Remove",
+    "freeShippingProgress": "Add <strong>{{amount}} MAD</strong> more for free shipping",
+    "freeShippingUnlocked": "🎉 You've unlocked free shipping!",
+    "freeShippingNote": "Free shipping on orders over {{amount}} MAD",
+    "orderSummary": "Order Summary",
+    "promoCode": "Promo Code",
+    "enterCode": "Enter code",
+    "apply": "Apply",
+    "invalidPromo": "Invalid promo code"
   },
   "checkout": {
     "fullName": "Full Name",
