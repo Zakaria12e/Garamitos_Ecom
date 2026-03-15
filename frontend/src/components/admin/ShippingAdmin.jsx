@@ -61,14 +61,14 @@ function DeleteModal({ promo, onConfirm, onCancel, t }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-        className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl w-full max-w-sm p-6">
+        className="relative bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl w-full max-w-sm p-6">
         <div className="flex flex-col items-center text-center gap-3">
           <div className="w-11 h-11 rounded-full bg-red-100 dark:bg-red-950 flex items-center justify-center">
             <AlertTriangle size={18} className="text-red-500" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold">Delete promo code</h3>
-            <p className="text-xs text-gray-500 mt-1">Delete <span className="font-mono font-bold text-gray-800 dark:text-gray-200">{promo?.code}</span>? This cannot be undone.</p>
+            <h3 className="text-sm font-semibold">{t('admin.shipping.deleteTitle')}</h3>
+            <p className="text-xs text-gray-500 mt-1">{t('admin.shipping.deleteConfirm')} <span className="font-mono font-bold text-gray-800 dark:text-gray-200">{promo?.code}</span>? {t('admin.shipping.deleteWarning')}</p>
           </div>
         </div>
         <div className="flex gap-2 mt-5">

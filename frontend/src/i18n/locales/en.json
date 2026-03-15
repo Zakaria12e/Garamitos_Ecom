@@ -154,7 +154,10 @@
       "activeStatus": "Active",
       "inactiveStatus": "Inactive",
       "discountSuffix": "discount",
-      "used": "used"
+      "used": "used",
+      "deleteTitle": "Delete Promo Code",
+      "deleteConfirm": "Delete",
+      "deleteWarning": "This cannot be undone."
     },
     "common": {
       "edit": "Edit",

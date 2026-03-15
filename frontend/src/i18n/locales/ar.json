@@ -154,7 +154,10 @@
       "activeStatus": "نشط",
       "inactiveStatus": "غير نشط",
       "discountSuffix": "خصم",
-      "used": "مستخدم"
+      "used": "مستخدم",
+      "deleteTitle": "حذف كود الخصم",
+      "deleteConfirm": "حذف",
+      "deleteWarning": "لا يمكن التراجع عن هذا الإجراء."
     },
     "common": {
       "edit": "تعديل",

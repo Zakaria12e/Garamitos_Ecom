@@ -154,7 +154,10 @@
       "activeStatus": "Actif",
       "inactiveStatus": "Inactif",
       "discountSuffix": "de remise",
-      "used": "utilisé(s)"
+      "used": "utilisé(s)",
+      "deleteTitle": "Supprimer le code promo",
+      "deleteConfirm": "Supprimer",
+      "deleteWarning": "Cette action est irréversible."
     },
     "common": {
       "edit": "Modifier",
