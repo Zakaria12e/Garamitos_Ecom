@@ -126,12 +126,15 @@ function OrderCard({ order }) {
   )
 }
 
+const PAGE_SIZE = 3
+
 export default function OrdersPage() {
   const { t } = useTranslation()
   const { user } = useAuth()
   const [orders, setOrders]   = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState('')
+  const [page, setPage]       = useState(1)
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
@@ -140,6 +143,9 @@ export default function OrdersPage() {
       .catch(err => setError(err.message))
       .finally(() => setLoading(false))
   }, [user])
+
+  const totalPages  = Math.ceil(orders.length / PAGE_SIZE)
+  const paginated   = orders.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   if (!user) return (
     <div className="max-w-7xl mx-auto px-4 py-20 text-center">
@@ -175,9 +181,31 @@ export default function OrdersPage() {
           </Link>
         </div>
       ) : (
-        <div className="space-y-4">
-          {orders.map(order => <OrderCard key={order._id} order={order} />)}
-        </div>
+        <>
+          <div className="space-y-4">
+            {paginated.map(order => <OrderCard key={order._id} order={order} />)}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between mt-6 text-xs">
+              <button
+                onClick={() => setPage(p => p - 1)}
+                disabled={page === 1}
+                className="border border-gray-200 dark:border-gray-800 px-3 py-1.5 rounded-md hover:bg-gray-50 dark:hover:bg-gray-950 disabled:opacity-40 transition-colors"
+              >
+                {t('orders.prev')}
+              </button>
+              <span className="text-gray-400">{t('orders.page', { current: page, total: totalPages })}</span>
+              <button
+                onClick={() => setPage(p => p + 1)}
+                disabled={page === totalPages}
+                className="border border-gray-200 dark:border-gray-800 px-3 py-1.5 rounded-md hover:bg-gray-50 dark:hover:bg-gray-950 disabled:opacity-40 transition-colors"
+              >
+                {t('orders.next')}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
