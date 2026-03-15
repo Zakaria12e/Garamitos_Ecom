@@ -224,6 +224,57 @@
     "search": "بحث",
     "noResults": "لا توجد نتائج"
   },
+  "productPage": {
+    "notFound": "المنتج غير موجود",
+    "specifications": "المواصفات",
+    "relatedProducts": "منتجات ذات صلة",
+    "freeShipping": "شحن مجاني للطلبات فوق {{amount}} درهم · إرجاع خلال 30 يوماً",
+    "onlyLeft": "{{count}} قطعة فقط متبقية",
+    "inStock": "متوفر",
+    "outOfStock": "نفذ من المخزون",
+    "addToCart": "أضف إلى السلة",
+    "reviews": {
+      "title": "آراء العملاء",
+      "write": "اكتب رأيك",
+      "cancel": "إلغاء",
+      "count_one": "{{count}} تقييم",
+      "count_other": "{{count}} تقييمات",
+      "noReviews": "لا توجد تقييمات بعد",
+      "beFirst": "كن أول من يقيّم هذا المنتج",
+      "verified": "مشترٍ موثق",
+      "sort": {
+        "newest": "الأحدث أولاً",
+        "oldest": "الأقدم أولاً",
+        "highest": "الأعلى تقييماً",
+        "lowest": "الأدنى تقييماً"
+      },
+      "stars": {
+        "1": "ضعيف",
+        "2": "مقبول",
+        "3": "جيد",
+        "4": "جيد جداً",
+        "5": "ممتاز"
+      },
+      "form": {
+        "title": "اكتب رأيك",
+        "rating": "تقييمك",
+        "name": "اسمك",
+        "email": "البريد الإلكتروني",
+        "reviewTitle": "عنوان التقييم",
+        "titlePlaceholder": "لخّص تجربتك",
+        "body": "تقييمك",
+        "bodyPlaceholder": "شارك رأيك في هذا المنتج…",
+        "charCount": "{{count}}/1000 · الحد الأدنى 10 أحرف",
+        "submit": "إرسال التقييم",
+        "submitting": "جارٍ الإرسال…",
+        "successTitle": "تم إرسال التقييم!",
+        "successBody": "شكراً على مشاركتك.",
+        "errorRating": "يرجى اختيار تقييم",
+        "errorLength": "يجب أن يحتوي التقييم على 10 أحرف على الأقل",
+        "errorFallback": "فشل إرسال التقييم"
+      }
+    }
+  },
   "settings": {
     "title": "الإعدادات",
     "subtitle": "إدارة حسابك وتفضيلاتك",

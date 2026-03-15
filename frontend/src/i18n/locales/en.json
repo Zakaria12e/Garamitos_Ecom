@@ -224,6 +224,57 @@
     "search": "Search",
     "noResults": "No results found"
   },
+  "productPage": {
+    "notFound": "Product not found",
+    "specifications": "Specifications",
+    "relatedProducts": "Related Products",
+    "freeShipping": "Free shipping on orders over {{amount}} MAD · 30-day returns",
+    "onlyLeft": "Only {{count}} left",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "addToCart": "Add to Cart",
+    "reviews": {
+      "title": "Customer Reviews",
+      "write": "Write a Review",
+      "cancel": "Cancel",
+      "count_one": "{{count}} review",
+      "count_other": "{{count}} reviews",
+      "noReviews": "No reviews yet",
+      "beFirst": "Be the first to review this product",
+      "verified": "Verified",
+      "sort": {
+        "newest": "Newest First",
+        "oldest": "Oldest First",
+        "highest": "Highest Rated",
+        "lowest": "Lowest Rated"
+      },
+      "stars": {
+        "1": "Poor",
+        "2": "Fair",
+        "3": "Good",
+        "4": "Very Good",
+        "5": "Excellent"
+      },
+      "form": {
+        "title": "Write a Review",
+        "rating": "Your Rating",
+        "name": "Your Name",
+        "email": "Email",
+        "reviewTitle": "Review Title",
+        "titlePlaceholder": "Summarize your experience",
+        "body": "Your Review",
+        "bodyPlaceholder": "Tell others what you think about this product…",
+        "charCount": "{{count}}/1000 · min 10 characters",
+        "submit": "Submit Review",
+        "submitting": "Submitting…",
+        "successTitle": "Review submitted!",
+        "successBody": "Thank you for your feedback.",
+        "errorRating": "Please select a rating",
+        "errorLength": "Review must be at least 10 characters",
+        "errorFallback": "Failed to submit review"
+      }
+    }
+  },
   "settings": {
     "title": "Settings",
     "subtitle": "Manage your account and preferences",

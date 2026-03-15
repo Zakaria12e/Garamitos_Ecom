@@ -224,6 +224,57 @@
     "search": "Rechercher",
     "noResults": "Aucun résultat"
   },
+  "productPage": {
+    "notFound": "Produit introuvable",
+    "specifications": "Caractéristiques",
+    "relatedProducts": "Produits similaires",
+    "freeShipping": "Livraison gratuite dès {{amount}} MAD · Retours sous 30 jours",
+    "onlyLeft": "Plus que {{count}} en stock",
+    "inStock": "En stock",
+    "outOfStock": "Rupture de stock",
+    "addToCart": "Ajouter au panier",
+    "reviews": {
+      "title": "Avis clients",
+      "write": "Écrire un avis",
+      "cancel": "Annuler",
+      "count_one": "{{count}} avis",
+      "count_other": "{{count}} avis",
+      "noReviews": "Aucun avis pour l'instant",
+      "beFirst": "Soyez le premier à donner votre avis",
+      "verified": "Vérifié",
+      "sort": {
+        "newest": "Plus récent",
+        "oldest": "Plus ancien",
+        "highest": "Mieux noté",
+        "lowest": "Moins bien noté"
+      },
+      "stars": {
+        "1": "Mauvais",
+        "2": "Passable",
+        "3": "Bien",
+        "4": "Très bien",
+        "5": "Excellent"
+      },
+      "form": {
+        "title": "Écrire un avis",
+        "rating": "Votre note",
+        "name": "Votre nom",
+        "email": "Email",
+        "reviewTitle": "Titre de l'avis",
+        "titlePlaceholder": "Résumez votre expérience",
+        "body": "Votre avis",
+        "bodyPlaceholder": "Partagez votre opinion sur ce produit…",
+        "charCount": "{{count}}/1000 · min 10 caractères",
+        "submit": "Publier l'avis",
+        "submitting": "Envoi…",
+        "successTitle": "Avis soumis !",
+        "successBody": "Merci pour votre retour.",
+        "errorRating": "Veuillez sélectionner une note",
+        "errorLength": "L'avis doit contenir au moins 10 caractères",
+        "errorFallback": "Échec de l'envoi de l'avis"
+      }
+    }
+  },
   "settings": {
     "title": "Paramètres",
     "subtitle": "Gérez votre compte et vos préférences",
