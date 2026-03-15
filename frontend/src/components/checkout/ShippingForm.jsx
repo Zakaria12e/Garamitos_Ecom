@@ -14,7 +14,19 @@ export default function ShippingForm({ shipping, setShipping, onContinue }) {
           <Field label={t('checkout.fullName')} value={shipping.fullName} onChange={e => setShipping(s => ({ ...s, fullName: e.target.value }))} placeholder="John Doe" />
         </div>
         <Field label={t('checkout.email')} type="email" value={shipping.email} onChange={e => setShipping(s => ({ ...s, email: e.target.value }))} placeholder="john@example.com" />
-        <Field label={t('checkout.phone')} value={shipping.phone} onChange={e => setShipping(s => ({ ...s, phone: e.target.value }))} placeholder="+212 600 000000" dir="ltr" />
+        <Field
+          label={t('checkout.phone')}
+          value={shipping.phone}
+          onChange={e => {
+            const prefix = '+212'
+            let raw = e.target.value
+            if (!raw.startsWith(prefix)) raw = prefix
+            const digits = raw.slice(prefix.length).replace(/\D/g, '').slice(0, 9)
+            setShipping(s => ({ ...s, phone: prefix + digits }))
+          }}
+          placeholder="+212 600 000000"
+          dir="ltr"
+        />
         <div className="col-span-2">
           <Field label={t('checkout.address')} value={shipping.address} onChange={e => setShipping(s => ({ ...s, address: e.target.value }))} placeholder="123 Main St" />
         </div>
