@@ -239,6 +239,12 @@
     "search": "Search",
     "noResults": "No results found"
   },
+  "wishlist": {
+    "title": "Wishlist ({{count}})",
+    "empty": "Your wishlist is empty",
+    "browseProducts": "Browse Products",
+    "addToCart": "Add to Cart"
+  },
   "productPage": {
     "notFound": "Product not found",
     "specifications": "Specifications",

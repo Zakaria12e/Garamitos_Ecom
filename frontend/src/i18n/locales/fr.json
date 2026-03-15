@@ -239,6 +239,12 @@
     "search": "Rechercher",
     "noResults": "Aucun résultat"
   },
+  "wishlist": {
+    "title": "Favoris ({{count}})",
+    "empty": "Votre liste de favoris est vide",
+    "browseProducts": "Voir les produits",
+    "addToCart": "Ajouter au panier"
+  },
   "productPage": {
     "notFound": "Produit introuvable",
     "specifications": "Caractéristiques",

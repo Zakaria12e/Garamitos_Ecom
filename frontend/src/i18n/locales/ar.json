@@ -239,6 +239,12 @@
     "search": "بحث",
     "noResults": "لا توجد نتائج"
   },
+  "wishlist": {
+    "title": "المفضلة ({{count}})",
+    "empty": "قائمة المفضلة فارغة",
+    "browseProducts": "تصفح المنتجات",
+    "addToCart": "أضف إلى السلة"
+  },
   "productPage": {
     "notFound": "المنتج غير موجود",
     "specifications": "المواصفات",
