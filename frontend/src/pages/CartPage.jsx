@@ -137,6 +137,41 @@ export default function CartPage() {
               </p>
             )}
           </div>
+          {/* Promo code */}
+          <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+            <h3 className="text-xs font-semibold mb-3 flex items-center gap-1.5">
+              <Tag size={12} /> Promo Code
+            </h3>
+            {state.promoCode ? (
+              <div className="flex items-center justify-between bg-green-50 dark:bg-green-950 rounded-md px-3 py-2">
+                <div>
+                  <span className="text-xs font-mono font-semibold text-green-700 dark:text-green-400">{state.promoCode.code}</span>
+                  <span className="text-[10px] text-green-600 dark:text-green-500 ml-2">{state.promoCode.label}</span>
+                </div>
+                <button onClick={() => dispatch({ type: 'REMOVE_PROMO' })}>
+                  <X size={12} className="text-gray-500" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  value={promoInput}
+                  onChange={e => setPromoInput(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && applyPromo()}
+                  placeholder="Enter code"
+                  className="flex-1 text-xs border border-gray-200 dark:border-gray-800 rounded-md px-3 py-1.5 bg-transparent focus:outline-none focus:border-black dark:focus:border-white"
+                />
+                <button
+                  onClick={applyPromo}
+                  disabled={promoLoading}
+                  className="text-xs bg-black dark:bg-white text-white dark:text-black px-3 py-1.5 rounded-md font-medium flex items-center gap-1 disabled:opacity-50"
+                >
+                  {promoLoading ? <Loader2 size={11} className="animate-spin" /> : 'Apply'}
+                </button>
+              </div>
+            )}
+            {promoError && <p className="text-xs text-red-500 mt-1">{promoError}</p>}
+          </div>
         </div>
       </div>
     </div>
