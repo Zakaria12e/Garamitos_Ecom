@@ -1,11 +1,49 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Pencil, Trash2 } from 'lucide-react'
+import { Plus, Pencil, Trash2, MoreVertical } from 'lucide-react'
 import { Skeleton } from '../ui/Skeleton'
 import { productsApi, categoriesApi, normaliseProduct } from '../../lib/api'
 import { EMPTY_PRODUCT_FORM } from '../../constants/admin'
 import ProductFormModal from './ProductFormModal'
 import { useTranslation } from 'react-i18next'
+
+function ActionsMenu({ onEdit, onDelete, t }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  return (
+    <div ref={ref} className="relative shrink-0">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      >
+        <MoreVertical size={14} className="text-gray-500" />
+      </button>
+      {open && (
+        <div className="absolute end-0 top-7 z-20 w-32 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
+          <button
+            onClick={() => { onEdit(); setOpen(false) }}
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          >
+            <Pencil size={11} /> {t('admin.common.edit')}
+          </button>
+          <button
+            onClick={() => { onDelete(); setOpen(false) }}
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
+          >
+            <Trash2 size={11} /> {t('admin.common.del')}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default function ProductsAdmin() {
   const { t } = useTranslation()
@@ -116,14 +154,11 @@ export default function ProductsAdmin() {
                 <p className="text-[10px] text-gray-400">{p.brand} · {p.category?.name ?? p.category} · Stock: {p.stock}</p>
               </div>
               <span className="text-sm font-semibold shrink-0">MAD {p.price}</span>
-              <div className="flex gap-1 shrink-0">
-                <button onClick={() => openEdit(p)} className="text-xs px-2.5 py-1 border border-gray-200 dark:border-gray-800 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors flex items-center gap-1">
-                  <Pencil size={10} /> {t('admin.common.edit')}
-                </button>
-                <button onClick={() => handleDelete(p._id || p.id)} className="text-xs px-2.5 py-1 border border-red-200 dark:border-red-900 text-red-500 rounded hover:bg-red-50 dark:hover:bg-red-950 transition-colors flex items-center gap-1">
-                  <Trash2 size={10} /> {t('admin.common.del')}
-                </button>
-              </div>
+              <ActionsMenu
+                onEdit={() => openEdit(p)}
+                onDelete={() => handleDelete(p._id || p.id)}
+                t={t}
+              />
             </motion.div>
           ))}
         </div>
