@@ -8,7 +8,8 @@ import Footer from './components/layout/Footer'
 import HomePage from './pages/HomePage'
 import AuthPage   from './pages/AuthPage'
 import AdminPage    from './pages/AdminPage'
-import SettingsPage from './pages/SettingsPage'
+import SettingsPage  from './pages/SettingsPage'
+import CatalogPage   from './pages/CatalogPage'
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -31,6 +32,7 @@ export default function App() {
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<PageWrapper><HomePage /></PageWrapper>} />
+              <Route path="/catalog"    element={<PageWrapper><CatalogPage /></PageWrapper>} />
               <Route path="/login"     element={<PageWrapper><AuthPage /></PageWrapper>} />
               <Route path="/admin/*"    element={<PageWrapper><AdminPage /></PageWrapper>} />
               <Route path="/settings"  element={<PageWrapper><SettingsPage /></PageWrapper>} />
