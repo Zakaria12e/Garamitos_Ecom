@@ -43,11 +43,11 @@ function PromoMenu({ onEdit, onDelete, t }) {
         <MoreVertical size={13} className="text-gray-400" />
       </button>
       {open && (
-        <div className="absolute end-0 top-7 z-20 w-32 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden">
-          <button onClick={() => { onEdit(); setOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+        <div className="absolute end-0 top-7 z-20 w-32 bg-black border border-gray-700 rounded-xl shadow-lg overflow-hidden">
+          <button onClick={() => { onEdit(); setOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-white/10 transition-colors">
             <Pencil size={11} /> {t('admin.common.edit')}
           </button>
-          <button onClick={() => { onDelete(); setOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
+          <button onClick={() => { onDelete(); setOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-white/10 transition-colors">
             <Trash2 size={11} /> {t('admin.common.del')}
           </button>
         </div>
