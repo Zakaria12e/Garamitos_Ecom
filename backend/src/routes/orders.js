@@ -163,6 +163,35 @@ router.get('/my/:id', protect, async (req, res, next) => {
   }
 })
 
+// PUT /api/orders/my/:id/cancel
+// Auth user — cancel their own order (only if still Processing)
+router.put('/my/:id/cancel', protect, async (req, res, next) => {
+  try {
+    const order = await Order.findOne({ _id: req.params.id, user: req.user._id })
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found.' })
+
+    if (order.status !== 'Processing') {
+      return res.status(400).json({
+        success: false,
+        message: 'Only orders in Processing status can be cancelled.',
+      })
+    }
+
+    // Restore stock for each item
+    for (const item of order.items) {
+      await Product.findByIdAndUpdate(item.productId, { $inc: { stock: item.qty } })
+    }
+
+    order.status = 'Cancelled'
+    order.statusHistory.push({ status: 'Cancelled', note: 'Cancelled by customer', changedAt: new Date() })
+    await order.save()
+
+    res.json({ success: true, order })
+  } catch (err) {
+    next(err)
+  }
+})
+
 // GET /api/orders (admin)
 router.get('/', protect, adminOnly, async (req, res, next) => {
   try {
