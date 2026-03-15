@@ -8,6 +8,7 @@ import {
 import { productsApi, normaliseProduct } from '../lib/api'
 import { useApp } from '../context/AppContext'
 import { useSettings } from '../context/SettingsContext'
+import { useTranslation } from 'react-i18next'
 import ProductCard from '../components/ui/ProductCard'
 import ReviewsSection from '../components/product/ReviewsSection'
 
@@ -16,6 +17,7 @@ export default function ProductPage() {
   const navigate = useNavigate()
   const { state, dispatch } = useApp()
   const { settings } = useSettings()
+  const { t } = useTranslation()
 
   const [product,   setProduct]   = useState(null)
   const [related,   setRelated]   = useState([])
@@ -43,13 +45,13 @@ export default function ProductPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-24 text-gray-400">
-      <Loader2 size={20} className="animate-spin mr-2" /> Loading…
+      <Loader2 size={20} className="animate-spin mr-2" /> {t('common.loading')}
     </div>
   )
 
   if (!product) return (
     <div className="max-w-7xl mx-auto px-4 py-16 text-center text-gray-400 text-sm">
-      Product not found
+      {t('productPage.notFound')}
     </div>
   )
 
@@ -61,9 +63,9 @@ export default function ProductPage() {
 
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-xs text-gray-400 mb-6">
-        <Link to="/" className="hover:text-black dark:hover:text-white">Home</Link>
+        <Link to="/" className="hover:text-black dark:hover:text-white">{t('nav.home')}</Link>
         <ChevronRight size={11} />
-        <Link to="/catalog" className="hover:text-black dark:hover:text-white">Catalog</Link>
+        <Link to="/catalog" className="hover:text-black dark:hover:text-white">{t('nav.catalog')}</Link>
         <ChevronRight size={11} />
         <Link
           to={'/catalog?category=' + encodeURIComponent(product.category?.slug || product.category)}
@@ -113,7 +115,7 @@ export default function ProductPage() {
           {product.specs && Object.keys(product.specs).length > 0 && (
             <div>
               <h2 className="text-xs font-semibold uppercase tracking-wider mb-3 text-gray-500 dark:text-gray-400">
-                Specifications
+                {t('productPage.specifications')}
               </h2>
               <div className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
                 {Object.entries(product.specs).map(([key, val], i) => (
@@ -182,7 +184,7 @@ export default function ProductPage() {
                   ? 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400'
                   : 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-400')
             }>
-              {product.stock > 10 ? 'In Stock' : product.stock > 0 ? `Only ${product.stock} left` : 'Out of Stock'}
+              {product.stock > 10 ? t('productPage.inStock') : product.stock > 0 ? t('productPage.onlyLeft', { count: product.stock }) : t('productPage.outOfStock')}
             </span>
           </div>
 
@@ -214,7 +216,7 @@ export default function ProductPage() {
               disabled={product.stock === 0}
               className="flex-1 flex items-center justify-center gap-2 py-2 bg-black dark:bg-white text-white dark:text-black rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-40"
             >
-              <ShoppingCart size={14} /> Add to Cart
+              <ShoppingCart size={14} /> {t('productPage.addToCart')}
             </motion.button>
 
             <motion.button
@@ -239,7 +241,7 @@ export default function ProductPage() {
           </div>
 
           <p className="text-[10px] text-gray-400 mt-2">
-            Free shipping on orders over {settings.freeShippingAt} MAD · 30-day returns
+            {t('productPage.freeShipping', { amount: settings.freeShippingAt })}
           </p>
         </div>
       </div>
@@ -247,7 +249,7 @@ export default function ProductPage() {
       {/* Related products */}
       {related.length > 0 && (
         <div className="border-t border-gray-200 dark:border-gray-800 pt-12">
-          <h2 className="text-sm font-semibold uppercase tracking-wider mb-4">Related Products</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wider mb-4">{t('productPage.relatedProducts')}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {related.map(p => <ProductCard key={p.id} product={p} />)}
           </div>
