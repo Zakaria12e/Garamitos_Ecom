@@ -10,6 +10,7 @@ import AuthPage   from './pages/AuthPage'
 import AdminPage    from './pages/AdminPage'
 import SettingsPage  from './pages/SettingsPage'
 import CatalogPage   from './pages/CatalogPage'
+import ProductPage   from './pages/ProductPage'
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -33,6 +34,7 @@ export default function App() {
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<PageWrapper><HomePage /></PageWrapper>} />
               <Route path="/catalog"    element={<PageWrapper><CatalogPage /></PageWrapper>} />
+              <Route path="/product/:id" element={<PageWrapper><ProductPage /></PageWrapper>} />
               <Route path="/login"     element={<PageWrapper><AuthPage /></PageWrapper>} />
               <Route path="/admin/*"    element={<PageWrapper><AdminPage /></PageWrapper>} />
               <Route path="/settings"  element={<PageWrapper><SettingsPage /></PageWrapper>} />
