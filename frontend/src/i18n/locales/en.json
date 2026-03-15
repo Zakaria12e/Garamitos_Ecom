@@ -190,5 +190,34 @@
     "create": "Create",
     "search": "Search",
     "noResults": "No results found"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and preferences",
+    "profile": {
+      "title": "Profile",
+      "description": "Update your display name and email address",
+      "name": "Full Name",
+      "email": "Email Address",
+      "save": "Save Changes",
+      "saved": "Saved!",
+      "error": "Failed to update profile."
+    },
+    "security": {
+      "title": "Security",
+      "description": "Change your password to keep your account safe",
+      "current": "Current Password",
+      "new": "New Password",
+      "confirm": "Confirm New Password",
+      "save": "Update Password",
+      "saved": "Password updated!",
+      "mismatch": "New passwords do not match.",
+      "error": "Failed to change password."
+    },
+    "preferences": {
+      "title": "Preferences",
+      "description": "Choose your preferred language",
+      "language": "Language"
+    }
   }
 }
