@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next'
 import { Loader2, Truck, MapPin } from 'lucide-react'
 
 export default function PaymentStep({ shipping, total, loading, error, onBack, onSubmit }) {
+  const { t } = useTranslation()
+
   return (
     <div className="space-y-4">
-      <h2 className="text-sm font-semibold mb-4">Payment Method</h2>
+      <h2 className="text-sm font-semibold mb-4">{t('checkout.paymentMethod')}</h2>
 
       {/* Pay on Delivery — only option */}
       <div className="border-2 border-black dark:border-white rounded-xl p-4 flex items-start gap-3 bg-gray-50 dark:bg-gray-950">
@@ -13,10 +16,10 @@ export default function PaymentStep({ shipping, total, loading, error, onBack, o
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Truck size={15} />
-            <span className="text-sm font-semibold">Pay on Delivery</span>
+            <span className="text-sm font-semibold">{t('checkout.payOnDelivery')}</span>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Pay in cash when your order arrives at your door. No card needed.
+            {t('checkout.payOnDeliveryDesc')}
           </p>
         </div>
       </div>
@@ -25,7 +28,7 @@ export default function PaymentStep({ shipping, total, loading, error, onBack, o
       <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-4">
         <div className="flex items-center gap-2 mb-2">
           <MapPin size={13} className="text-gray-400" />
-          <span className="text-xs font-semibold">Delivery Address</span>
+          <span className="text-xs font-semibold">{t('checkout.deliveryAddress')}</span>
         </div>
         <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
           {shipping.fullName}<br />
@@ -33,7 +36,7 @@ export default function PaymentStep({ shipping, total, loading, error, onBack, o
           {shipping.country}
         </p>
         <button onClick={onBack} className="mt-2 text-[10px] text-gray-400 hover:text-black dark:hover:text-white transition-colors underline underline-offset-2">
-          Edit address
+          {t('checkout.editAddress')}
         </button>
       </div>
 
@@ -45,7 +48,7 @@ export default function PaymentStep({ shipping, total, loading, error, onBack, o
 
       <div className="flex gap-3 pt-2">
         <button onClick={onBack} className="flex-1 border border-gray-200 dark:border-gray-800 py-2.5 rounded-md text-sm hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors">
-          Back
+          {t('checkout.back')}
         </button>
         <button
           onClick={onSubmit}
@@ -53,8 +56,8 @@ export default function PaymentStep({ shipping, total, loading, error, onBack, o
           className="flex-1 bg-black dark:bg-white text-white dark:text-black py-2.5 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
         >
           {loading
-            ? <><Loader2 size={14} className="animate-spin" /> Placing Order…</>
-            : `Confirm Order — ${total.toFixed(2)} MAD`}
+            ? <><Loader2 size={14} className="animate-spin" /> {t('checkout.placingOrder')}</>
+            : t('checkout.confirmOrder', { total: total.toFixed(2), currency: t('common.currency') })}
         </button>
       </div>
     </div>

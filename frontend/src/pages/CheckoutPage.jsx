@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useApp } from '../context/AppContext'
 import { useAuth } from '../context/AuthContext'
 import { useSettings } from '../context/SettingsContext'
@@ -10,9 +11,10 @@ import PaymentStep from '../components/checkout/PaymentStep'
 import OrderSummary from '../components/checkout/OrderSummary'
 import OrderConfirmation from '../components/checkout/OrderConfirmation'
 
-const STEPS = ['Shipping', 'Payment']
+const STEPS = ['checkout.stepShipping', 'checkout.stepPayment']
 
 export default function CheckoutPage() {
+  const { t } = useTranslation()
   const { state, dispatch } = useApp()
   const { user } = useAuth()
   const { calcShipping } = useSettings()
@@ -39,9 +41,9 @@ export default function CheckoutPage() {
 
   if (state.cart.length === 0 && !done) return (
     <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-      <p className="text-sm text-gray-400 mb-4">Cart is empty</p>
+      <p className="text-sm text-gray-400 mb-4">{t('checkout.cartEmpty')}</p>
       <Link to="/catalog" className="inline-flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-md text-sm font-medium">
-        Shop Now
+        {t('checkout.shopNow')}
       </Link>
     </div>
   )
@@ -65,7 +67,7 @@ export default function CheckoutPage() {
       dispatch({ type: 'CLEAR_CART' })
       setDone(true)
     } catch (err) {
-      setError(err.message || 'Failed to place order. Please try again.')
+      setError(err.message || t('checkout.errorFallback'))
     } finally {
       setLoading(false)
     }
@@ -73,14 +75,14 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-lg font-semibold mb-2">Checkout</h1>
+      <h1 className="text-lg font-semibold mb-2">{t('checkout.title')}</h1>
 
       {/* Step indicator */}
       <div className="flex items-center gap-2 mb-8 text-xs">
         {STEPS.map((s, i) => (
           <React.Fragment key={s}>
             <span className={'font-medium ' + (step === i + 1 ? 'text-black dark:text-white' : 'text-gray-400')}>
-              {i + 1}. {s}
+              {i + 1}. {t(s)}
             </span>
             {i < STEPS.length - 1 && <ChevronRight size={12} className="text-gray-300" />}
           </React.Fragment>
