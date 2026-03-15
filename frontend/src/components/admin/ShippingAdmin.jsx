@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
+import { Loader2, Plus, Pencil, Trash2, MoreVertical, AlertTriangle } from 'lucide-react'
 import { Skeleton } from '../ui/Skeleton'
 import { settingsApi } from '../../lib/api'
 import { useApp } from '../../context/AppContext'
@@ -16,6 +16,66 @@ function Field({ label, ...props }) {
         {...props}
         className="w-full text-xs border border-gray-200 dark:border-gray-800 rounded px-2.5 py-1.5 bg-transparent focus:outline-none focus:border-black dark:focus:border-white"
       />
+    </div>
+  )
+}
+
+function Toggle({ checked, onChange }) {
+  return (
+    <button type="button" onClick={onChange}
+      className={`relative w-9 h-5 rounded-full transition-colors shrink-0 ${checked ? 'bg-black dark:bg-white' : 'bg-gray-200 dark:bg-gray-700'}`}>
+      <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white dark:bg-black shadow transition-all ${checked ? 'left-4' : 'left-0.5'}`} />
+    </button>
+  )
+}
+
+function PromoMenu({ onEdit, onDelete, t }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  useEffect(() => {
+    const h = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', h)
+    return () => document.removeEventListener('mousedown', h)
+  }, [])
+  return (
+    <div ref={ref} className="relative shrink-0">
+      <button onClick={() => setOpen(o => !o)} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+        <MoreVertical size={13} className="text-gray-400" />
+      </button>
+      {open && (
+        <div className="absolute end-0 top-7 z-20 w-32 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden">
+          <button onClick={() => { onEdit(); setOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+            <Pencil size={11} /> {t('admin.common.edit')}
+          </button>
+          <button onClick={() => { onDelete(); setOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
+            <Trash2 size={11} /> {t('admin.common.del')}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DeleteModal({ promo, onConfirm, onCancel, t }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+        className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl w-full max-w-sm p-6">
+        <div className="flex flex-col items-center text-center gap-3">
+          <div className="w-11 h-11 rounded-full bg-red-100 dark:bg-red-950 flex items-center justify-center">
+            <AlertTriangle size={18} className="text-red-500" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold">Delete promo code</h3>
+            <p className="text-xs text-gray-500 mt-1">Delete <span className="font-mono font-bold text-gray-800 dark:text-gray-200">{promo?.code}</span>? This cannot be undone.</p>
+          </div>
+        </div>
+        <div className="flex gap-2 mt-5">
+          <button onClick={onCancel} className="flex-1 py-2 text-xs border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">{t('admin.common.cancel')}</button>
+          <button onClick={onConfirm} className="flex-1 py-2 text-xs bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors">{t('admin.common.del')}</button>
+        </div>
+      </motion.div>
     </div>
   )
 }
@@ -36,6 +96,7 @@ export default function ShippingAdmin() {
   const [showPromoForm, setShowPromoForm]   = useState(false)
   const [editingPromo, setEditingPromo]     = useState(null)
   const [promoForm, setPromoForm]           = useState(EMPTY_PROMO_FORM)
+  const [deleteTarget, setDeleteTarget]     = useState(null)
 
   useEffect(() => {
     if (settings.shippingPrice  !== undefined) setPrice(settings.shippingPrice)
@@ -67,11 +128,11 @@ export default function ShippingAdmin() {
   const openNewPromo  = () => { setEditingPromo(null); setPromoForm(EMPTY_PROMO_FORM); setShowPromoForm(true) }
   const openEditPromo = (p) => { setEditingPromo(p); setPromoForm({ ...p, usageLimit: p.usageLimit ?? '' }); setShowPromoForm(true) }
 
-  const handleDeletePromo = async (id) => {
-    if (!confirm('Delete this promo code?')) return
+  const handleDeletePromo = async () => {
     const { promoApi } = await import('../../lib/api')
-    await promoApi.delete(id)
-    setPromos(ps => ps.filter(p => p._id !== id))
+    await promoApi.delete(deleteTarget._id)
+    setPromos(ps => ps.filter(p => p._id !== deleteTarget._id))
+    setDeleteTarget(null)
   }
 
   const handleSavePromo = async () => {
@@ -195,6 +256,12 @@ export default function ShippingAdmin() {
           )}
         </AnimatePresence>
 
+        <AnimatePresence>
+          {deleteTarget && (
+            <DeleteModal promo={deleteTarget} onConfirm={handleDeletePromo} onCancel={() => setDeleteTarget(null)} t={t} />
+          )}
+        </AnimatePresence>
+
         {promoLoading ? (
           <div className="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
             {Array(4).fill(0).map((_, i) => (
@@ -219,7 +286,7 @@ export default function ShippingAdmin() {
             {t('admin.shipping.noPromos')}
           </div>
         ) : (
-          <div className="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
+          <div className="border border-gray-200 dark:border-gray-800 rounded-xl">
             {promos.map((promo, i) => (
               <motion.div key={promo._id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.03 }}
                 className={`flex items-center gap-3 px-4 py-3 flex-wrap ${i > 0 ? 'border-t border-gray-200 dark:border-gray-800' : ''}`}>
@@ -236,16 +303,8 @@ export default function ShippingAdmin() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <button onClick={() => togglePromoActive(promo)}
-                    className={`text-[10px] px-2 py-1 rounded font-medium transition-colors ${promo.isActive ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400' : 'bg-gray-100 dark:bg-gray-900 text-gray-500'}`}>
-                    {promo.isActive ? t('admin.shipping.activeStatus') : t('admin.shipping.inactiveStatus')}
-                  </button>
-                  <button onClick={() => openEditPromo(promo)} className="text-xs px-2.5 py-1 border border-gray-200 dark:border-gray-800 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors flex items-center gap-1">
-                    <Pencil size={10} /> {t('admin.common.edit')}
-                  </button>
-                  <button onClick={() => handleDeletePromo(promo._id)} className="text-xs px-2.5 py-1 border border-red-200 dark:border-red-900 text-red-500 rounded hover:bg-red-50 dark:hover:bg-red-950 transition-colors flex items-center gap-1">
-                    <Trash2 size={10} /> {t('admin.common.del')}
-                  </button>
+                  <Toggle checked={promo.isActive} onChange={() => togglePromoActive(promo)} />
+                  <PromoMenu onEdit={() => openEditPromo(promo)} onDelete={() => setDeleteTarget(promo)} t={t} />
                 </div>
               </motion.div>
             ))}
