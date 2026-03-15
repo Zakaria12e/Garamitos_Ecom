@@ -96,10 +96,10 @@ router.put(
   [body('name').optional().trim().notEmpty()],
   async (req, res, next) => {
     try {
-      const { name } = req.body
+      const { name, email } = req.body
       const user = await User.findByIdAndUpdate(
         req.user._id,
-        { ...(name && { name }) },
+        { ...(name && { name }), ...(email && { email }) },
         { new: true, runValidators: true }
       )
       res.json({ success: true, user })
