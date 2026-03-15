@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Star } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export default function StarPicker({ value, onChange }) {
   const [hovered, setHovered] = useState(0)
+  const { t } = useTranslation()
   return (
     <div className="flex items-center gap-1">
       {[1, 2, 3, 4, 5].map(n => (
@@ -25,7 +27,7 @@ export default function StarPicker({ value, onChange }) {
         </button>
       ))}
       <span className="text-xs text-gray-400 ml-2">
-        {['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'][hovered || value] || ''}
+        {(hovered || value) ? t(`productPage.reviews.stars.${hovered || value}`) : ''}
       </span>
     </div>
   )

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Loader2, ThumbsUp, CheckCircle } from 'lucide-react'
 import { reviewsApi } from '../../lib/api'
 import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from 'react-i18next'
 import StarPicker from './StarPicker'
 
 const Field = ({ label, ...props }) => (
@@ -17,6 +18,7 @@ const Field = ({ label, ...props }) => (
 
 export default function ReviewForm({ productId, onSubmitted }) {
   const { user } = useAuth()
+  const { t } = useTranslation()
   const [name,    setName]    = useState(user?.name  || '')
   const [email,   setEmail]   = useState(user?.email || '')
   const [rating,  setRating]  = useState(0)
@@ -28,8 +30,8 @@ export default function ReviewForm({ productId, onSubmitted }) {
 
   const submit = async e => {
     e.preventDefault()
-    if (!rating) { setError('Please select a rating'); return }
-    if (body.trim().length < 10) { setError('Review must be at least 10 characters'); return }
+    if (!rating) { setError(t('productPage.reviews.form.errorRating')); return }
+    if (body.trim().length < 10) { setError(t('productPage.reviews.form.errorLength')); return }
     setError('')
     setLoading(true)
     try {
@@ -37,7 +39,7 @@ export default function ReviewForm({ productId, onSubmitted }) {
       setDone(true)
       onSubmitted?.(res.review)
     } catch (err) {
-      setError(err.message || 'Failed to submit review')
+      setError(err.message || t('productPage.reviews.form.errorFallback'))
     } finally {
       setLoading(false)
     }
@@ -50,37 +52,37 @@ export default function ReviewForm({ productId, onSubmitted }) {
       className="border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/40 rounded-xl p-6 text-center"
     >
       <CheckCircle size={28} className="mx-auto text-green-600 dark:text-green-400 mb-2" />
-      <p className="text-sm font-semibold text-green-700 dark:text-green-400">Review submitted!</p>
-      <p className="text-xs text-gray-500 mt-1">Thank you for your feedback.</p>
+      <p className="text-sm font-semibold text-green-700 dark:text-green-400">{t('productPage.reviews.form.successTitle')}</p>
+      <p className="text-xs text-gray-500 mt-1">{t('productPage.reviews.form.successBody')}</p>
     </motion.div>
   )
 
   return (
     <form onSubmit={submit} className="border border-gray-200 dark:border-gray-800 rounded-xl p-5 space-y-4">
-      <h3 className="text-sm font-semibold">Write a Review</h3>
+      <h3 className="text-sm font-semibold">{t('productPage.reviews.form.title')}</h3>
 
       <div>
-        <label className="block text-xs font-medium mb-2">Your Rating *</label>
+        <label className="block text-xs font-medium mb-2">{t('productPage.reviews.form.rating')} *</label>
         <StarPicker value={rating} onChange={setRating} />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Your Name *" value={name} onChange={e => setName(e.target.value)} placeholder="John Doe" required />
-        <Field label="Email *" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="john@example.com" required />
+        <Field label={`${t('productPage.reviews.form.name')} *`} value={name} onChange={e => setName(e.target.value)} placeholder="John Doe" required />
+        <Field label={`${t('productPage.reviews.form.email')} *`} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="john@example.com" required />
       </div>
 
-      <Field label="Review Title" value={title} onChange={e => setTitle(e.target.value)} placeholder="Summarize your experience" />
+      <Field label={t('productPage.reviews.form.reviewTitle')} value={title} onChange={e => setTitle(e.target.value)} placeholder={t('productPage.reviews.form.titlePlaceholder')} />
 
       <div>
-        <label className="block text-xs font-medium mb-1">Your Review *</label>
+        <label className="block text-xs font-medium mb-1">{t('productPage.reviews.form.body')} *</label>
         <textarea
           value={body}
           onChange={e => setBody(e.target.value)}
           rows={4}
-          placeholder="Tell others what you think about this product…"
+          placeholder={t('productPage.reviews.form.bodyPlaceholder')}
           className="w-full text-xs border border-gray-200 dark:border-gray-800 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:border-black dark:focus:border-white transition-colors resize-none"
         />
-        <p className="text-[10px] text-gray-400 mt-0.5">{body.length}/1000 · min 10 characters</p>
+        <p className="text-[10px] text-gray-400 mt-0.5">{t('productPage.reviews.form.charCount', { count: body.length })}</p>
       </div>
 
       {error && (
@@ -95,7 +97,7 @@ export default function ReviewForm({ productId, onSubmitted }) {
         className="w-full bg-black dark:bg-white text-white dark:text-black py-2.5 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
       >
         {loading ? <Loader2 size={14} className="animate-spin" /> : <ThumbsUp size={14} />}
-        {loading ? 'Submitting…' : 'Submit Review'}
+        {loading ? t('productPage.reviews.form.submitting') : t('productPage.reviews.form.submit')}
       </button>
     </form>
   )

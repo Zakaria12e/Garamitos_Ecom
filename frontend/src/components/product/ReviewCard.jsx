@@ -1,8 +1,10 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Star, CheckCircle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export default function ReviewCard({ review }) {
+  const { t } = useTranslation()
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -21,7 +23,7 @@ export default function ReviewCard({ review }) {
               <span className="text-xs font-semibold">{review.name}</span>
               {review.verified && (
                 <span className="inline-flex items-center gap-0.5 text-[10px] text-green-600 dark:text-green-400 font-medium">
-                  <CheckCircle size={10} /> Verified
+                  <CheckCircle size={10} /> {t('productPage.reviews.verified')}
                 </span>
               )}
             </div>
