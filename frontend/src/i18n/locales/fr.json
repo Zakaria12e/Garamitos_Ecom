@@ -106,7 +106,10 @@
       "free": "Gratuit",
       "total": "Total",
       "qty": "Qté",
-      "all": "Tous"
+      "all": "Tous",
+      "prev": "Préc.",
+      "next": "Suiv.",
+      "page": "Page {{current}} sur {{total}}"
     },
     "categories": {
       "title": "Catégories",

@@ -106,7 +106,10 @@
       "free": "Free",
       "total": "Total",
       "qty": "Qty",
-      "all": "All"
+      "all": "All",
+      "prev": "Prev",
+      "next": "Next",
+      "page": "Page {{current}} of {{total}}"
     },
     "categories": {
       "title": "Categories",
