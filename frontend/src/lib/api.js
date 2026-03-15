@@ -62,6 +62,7 @@ export const ordersApi = {
   lookup:      (email) => request(`/orders/lookup?email=${encodeURIComponent(email)}`),
   myOrders:    ()      => request('/orders/my'),
   myOrder:     (id)    => request(`/orders/my/${id}`),
+  cancelOrder: (id)    => request(`/orders/my/${id}/cancel`, { method: 'PUT' }),
   // admin
   all:         (params = {}) => {
     const qs = new URLSearchParams(params).toString()
