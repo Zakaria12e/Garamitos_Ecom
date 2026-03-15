@@ -57,14 +57,14 @@ export default function AdminPage() {
 
       {/* Sidebar */}
       <motion.aside
-        animate={{ width: collapsed ? 48 : 176 }}
+        animate={{ width: collapsed ? 52 : 180 }}
         transition={{ duration: 0.2, ease: 'easeInOut' }}
         className="hidden md:flex flex-col shrink-0 overflow-visible"
       >
         {/* Header row */}
-        <div className={`flex items-center mb-3 ${collapsed ? 'justify-center' : 'justify-between'}`}>
+        <div className={`flex items-center mb-4 ${collapsed ? 'justify-center' : 'justify-between'}`}>
           {!collapsed && (
-            <p className="text-[10px] text-gray-400 uppercase tracking-wider">{t('admin.panel')}</p>
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-400">{t('admin.panel')}</span>
           )}
           <button
             onClick={() => setCollapsed(c => {
@@ -72,16 +72,16 @@ export default function AdminPage() {
               localStorage.setItem('admin_sidebar', next ? 'collapsed' : 'expanded')
               return next
             })}
-            className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+            className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-800 text-gray-400 hover:text-black dark:hover:text-white hover:border-black dark:hover:border-white transition-all"
           >
             <motion.div animate={{ rotate: collapsed ? 180 : 0 }} transition={{ duration: 0.2 }}>
-              <ChevronLeft size={14} />
+              <ChevronLeft size={12} />
             </motion.div>
           </button>
         </div>
 
         {/* Nav links */}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-0.5">
           {NAV_LINKS.map(({ to, label, icon: Icon, exact }) => {
             const isActive = exact
               ? location.pathname === to
@@ -91,24 +91,27 @@ export default function AdminPage() {
               <div key={to} className="relative group">
                 <Link
                   to={to}
-                  className={`flex items-center gap-2 px-2.5 py-2 rounded-md text-xs transition-colors ${
+                  className={`relative flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
                     collapsed ? 'justify-center' : ''
                   } ${
                     isActive
-                      ? 'bg-black dark:bg-white text-white dark:text-black font-medium'
-                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'
+                      ? 'text-black dark:text-white bg-black/5 dark:bg-white/5'
+                      : 'text-gray-400 dark:text-gray-500 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
-                  <Icon size={14} className="shrink-0" />
+                  {isActive && (
+                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-black dark:bg-white rounded-full" />
+                  )}
+                  <Icon size={15} className="shrink-0" />
                   {!collapsed && <span>{label}</span>}
                 </Link>
 
                 {/* Tooltip when collapsed */}
                 {collapsed && (
-                  <div className="absolute ltr:left-full rtl:right-full top-1/2 -translate-y-1/2 ltr:ms-2 rtl:me-2 z-50
+                  <div className="absolute ltr:left-full rtl:right-full top-1/2 -translate-y-1/2 ltr:ms-2.5 rtl:me-2.5 z-50
                     opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150">
-                    <div className="bg-black dark:bg-white text-white dark:text-black text-xs font-medium
-                      px-2.5 py-1.5 rounded-md whitespace-nowrap shadow-lg">
+                    <div className="bg-black dark:bg-white text-white dark:text-black text-[11px] font-medium
+                      px-2.5 py-1.5 rounded-lg whitespace-nowrap shadow-lg">
                       {label}
                     </div>
                   </div>
@@ -119,18 +122,18 @@ export default function AdminPage() {
         </div>
       </motion.aside>
 
-      {/* Mobile nav — unchanged horizontal scroll */}
-      <div className="flex md:hidden overflow-x-auto gap-1 pb-1 scrollbar-none">
+      {/* Mobile nav */}
+      <div className="flex md:hidden overflow-x-auto gap-1 pb-2 scrollbar-none border-b border-gray-200 dark:border-gray-800">
         {NAV_LINKS.map(({ to, label, icon: Icon, exact }) => {
           const isActive = exact
             ? location.pathname === to
             : location.pathname.startsWith(to) && to !== '/admin' || location.pathname === '/admin' && to === '/admin'
           return (
             <Link key={to} to={to}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md text-xs transition-colors shrink-0 ${
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-all shrink-0 rounded-lg ${
                 isActive
-                  ? 'bg-black dark:bg-white text-white dark:text-black font-medium'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'
+                  ? 'text-black dark:text-white bg-black/5 dark:bg-white/5'
+                  : 'text-gray-400 dark:text-gray-500 hover:text-black dark:hover:text-white'
               }`}>
               <Icon size={13} />{label}
             </Link>

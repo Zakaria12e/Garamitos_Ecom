@@ -29,13 +29,14 @@ const PageWrapper = ({ children }) => (
 
 export default function App() {
   const location = useLocation()
+  const pageKey = '/' + location.pathname.split('/')[1]
   return (
     <AppProvider>
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1">
           <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname}>
+            <Routes location={location} key={pageKey}>
               <Route path="/" element={<PageWrapper><HomePage /></PageWrapper>} />
               <Route path="/catalog"    element={<PageWrapper><CatalogPage /></PageWrapper>} />
               <Route path="/product/:id" element={<PageWrapper><ProductPage /></PageWrapper>} />
