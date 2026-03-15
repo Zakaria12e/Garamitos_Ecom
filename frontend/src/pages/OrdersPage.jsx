@@ -5,6 +5,42 @@ import { ChevronDown, ChevronUp, Package, MapPin, CreditCard, Loader2, XCircle }
 import { useAuth } from '../context/AuthContext'
 import { ordersApi } from '../lib/api'
 
+function CancelModal({ orderNumber, onConfirm, onClose, loading }) {
+  const { t } = useTranslation()
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 w-full max-w-sm shadow-xl">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-9 h-9 rounded-full bg-red-100 dark:bg-red-950/40 flex items-center justify-center shrink-0">
+            <XCircle size={18} className="text-red-500" />
+          </div>
+          <h2 className="text-sm font-semibold">{t('orders.cancelOrder')}</h2>
+        </div>
+        <p className="text-xs text-gray-500 mb-1">{t('orders.cancelConfirm')}</p>
+        <p className="text-xs font-mono text-gray-400 mb-5">{orderNumber}</p>
+        <div className="flex gap-2">
+          <button
+            onClick={onClose}
+            disabled={loading}
+            className="flex-1 border border-gray-200 dark:border-gray-800 py-2 rounded-lg text-xs hover:bg-gray-50 dark:hover:bg-gray-900 disabled:opacity-40 transition-colors"
+          >
+            {t('common.cancel')}
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={loading}
+            className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-xs font-medium disabled:opacity-40 transition-colors flex items-center justify-center gap-1.5"
+          >
+            {loading && <Loader2 size={12} className="animate-spin" />}
+            {loading ? t('orders.cancelling') : t('orders.cancelOrder')}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const STATUS_STYLES = {
   Processing: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   Shipped:    'bg-blue-100  text-blue-800  dark:bg-blue-900/30  dark:text-blue-400',
@@ -14,22 +50,32 @@ const STATUS_STYLES = {
 
 function OrderCard({ order, onCancelled }) {
   const { t } = useTranslation()
-  const [open, setOpen]         = useState(false)
+  const [open, setOpen]             = useState(false)
+  const [showModal, setShowModal]   = useState(false)
   const [cancelling, setCancelling] = useState(false)
   const currency = t('common.currency')
 
-  const handleCancel = async () => {
-    if (!window.confirm(t('orders.cancelConfirm'))) return
+  const confirmCancel = async () => {
     setCancelling(true)
     try {
       const data = await ordersApi.cancelOrder(order._id)
       onCancelled(data.order)
+      setShowModal(false)
     } finally {
       setCancelling(false)
     }
   }
 
   return (
+    <>
+    {showModal && (
+      <CancelModal
+        orderNumber={order.orderNumber}
+        onConfirm={confirmCancel}
+        onClose={() => setShowModal(false)}
+        loading={cancelling}
+      />
+    )}
     <div className="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-950">
@@ -42,14 +88,11 @@ function OrderCard({ order, onCancelled }) {
           </span>
           {order.status === 'Processing' && (
             <button
-              onClick={handleCancel}
-              disabled={cancelling}
-              className="flex items-center gap-1 text-[10px] text-red-500 hover:text-red-700 disabled:opacity-40 transition-colors"
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-1 text-[10px] text-red-500 hover:text-red-700 transition-colors"
             >
-              {cancelling
-                ? <Loader2 size={11} className="animate-spin" />
-                : <XCircle size={11} />}
-              {cancelling ? t('orders.cancelling') : t('orders.cancelOrder')}
+              <XCircle size={11} />
+              {t('orders.cancelOrder')}
             </button>
           )}
         </div>
@@ -147,6 +190,7 @@ function OrderCard({ order, onCancelled }) {
         </div>
       )}
     </div>
+    </>
   )
 }
 
