@@ -7,10 +7,10 @@ export default function Footer() {
   const { t } = useTranslation()
 
   const categories = [
-    { key: 'surveillance', slug: 'Surveillance Cameras' },
-    { key: 'drones',       slug: 'Drones' },
-    { key: 'smartHome',    slug: 'Smart Home' },
-    { key: 'audio',        slug: 'Audio Equipment' },
+    { key: 'tools',       slug: 'Power Tools' },
+    { key: 'plumbing',    slug: 'Plumbing' },
+    { key: 'electrical',  slug: 'Electrical' },
+    { key: 'paint',       slug: 'Paint & Finishing' },
   ]
 
   const accountLinks = [
