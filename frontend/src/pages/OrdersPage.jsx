@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ChevronDown, ChevronUp, Package, MapPin, CreditCard, Loader2 } from 'lucide-react'
+import { ChevronDown, ChevronUp, Package, MapPin, CreditCard, Loader2, XCircle } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { ordersApi } from '../lib/api'
 
@@ -12,10 +12,22 @@ const STATUS_STYLES = {
   Cancelled:  'bg-red-100   text-red-800   dark:bg-red-900/30   dark:text-red-400',
 }
 
-function OrderCard({ order }) {
+function OrderCard({ order, onCancelled }) {
   const { t } = useTranslation()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen]         = useState(false)
+  const [cancelling, setCancelling] = useState(false)
   const currency = t('common.currency')
+
+  const handleCancel = async () => {
+    if (!window.confirm(t('orders.cancelConfirm'))) return
+    setCancelling(true)
+    try {
+      const data = await ordersApi.cancelOrder(order._id)
+      onCancelled(data.order)
+    } finally {
+      setCancelling(false)
+    }
+  }
 
   return (
     <div className="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
@@ -28,6 +40,18 @@ function OrderCard({ order }) {
           <span className={'text-[10px] font-medium px-2 py-0.5 rounded-full ' + (STATUS_STYLES[order.status] || '')}>
             {t(`orders.${order.status}`)}
           </span>
+          {order.status === 'Processing' && (
+            <button
+              onClick={handleCancel}
+              disabled={cancelling}
+              className="flex items-center gap-1 text-[10px] text-red-500 hover:text-red-700 disabled:opacity-40 transition-colors"
+            >
+              {cancelling
+                ? <Loader2 size={11} className="animate-spin" />
+                : <XCircle size={11} />}
+              {cancelling ? t('orders.cancelling') : t('orders.cancelOrder')}
+            </button>
+          )}
         </div>
         <div className="flex items-center gap-4">
           <span className="text-xs font-semibold hidden sm:block">
@@ -183,7 +207,15 @@ export default function OrdersPage() {
       ) : (
         <>
           <div className="space-y-4">
-            {paginated.map(order => <OrderCard key={order._id} order={order} />)}
+            {paginated.map(order => (
+              <OrderCard
+                key={order._id}
+                order={order}
+                onCancelled={updated =>
+                  setOrders(prev => prev.map(o => o._id === updated._id ? updated : o))
+                }
+              />
+            ))}
           </div>
 
           {totalPages > 1 && (
