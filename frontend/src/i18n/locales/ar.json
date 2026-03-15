@@ -218,6 +218,22 @@
       "deleteConfirm": "حذف",
       "deleteWarning": "لا يمكن التراجع عن هذا الإجراء."
     },
+    "users": {
+      "title": "المستخدمون",
+      "searchPlaceholder": "ابحث بالاسم أو البريد الإلكتروني…",
+      "noUsers": "لا يوجد مستخدمون",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "joined": "تاريخ الانضمام",
+      "actions": "الإجراءات",
+      "roleUser": "مستخدم",
+      "roleAdmin": "مشرف",
+      "deleteTitle": "حذف المستخدم",
+      "deleteConfirm": "هل أنت متأكد من حذف",
+      "deleteWarning": "لا يمكن التراجع عن هذا الإجراء.",
+      "cannotDeleteSelf": "لا يمكنك حذف حسابك الخاص."
+    },
     "common": {
       "edit": "تعديل",
       "del": "حذف",

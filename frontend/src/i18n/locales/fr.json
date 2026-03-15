@@ -218,6 +218,22 @@
       "deleteConfirm": "Supprimer",
       "deleteWarning": "Cette action est irréversible."
     },
+    "users": {
+      "title": "Utilisateurs",
+      "searchPlaceholder": "Rechercher par nom ou e-mail…",
+      "noUsers": "Aucun utilisateur trouvé",
+      "name": "Nom",
+      "email": "E-mail",
+      "role": "Rôle",
+      "joined": "Inscrit le",
+      "actions": "Actions",
+      "roleUser": "Utilisateur",
+      "roleAdmin": "Admin",
+      "deleteTitle": "Supprimer l'utilisateur",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer",
+      "deleteWarning": "Cette action est irréversible.",
+      "cannotDeleteSelf": "Vous ne pouvez pas supprimer votre propre compte."
+    },
     "common": {
       "edit": "Modifier",
       "del": "Suppr.",

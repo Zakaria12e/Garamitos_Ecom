@@ -218,6 +218,22 @@
       "deleteConfirm": "Delete",
       "deleteWarning": "This cannot be undone."
     },
+    "users": {
+      "title": "Users",
+      "searchPlaceholder": "Search by name or email…",
+      "noUsers": "No users found",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "joined": "Joined",
+      "actions": "Actions",
+      "roleUser": "User",
+      "roleAdmin": "Admin",
+      "deleteTitle": "Delete User",
+      "deleteConfirm": "Are you sure you want to delete",
+      "deleteWarning": "This action cannot be undone.",
+      "cannotDeleteSelf": "You cannot delete your own account."
+    },
     "common": {
       "edit": "Edit",
       "del": "Del",
