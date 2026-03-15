@@ -105,7 +105,8 @@
       "discount": "Discount",
       "free": "Free",
       "total": "Total",
-      "qty": "Qty"
+      "qty": "Qty",
+      "all": "All"
     },
     "categories": {
       "title": "Categories",

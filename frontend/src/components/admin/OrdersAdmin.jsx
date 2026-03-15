@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { ShoppingBag } from 'lucide-react'
 import { Skeleton } from '../ui/Skeleton'
@@ -6,35 +6,66 @@ import { ordersApi } from '../../lib/api'
 import OrderCard from './OrderCard'
 import { useTranslation } from 'react-i18next'
 
+const STATUSES = ['All', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
+
 export default function OrdersAdmin() {
   const { t } = useTranslation()
   const [orders, setOrders]   = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch]   = useState('')
+  const [status, setStatus]   = useState('All')
 
   const load = (q = '') => {
     setLoading(true)
-    ordersApi.all({ limit: 50, ...(q ? { search: q } : {}) })
+    ordersApi.all({ limit: 200, ...(q ? { search: q } : {}) })
       .then(d => setOrders(d.orders || []))
       .catch(console.error)
       .finally(() => setLoading(false))
   }
+
   useEffect(() => load(), [])
+
+  const filtered = useMemo(() => {
+    if (status === 'All') return orders
+    return orders.filter(o => o.status === status)
+  }, [orders, status])
+
+  const handleSearch = (q) => { setSearch(q); load(q) }
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-      <div className="flex items-center justify-between mb-5 gap-3">
-        <h2 className="text-base font-semibold shrink-0">{t('admin.orders.title')} ({orders.length})</h2>
-        <div className="relative max-w-xs w-full">
-          <input
-            value={search}
-            onChange={e => { setSearch(e.target.value); load(e.target.value) }}
-            placeholder={t('admin.orders.searchPlaceholder')}
-            className="w-full text-xs border border-gray-200 dark:border-gray-800 rounded-md pl-3 pr-3 py-1.5 bg-transparent focus:outline-none focus:border-black dark:focus:border-white"
-          />
-        </div>
+
+      {/* Header row */}
+      <div className="flex items-center justify-between mb-4 gap-3">
+        <h2 className="text-base font-semibold shrink-0">
+          {t('admin.orders.title')} ({filtered.length})
+        </h2>
+        <input
+          value={search}
+          onChange={e => handleSearch(e.target.value)}
+          placeholder={t('admin.orders.searchPlaceholder')}
+          className="w-full max-w-xs text-xs border border-gray-200 dark:border-gray-800 rounded-md px-3 py-1.5 bg-transparent focus:outline-none focus:border-black dark:focus:border-white"
+        />
       </div>
 
+      {/* Status filter tabs */}
+      <div className="flex items-center gap-1.5 flex-wrap mb-5">
+        {STATUSES.map(s => (
+          <button
+            key={s}
+            onClick={() => setStatus(s)}
+            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+              status === s
+                ? 'bg-black dark:bg-white text-white dark:text-black'
+                : 'border border-gray-200 dark:border-gray-700 text-gray-500 hover:border-gray-400 dark:hover:border-gray-500'
+            }`}
+          >
+            {s === 'All' ? t('admin.orders.all') : t(`orders.${s}`)}
+          </button>
+        ))}
+      </div>
+
+      {/* List */}
       {loading ? (
         <div className="space-y-3">
           {Array(5).fill(0).map((_, i) => (
@@ -54,14 +85,17 @@ export default function OrdersAdmin() {
             </div>
           ))}
         </div>
-      ) : orders.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <div className="text-center py-16 border border-dashed border-gray-200 dark:border-gray-800 rounded-lg">
           <ShoppingBag size={32} className="mx-auto text-gray-300 dark:text-gray-700 mb-3" />
           <p className="text-xs text-gray-400">{t('admin.orders.noOrders')}</p>
         </div>
       ) : (
-        orders.map(order => <OrderCard key={order._id} order={order} />)
+        <div className="space-y-3">
+          {filtered.map(order => <OrderCard key={order._id} order={order} />)}
+        </div>
       )}
+
     </motion.div>
   )
 }
