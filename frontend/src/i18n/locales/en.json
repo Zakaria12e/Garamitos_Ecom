@@ -90,7 +90,10 @@
       "editProduct": "Edit Product",
       "newProduct": "New Product",
       "featured": "Featured product",
-      "selectCategory": "Select category"
+      "selectCategory": "Select category",
+      "deleteTitle": "Delete Product",
+      "deleteConfirm": "Are you sure you want to delete",
+      "deleteWarning": "This action cannot be undone."
     },
     "orders": {
       "title": "Orders",

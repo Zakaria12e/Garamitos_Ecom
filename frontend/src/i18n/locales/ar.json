@@ -90,7 +90,10 @@
       "editProduct": "تعديل المنتج",
       "newProduct": "منتج جديد",
       "featured": "منتج مميز",
-      "selectCategory": "اختر الفئة"
+      "selectCategory": "اختر الفئة",
+      "deleteTitle": "حذف المنتج",
+      "deleteConfirm": "هل أنت متأكد من حذف",
+      "deleteWarning": "لا يمكن التراجع عن هذا الإجراء."
     },
     "orders": {
       "title": "الطلبات",

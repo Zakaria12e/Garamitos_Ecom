@@ -1,11 +1,53 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { motion } from 'framer-motion'
-import { Plus, Pencil, Trash2, MoreVertical } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Plus, Pencil, Trash2, MoreVertical, AlertTriangle } from 'lucide-react'
 import { Skeleton } from '../ui/Skeleton'
 import { productsApi, categoriesApi, normaliseProduct } from '../../lib/api'
 import { EMPTY_PRODUCT_FORM } from '../../constants/admin'
 import ProductFormModal from './ProductFormModal'
 import { useTranslation } from 'react-i18next'
+
+function DeleteModal({ product, onConfirm, onCancel }) {
+  const { t } = useTranslation()
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className="relative bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl w-full max-w-sm p-6"
+      >
+        <div className="flex flex-col items-center text-center gap-3">
+          <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-950 flex items-center justify-center">
+            <AlertTriangle size={20} className="text-red-500" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold">{t('admin.products.deleteTitle')}</h3>
+            <p className="text-xs text-gray-500 mt-1">
+              {t('admin.products.deleteConfirm')} <span className="font-medium text-gray-800 dark:text-gray-200">"{product?.name}"</span>?
+            </p>
+            <p className="text-xs text-gray-400 mt-1">{t('admin.products.deleteWarning')}</p>
+          </div>
+        </div>
+        <div className="flex gap-2 mt-5">
+          <button
+            onClick={onCancel}
+            className="flex-1 px-4 py-2 text-xs font-medium border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          >
+            {t('admin.common.cancel')}
+          </button>
+          <button
+            onClick={onConfirm}
+            className="flex-1 px-4 py-2 text-xs font-medium bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+          >
+            {t('admin.common.del')}
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  )
+}
 
 function ActionsMenu({ onEdit, onDelete, t }) {
   const [open, setOpen] = useState(false)
@@ -55,6 +97,7 @@ export default function ProductsAdmin() {
   const [editing, setEditing]     = useState(null)
   const [form, setForm]           = useState(EMPTY_PRODUCT_FORM)
   const [page, setPage]           = useState(1)
+  const [deleteTarget, setDeleteTarget] = useState(null)
   const PAGE_SIZE = 6
 
   const load = () => {
@@ -82,9 +125,9 @@ export default function ProductsAdmin() {
     setShowForm(true)
   }
 
-  const handleDelete = async (id) => {
-    if (!confirm('Delete this product?')) return
-    await productsApi.delete(id)
+  const handleDelete = async () => {
+    await productsApi.delete(deleteTarget._id || deleteTarget.id)
+    setDeleteTarget(null)
     load()
   }
 
@@ -161,13 +204,23 @@ export default function ProductsAdmin() {
               <span className="text-sm font-semibold shrink-0">MAD {p.price}</span>
               <ActionsMenu
                 onEdit={() => openEdit(p)}
-                onDelete={() => handleDelete(p._id || p.id)}
+                onDelete={() => setDeleteTarget(p)}
                 t={t}
               />
             </motion.div>
           ))}
         </div>
       )}
+
+      <AnimatePresence>
+        {deleteTarget && (
+          <DeleteModal
+            product={deleteTarget}
+            onConfirm={handleDelete}
+            onCancel={() => setDeleteTarget(null)}
+          />
+        )}
+      </AnimatePresence>
 
       {!loading && totalPages > 1 && (
         <div className="flex items-center justify-between mt-4">
