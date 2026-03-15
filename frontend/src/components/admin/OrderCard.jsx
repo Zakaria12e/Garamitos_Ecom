@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, ChevronDown, ChevronUp, User, MapPin, CreditCard, Box } from 'lucide-react'
 import { ordersApi } from '../../lib/api'
-import { STATUS_COLORS, ORDER_STATUSES } from '../../constants/admin'
+import { STATUS_COLORS, ALLOWED_TRANSITIONS } from '../../constants/admin'
 import { useTranslation } from 'react-i18next'
 
 export default function OrderCard({ order, onStatusChange }) {
@@ -44,15 +44,22 @@ export default function OrderCard({ order, onStatusChange }) {
           <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${STATUS_COLORS[status] || STATUS_COLORS.Processing}`}>
             {t(`orders.${status}`, status)}
           </span>
-          <div className="relative">
-            <select
-              value={status} onChange={e => handleStatus(e.target.value)} disabled={saving}
-              className="text-xs border border-gray-200 dark:border-gray-800 rounded px-2 py-1 bg-white dark:bg-black focus:outline-none disabled:opacity-50"
-            >
-              {ORDER_STATUSES.map(s => <option key={s} value={s}>{t(`orders.${s}`, s)}</option>)}
-            </select>
-            {saving && <Loader2 size={10} className="absolute right-6 top-1/2 -translate-y-1/2 animate-spin text-gray-400" />}
-          </div>
+          {ALLOWED_TRANSITIONS[status]?.length > 0 && (
+            <div className="relative">
+              <select
+                value=""
+                onChange={e => e.target.value && handleStatus(e.target.value)}
+                disabled={saving}
+                className="text-xs border border-gray-200 dark:border-gray-800 rounded px-2 py-1 bg-white dark:bg-black focus:outline-none disabled:opacity-50"
+              >
+                <option value="" disabled>{t(`orders.${status}`, status)}</option>
+                {ALLOWED_TRANSITIONS[status].map(s => (
+                  <option key={s} value={s}>{t(`orders.${s}`, s)}</option>
+                ))}
+              </select>
+              {saving && <Loader2 size={10} className="absolute right-6 top-1/2 -translate-y-1/2 animate-spin text-gray-400" />}
+            </div>
+          )}
         </div>
       </div>
 

@@ -18,3 +18,11 @@ export const EMPTY_PROMO_FORM = {
 }
 
 export const ORDER_STATUSES = ['Processing', 'Shipped', 'Delivered', 'Cancelled']
+
+// Which statuses can be transitioned to from the current one
+export const ALLOWED_TRANSITIONS = {
+  Processing: ['Shipped', 'Cancelled'],
+  Shipped:    ['Delivered', 'Cancelled'],
+  Delivered:  [],
+  Cancelled:  [],
+}
