@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Star, Loader2 } from 'lucide-react'
 import { reviewsApi } from '../../lib/api'
+import { useTranslation } from 'react-i18next'
 import RatingBar from './RatingBar'
 import ReviewCard from './ReviewCard'
 import ReviewForm from './ReviewForm'
@@ -12,6 +13,7 @@ export default function ReviewsSection({ productId, product, onReviewSubmitted }
   const [sort,     setSort]     = useState('newest')
   const [page,     setPage]     = useState(1)
   const [showForm, setShowForm] = useState(false)
+  const { t } = useTranslation()
 
   const load = (s = sort, p = page) => {
     setLoading(true)
@@ -43,12 +45,12 @@ export default function ReviewsSection({ productId, product, onReviewSubmitted }
   return (
     <section id="reviews-section" className="mt-16 border-t border-gray-200 dark:border-gray-800 pt-12">
       <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wider">Customer Reviews</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wider">{t('productPage.reviews.title')}</h2>
         <button
           onClick={() => setShowForm(v => !v)}
           className="text-xs bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-md font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
         >
-          {showForm ? 'Cancel' : 'Write a Review'}
+          {showForm ? t('productPage.reviews.cancel') : t('productPage.reviews.write')}
         </button>
       </div>
 
@@ -69,7 +71,7 @@ export default function ReviewsSection({ productId, product, onReviewSubmitted }
                 />
               ))}
             </div>
-            <span className="text-xs text-gray-400">{total} review{total !== 1 ? 's' : ''}</span>
+            <span className="text-xs text-gray-400">{t('productPage.reviews.count_other', { count: total })}</span>
           </div>
           <div className="md:col-span-2 flex flex-col justify-center gap-2 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
             {[5, 4, 3, 2, 1].map(n => (
@@ -95,17 +97,17 @@ export default function ReviewsSection({ productId, product, onReviewSubmitted }
       {total > 0 && (
         <div className="flex items-center justify-between mb-4">
           <p className="text-xs text-gray-500">
-            {data?.total || total} review{(data?.total || total) !== 1 ? 's' : ''}
+            {t('productPage.reviews.count_other', { count: data?.total || total })}
           </p>
           <select
             value={sort}
             onChange={e => handleSort(e.target.value)}
             className="text-xs border border-gray-200 dark:border-gray-800 rounded-md px-3 py-1.5 bg-white dark:bg-black focus:outline-none"
           >
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="highest">Highest Rated</option>
-            <option value="lowest">Lowest Rated</option>
+            <option value="newest">{t('productPage.reviews.sort.newest')}</option>
+            <option value="oldest">{t('productPage.reviews.sort.oldest')}</option>
+            <option value="highest">{t('productPage.reviews.sort.highest')}</option>
+            <option value="lowest">{t('productPage.reviews.sort.lowest')}</option>
           </select>
         </div>
       )}
@@ -117,14 +119,14 @@ export default function ReviewsSection({ productId, product, onReviewSubmitted }
       ) : !data || data.reviews.length === 0 ? (
         <div className="text-center py-12 border border-dashed border-gray-200 dark:border-gray-800 rounded-xl">
           <Star size={28} className="mx-auto text-yellow-300 dark:text-yellow-700 mb-3" />
-          <p className="text-sm text-gray-400">No reviews yet</p>
-          <p className="text-xs text-gray-400 mt-1">Be the first to review this product</p>
+          <p className="text-sm text-gray-400">{t('productPage.reviews.noReviews')}</p>
+          <p className="text-xs text-gray-400 mt-1">{t('productPage.reviews.beFirst')}</p>
           {!showForm && (
             <button
               onClick={() => setShowForm(true)}
               className="mt-4 text-xs bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-md font-medium"
             >
-              Write a Review
+              {t('productPage.reviews.write')}
             </button>
           )}
         </div>
