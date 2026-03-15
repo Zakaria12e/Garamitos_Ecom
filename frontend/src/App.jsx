@@ -14,6 +14,7 @@ import ProductPage   from './pages/ProductPage'
 import CartPage      from './pages/CartPage'
 import WishlistPage  from './pages/WishlistPage'
 import CheckoutPage  from './pages/CheckoutPage'
+import OrdersPage    from './pages/OrdersPage'
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="/cart"       element={<PageWrapper><CartPage /></PageWrapper>} />
               <Route path="/wishlist"   element={<PageWrapper><WishlistPage /></PageWrapper>} />
               <Route path="/checkout"  element={<PageWrapper><CheckoutPage /></PageWrapper>} />
+              <Route path="/orders"   element={<PageWrapper><OrdersPage /></PageWrapper>} />
               <Route path="/login"     element={<PageWrapper><AuthPage /></PageWrapper>} />
               <Route path="/admin/*"    element={<PageWrapper><AdminPage /></PageWrapper>} />
               <Route path="/settings"  element={<PageWrapper><SettingsPage /></PageWrapper>} />
