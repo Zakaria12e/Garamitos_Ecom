@@ -54,7 +54,7 @@ function SectionCard({ icon: Icon, title, children }) {
 }
 
 export default function SettingsPage() {
-  const { user, setUser } = useAuth()
+  const { user, updateProfile } = useAuth()
   const { i18n } = useTranslation()
 
   const [profile, setProfile]             = useState({ name: user?.name || '', email: user?.email || '' })
@@ -74,8 +74,7 @@ export default function SettingsPage() {
     setProfileError('')
     setProfileSaving(true)
     try {
-      const res = await authApi.updateMe({ name: profile.name, email: profile.email })
-      if (setUser) setUser(res.user)
+      await updateProfile({ name: profile.name, email: profile.email })
       setProfileSaved(true)
       setTimeout(() => setProfileSaved(false), 2500)
     } catch (err) {
