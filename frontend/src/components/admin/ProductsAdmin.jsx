@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Plus, Pencil, Trash2, MoreVertical } from 'lucide-react'
 import { Skeleton } from '../ui/Skeleton'
@@ -54,6 +54,8 @@ export default function ProductsAdmin() {
   const [showForm, setShowForm]   = useState(false)
   const [editing, setEditing]     = useState(null)
   const [form, setForm]           = useState(EMPTY_PRODUCT_FORM)
+  const [page, setPage]           = useState(1)
+  const PAGE_SIZE = 6
 
   const load = () => {
     setLoading(true)
@@ -69,6 +71,9 @@ export default function ProductsAdmin() {
       .finally(() => setLoading(false))
   }
   useEffect(load, [])
+
+  const totalPages = Math.max(1, Math.ceil(products.length / PAGE_SIZE))
+  const paginated  = useMemo(() => products.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), [products, page])
 
   const openNew  = () => { setEditing(null); setForm(EMPTY_PRODUCT_FORM); setShowForm(true) }
   const openEdit = (p) => {
@@ -142,7 +147,7 @@ export default function ProductsAdmin() {
         </div>
       ) : (
         <div className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
-          {products.map((p, i) => (
+          {paginated.map((p, i) => (
             <motion.div
               key={p.id}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.02 }}
@@ -161,6 +166,43 @@ export default function ProductsAdmin() {
               />
             </motion.div>
           ))}
+        </div>
+      )}
+
+      {!loading && totalPages > 1 && (
+        <div className="flex items-center justify-between mt-4">
+          <p className="text-xs text-gray-400">
+            {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, products.length)} of {products.length}
+          </p>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="px-3 py-1.5 text-xs border border-gray-200 dark:border-gray-700 rounded-lg disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              ←
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
+              <button
+                key={n}
+                onClick={() => setPage(n)}
+                className={`w-7 h-7 text-xs rounded-lg transition-colors ${
+                  n === page
+                    ? 'bg-black dark:bg-white text-white dark:text-black font-medium'
+                    : 'border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'
+                }`}
+              >
+                {n}
+              </button>
+            ))}
+            <button
+              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              className="px-3 py-1.5 text-xs border border-gray-200 dark:border-gray-700 rounded-lg disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              →
+            </button>
+          </div>
         </div>
       )}
     </motion.div>
