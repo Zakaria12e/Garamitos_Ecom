@@ -8,7 +8,7 @@
     "login": "Login"
   },
   "header": {
-    "search": "Search cameras, security..."
+    "search": "Search tools, materials, hardware..."
   },
   "auth": {
     "logout": "Sign Out",
@@ -192,15 +192,15 @@
     }
   },
   "footer": {
-    "tagline": "Premium surveillance and smart home tech for professionals and enthusiasts.",
+    "tagline": "Your one-stop shop for construction materials, hardware, and droguerie supplies.",
     "shopTitle": "Shop",
     "accountTitle": "Account",
     "copyright": "All rights reserved.",
     "categories": {
-      "surveillance": "Surveillance Cameras",
-      "drones": "Drones",
-      "smartHome": "Smart Home",
-      "audio": "Audio Equipment"
+      "tools": "Power Tools",
+      "plumbing": "Plumbing",
+      "electrical": "Electrical",
+      "paint": "Paint & Finishing"
     },
     "links": {
       "orders": "Orders",
@@ -239,6 +239,47 @@
     "create": "Create",
     "search": "Search",
     "noResults": "No results found"
+  },
+  "home": {
+    "hero": {
+      "badge": "Construction & Hardware Supplies — 2025",
+      "title": "Build With",
+      "titleHighlight": "Confidence.",
+      "subtitle": "Professional-grade tools, construction materials, plumbing, electrical supplies, and droguerie products for contractors and DIY enthusiasts.",
+      "shopBtn": "Shop Now",
+      "viewProducts": "Browse Products"
+    },
+    "sections": {
+      "categories": "Categories",
+      "spotlight": "🔨 Top Picks",
+      "featured": "Featured Products",
+      "newArrivals": "🆕 New Arrivals",
+      "viewAll": "View All",
+      "all": "All"
+    },
+    "trust": {
+      "warrantyTitle": "Quality Guarantee",
+      "warrantyDesc": "All products quality-checked",
+      "shippingTitle": "Free Shipping",
+      "shippingDesc": "On orders over {{amount}} {{currency}}",
+      "returnsTitle": "30-Day Returns",
+      "returnsDesc": "Hassle-free returns"
+    },
+    "reviews": {
+      "title": "What Our Customers Say"
+    },
+    "stats": {
+      "products": "Products",
+      "brands": "Brands",
+      "customers": "Happy Customers",
+      "support": "Support"
+    },
+    "newsletter": {
+      "title": "Stay in the Loop",
+      "subtitle": "Get notified about new arrivals and exclusive deals.",
+      "placeholder": "Your email address",
+      "btn": "Subscribe"
+    }
   },
   "wishlist": {
     "title": "Wishlist ({{count}})",

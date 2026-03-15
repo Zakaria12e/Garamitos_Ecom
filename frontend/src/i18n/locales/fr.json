@@ -8,7 +8,7 @@
     "login": "Connexion"
   },
   "header": {
-    "search": "Rechercher caméras, sécurité..."
+    "search": "Rechercher outils, matériaux, quincaillerie..."
   },
   "auth": {
     "logout": "Déconnexion",
@@ -192,15 +192,15 @@
     }
   },
   "footer": {
-    "tagline": "Technologie de surveillance et maison connectée haut de gamme pour professionnels et passionnés.",
+    "tagline": "Votre référence en matériaux de construction, quincaillerie et produits de droguerie.",
     "shopTitle": "Boutique",
     "accountTitle": "Compte",
     "copyright": "Tous droits réservés.",
     "categories": {
-      "surveillance": "Caméras de surveillance",
-      "drones": "Drones",
-      "smartHome": "Maison intelligente",
-      "audio": "Équipement audio"
+      "tools": "Outillage électroportatif",
+      "plumbing": "Plomberie",
+      "electrical": "Électricité",
+      "paint": "Peinture & Finition"
     },
     "links": {
       "orders": "Commandes",
@@ -239,6 +239,47 @@
     "create": "Créer",
     "search": "Rechercher",
     "noResults": "Aucun résultat"
+  },
+  "home": {
+    "hero": {
+      "badge": "Fournitures Construction & Droguerie — 2025",
+      "title": "Construisez Avec",
+      "titleHighlight": "Confiance.",
+      "subtitle": "Outils professionnels, matériaux de construction, plomberie, électricité et produits de droguerie pour les professionnels et les bricoleurs.",
+      "shopBtn": "Acheter",
+      "viewProducts": "Voir les produits"
+    },
+    "sections": {
+      "categories": "Catégories",
+      "spotlight": "🔨 Coups de Cœur",
+      "featured": "Produits Phares",
+      "newArrivals": "🆕 Nouveautés",
+      "viewAll": "Voir tout",
+      "all": "Tout"
+    },
+    "trust": {
+      "warrantyTitle": "Garantie Qualité",
+      "warrantyDesc": "Tous les produits contrôlés",
+      "shippingTitle": "Livraison Gratuite",
+      "shippingDesc": "Dès {{amount}} {{currency}}",
+      "returnsTitle": "Retours sous 30 jours",
+      "returnsDesc": "Retours sans tracas"
+    },
+    "reviews": {
+      "title": "Ce Que Disent Nos Clients"
+    },
+    "stats": {
+      "products": "Produits",
+      "brands": "Marques",
+      "customers": "Clients Satisfaits",
+      "support": "Support"
+    },
+    "newsletter": {
+      "title": "Restez Informé",
+      "subtitle": "Recevez les nouveautés et offres exclusives.",
+      "placeholder": "Votre adresse e-mail",
+      "btn": "S'abonner"
+    }
   },
   "wishlist": {
     "title": "Favoris ({{count}})",
