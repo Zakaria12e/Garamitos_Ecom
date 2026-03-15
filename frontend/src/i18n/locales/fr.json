@@ -125,7 +125,8 @@
       "products": "Produits",
       "categories": "Catégories",
       "orders": "Commandes",
-      "shipping": "Livraison"
+      "shipping": "Livraison",
+      "users": "Utilisateurs"
     },
     "dashboard": {
       "title": "Tableau de bord",

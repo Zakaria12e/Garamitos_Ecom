@@ -125,7 +125,8 @@
       "products": "Products",
       "categories": "Categories",
       "orders": "Orders",
-      "shipping": "Shipping"
+      "shipping": "Shipping",
+      "users": "Users"
     },
     "dashboard": {
       "title": "Dashboard",

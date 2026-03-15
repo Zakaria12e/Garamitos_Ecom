@@ -125,7 +125,8 @@
       "products": "المنتجات",
       "categories": "الفئات",
       "orders": "الطلبات",
-      "shipping": "الشحن"
+      "shipping": "الشحن",
+      "users": "المستخدمون"
     },
     "dashboard": {
       "title": "الرئيسية",

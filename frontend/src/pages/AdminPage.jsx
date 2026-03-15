@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Navigate, Link, Routes, Route, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Package, ShoppingBag, Settings, Tag, ChevronLeft } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingBag, Settings, Tag, Users, ChevronLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,7 @@ import ProductsAdmin    from '../components/admin/ProductsAdmin'
 import OrdersAdmin      from '../components/admin/OrdersAdmin'
 import ShippingAdmin    from '../components/admin/ShippingAdmin'
 import CategoriesAdmin  from '../components/admin/CategoriesAdmin'
+import UsersAdmin       from '../components/admin/UsersAdmin'
 
 export default function AdminPage() {
   const { user, loading } = useAuth()
@@ -23,6 +24,7 @@ export default function AdminPage() {
     { to: '/admin/categories', label: t('admin.nav.categories'), icon: Tag },
     { to: '/admin/orders',     label: t('admin.nav.orders'),     icon: ShoppingBag },
     { to: '/admin/shipping',   label: t('admin.nav.shipping'),   icon: Settings },
+    { to: '/admin/users',      label: t('admin.nav.users'),      icon: Users },
   ]
 
   if (loading) return (
@@ -143,6 +145,7 @@ export default function AdminPage() {
           <Route path="categories" element={<CategoriesAdmin />} />
           <Route path="orders"     element={<OrdersAdmin />} />
           <Route path="shipping"   element={<ShippingAdmin />} />
+          <Route path="users"      element={<UsersAdmin />} />
         </Routes>
       </main>
     </div>
