@@ -194,6 +194,26 @@
       "cart": "Panier"
     }
   },
+  "catalog": {
+    "allProducts": "Tous les produits",
+    "resultsFor": "Résultats pour \"{{query}}\"",
+    "products": "{{count}} produits",
+    "filters": "Filtres",
+    "clearFilters": "Effacer les filtres",
+    "categories": "Catégories",
+    "brands": "Marques",
+    "priceRange": "Fourchette de prix",
+    "min": "Min",
+    "max": "Max",
+    "noProducts": "Aucun produit trouvé",
+    "sort": {
+      "newest": "Plus récent",
+      "name": "Nom A–Z",
+      "price_asc": "Prix : croissant",
+      "price_desc": "Prix : décroissant",
+      "rating": "Mieux notés"
+    }
+  },
   "common": {
     "loading": "Chargement...",
     "save": "Enregistrer",

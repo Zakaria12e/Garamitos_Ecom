@@ -194,6 +194,26 @@
       "cart": "السلة"
     }
   },
+  "catalog": {
+    "allProducts": "جميع المنتجات",
+    "resultsFor": "نتائج \"{{query}}\"",
+    "products": "{{count}} منتج",
+    "filters": "الفلاتر",
+    "clearFilters": "مسح الفلاتر",
+    "categories": "الفئات",
+    "brands": "الماركات",
+    "priceRange": "نطاق السعر",
+    "min": "الأدنى",
+    "max": "الأقصى",
+    "noProducts": "لا توجد منتجات",
+    "sort": {
+      "newest": "الأحدث",
+      "name": "الاسم أ-ي",
+      "price_asc": "السعر: من الأقل",
+      "price_desc": "السعر: من الأعلى",
+      "rating": "الأعلى تقييماً"
+    }
+  },
   "common": {
     "loading": "جاري التحميل...",
     "save": "حفظ",

@@ -194,6 +194,26 @@
       "cart": "Cart"
     }
   },
+  "catalog": {
+    "allProducts": "All Products",
+    "resultsFor": "Results for \"{{query}}\"",
+    "products": "{{count}} products",
+    "filters": "Filters",
+    "clearFilters": "Clear filters",
+    "categories": "Categories",
+    "brands": "Brands",
+    "priceRange": "Price Range",
+    "min": "Min",
+    "max": "Max",
+    "noProducts": "No products found",
+    "sort": {
+      "newest": "Newest",
+      "name": "Name A–Z",
+      "price_asc": "Price: Low to High",
+      "price_desc": "Price: High to Low",
+      "rating": "Top Rated"
+    }
+  },
   "common": {
     "loading": "Loading...",
     "save": "Save",
