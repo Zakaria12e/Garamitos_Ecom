@@ -100,7 +100,43 @@ export default function CartPage() {
         </div>
 
         <div className="space-y-4">
-          {/* Summary and promo will be added next */}
+          {/* Order summary */}
+          <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+            <h2 className="text-sm font-semibold mb-4">Order Summary</h2>
+            <div className="space-y-2 text-xs mb-4">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Subtotal</span>
+                <span>{subtotal.toFixed(2)} MAD</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Shipping</span>
+                <span className={shipping === 0 ? 'text-green-600 dark:text-green-400 font-medium' : ''}>
+                  {settingsLoading ? '…' : shipping === 0 ? 'Free' : shipping.toFixed(2) + ' MAD'}
+                </span>
+              </div>
+              {state.discount > 0 && (
+                <div className="flex justify-between text-green-600 dark:text-green-400">
+                  <span>Discount ({state.promoCode?.code})</span>
+                  <span>-{state.discount.toFixed(2)} MAD</span>
+                </div>
+              )}
+            </div>
+            <div className="border-t border-gray-200 dark:border-gray-800 pt-3 flex justify-between font-semibold text-sm mb-4">
+              <span>Total</span>
+              <span>{total.toFixed(2)} MAD</span>
+            </div>
+            <button
+              onClick={() => navigate('/checkout')}
+              className="w-full bg-black dark:bg-white text-white dark:text-black py-2.5 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+            >
+              Checkout
+            </button>
+            {!settingsLoading && toFree > 0 && (
+              <p className="text-[10px] text-gray-400 text-center mt-2">
+                Free shipping on orders over {settings.freeShippingAt} MAD
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
