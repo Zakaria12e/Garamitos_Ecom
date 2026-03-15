@@ -125,7 +125,10 @@
       "none": "لا يوجد",
       "active": "نشط",
       "inactive": "غير نشط",
-      "parent": "الأم"
+      "parent": "الأم",
+      "deleteTitle": "حذف الفئة",
+      "deleteConfirm": "هل أنت متأكد من حذف",
+      "deleteWarning": "لا يمكن التراجع عن هذا الإجراء."
     },
     "shipping": {
       "title": "إعدادات الشحن",

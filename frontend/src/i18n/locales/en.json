@@ -125,7 +125,10 @@
       "none": "None",
       "active": "active",
       "inactive": "inactive",
-      "parent": "parent"
+      "parent": "parent",
+      "deleteTitle": "Delete Category",
+      "deleteConfirm": "Are you sure you want to delete",
+      "deleteWarning": "This action cannot be undone."
     },
     "shipping": {
       "title": "Shipping Settings",
