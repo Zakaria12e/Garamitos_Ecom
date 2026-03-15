@@ -81,7 +81,7 @@ export default function ProductPage() {
 
         {/* Gallery */}
         <div>
-          <div className="aspect-square border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-950 mb-3">
+          <div className="aspect-[3/2] border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-950 mb-3">
             <motion.img
               key={activeImg}
               initial={{ opacity: 0 }}
