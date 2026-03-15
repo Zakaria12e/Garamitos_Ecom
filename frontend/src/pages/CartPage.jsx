@@ -5,11 +5,13 @@ import { Trash2, Plus, Minus, Tag, X, Loader2, Truck } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { useSettings } from '../context/SettingsContext'
 import { promoApi } from '../lib/api'
+import { useTranslation } from 'react-i18next'
 
 export default function CartPage() {
   const { state, dispatch } = useApp()
   const { settings, loading: settingsLoading, calcShipping } = useSettings()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [promoInput, setPromoInput] = useState('')
   const [promoError, setPromoError] = useState('')
   const [promoLoading, setPromoLoading] = useState(false)
@@ -28,7 +30,7 @@ export default function CartPage() {
       dispatch({ type: 'APPLY_PROMO', promo: data.promo, discount: data.promo.discount })
       setPromoInput('')
     } catch (err) {
-      setPromoError(err.message || 'Invalid promo code')
+      setPromoError(err.message || t('cart.invalidPromo'))
     } finally {
       setPromoLoading(false)
     }
@@ -36,9 +38,9 @@ export default function CartPage() {
 
   if (state.cart.length === 0) return (
     <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-      <p className="text-sm text-gray-400 mb-4">Your cart is empty</p>
+      <p className="text-sm text-gray-400 mb-4">{t('cart.empty')}</p>
       <Link to="/catalog" className="inline-flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-md text-sm font-medium">
-        Browse Products
+        {t('cart.browseProducts')}
       </Link>
     </div>
   )
@@ -46,7 +48,7 @@ export default function CartPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-lg font-semibold mb-6">
-        Shopping Cart ({state.cart.reduce((s, i) => s + i.qty, 0)} items)
+        {t('cart.titleCount', { count: state.cart.reduce((s, i) => s + i.qty, 0) })}
       </h1>
 
       {/* Free shipping progress */}
@@ -59,7 +61,7 @@ export default function CartPage() {
           <Truck size={15} className="text-gray-400 shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-xs text-gray-600 dark:text-gray-400 mb-1.5">
-              Add <span className="font-semibold text-black dark:text-white">{toFree.toFixed(2)} MAD</span> more for free shipping
+              {t('cart.freeShippingProgress', { amount: toFree.toFixed(2) })}
             </p>
             <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
               <motion.div
@@ -79,7 +81,7 @@ export default function CartPage() {
           className="mb-6 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 rounded-lg p-3 flex items-center gap-2"
         >
           <Truck size={15} className="text-green-600 dark:text-green-400" />
-          <p className="text-xs text-green-700 dark:text-green-400 font-medium">🎉 You've unlocked free shipping!</p>
+          <p className="text-xs text-green-700 dark:text-green-400 font-medium">{t('cart.freeShippingUnlocked')}</p>
         </motion.div>
       )}
 
@@ -136,45 +138,45 @@ export default function CartPage() {
         <div className="space-y-4">
           {/* Order summary */}
           <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-4">
-            <h2 className="text-sm font-semibold mb-4">Order Summary</h2>
+            <h2 className="text-sm font-semibold mb-4">{t('cart.orderSummary')}</h2>
             <div className="space-y-2 text-xs mb-4">
               <div className="flex justify-between">
-                <span className="text-gray-500">Subtotal</span>
+                <span className="text-gray-500">{t('cart.subtotal')}</span>
                 <span>{subtotal.toFixed(2)} MAD</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Shipping</span>
+                <span className="text-gray-500">{t('cart.shipping')}</span>
                 <span className={shipping === 0 ? 'text-green-600 dark:text-green-400 font-medium' : ''}>
-                  {settingsLoading ? '…' : shipping === 0 ? 'Free' : shipping.toFixed(2) + ' MAD'}
+                  {settingsLoading ? '…' : shipping === 0 ? t('cart.free') : shipping.toFixed(2) + ' MAD'}
                 </span>
               </div>
               {state.discount > 0 && (
                 <div className="flex justify-between text-green-600 dark:text-green-400">
-                  <span>Discount ({state.promoCode?.code})</span>
+                  <span>{t('cart.discount')} ({state.promoCode?.code})</span>
                   <span>-{state.discount.toFixed(2)} MAD</span>
                 </div>
               )}
             </div>
             <div className="border-t border-gray-200 dark:border-gray-800 pt-3 flex justify-between font-semibold text-sm mb-4">
-              <span>Total</span>
+              <span>{t('cart.total')}</span>
               <span>{total.toFixed(2)} MAD</span>
             </div>
             <button
               onClick={() => navigate('/checkout')}
               className="w-full bg-black dark:bg-white text-white dark:text-black py-2.5 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
             >
-              Checkout
+              {t('cart.checkout')}
             </button>
             {!settingsLoading && toFree > 0 && (
               <p className="text-[10px] text-gray-400 text-center mt-2">
-                Free shipping on orders over {settings.freeShippingAt} MAD
+                {t('cart.freeShippingNote', { amount: settings.freeShippingAt })}
               </p>
             )}
           </div>
           {/* Promo code */}
           <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-4">
             <h3 className="text-xs font-semibold mb-3 flex items-center gap-1.5">
-              <Tag size={12} /> Promo Code
+              <Tag size={12} /> {t('cart.promoCode')}
             </h3>
             {state.promoCode ? (
               <div className="flex items-center justify-between bg-green-50 dark:bg-green-950 rounded-md px-3 py-2">
@@ -192,7 +194,7 @@ export default function CartPage() {
                   value={promoInput}
                   onChange={e => setPromoInput(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && applyPromo()}
-                  placeholder="Enter code"
+                  placeholder={t('cart.enterCode')}
                   className="flex-1 text-xs border border-gray-200 dark:border-gray-800 rounded-md px-3 py-1.5 bg-transparent focus:outline-none focus:border-black dark:focus:border-white"
                 />
                 <button
@@ -200,7 +202,7 @@ export default function CartPage() {
                   disabled={promoLoading}
                   className="text-xs bg-black dark:bg-white text-white dark:text-black px-3 py-1.5 rounded-md font-medium flex items-center gap-1 disabled:opacity-50"
                 >
-                  {promoLoading ? <Loader2 size={11} className="animate-spin" /> : 'Apply'}
+                  {promoLoading ? <Loader2 size={11} className="animate-spin" /> : t('cart.apply')}
                 </button>
               </div>
             )}

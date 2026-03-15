@@ -38,7 +38,7 @@
     "free": "Gratuit",
     "checkout": "Commander",
     "remove": "Supprimer",
-    "freeShippingProgress": "Ajoutez <strong>{{amount}} MAD</strong> pour la livraison gratuite",
+    "freeShippingProgress": "Ajoutez {{amount}} MAD pour la livraison gratuite",
     "freeShippingUnlocked": "🎉 Vous avez débloqué la livraison gratuite !",
     "freeShippingNote": "Livraison gratuite dès {{amount}} MAD",
     "orderSummary": "Récapitulatif",

@@ -38,7 +38,7 @@
     "free": "Free",
     "checkout": "Checkout",
     "remove": "Remove",
-    "freeShippingProgress": "Add <strong>{{amount}} MAD</strong> more for free shipping",
+    "freeShippingProgress": "Add {{amount}} MAD more for free shipping",
     "freeShippingUnlocked": "🎉 You've unlocked free shipping!",
     "freeShippingNote": "Free shipping on orders over {{amount}} MAD",
     "orderSummary": "Order Summary",

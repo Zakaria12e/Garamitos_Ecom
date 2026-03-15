@@ -38,7 +38,7 @@
     "free": "مجاني",
     "checkout": "إتمام الشراء",
     "remove": "إزالة",
-    "freeShippingProgress": "أضف <strong>{{amount}} درهم</strong> للحصول على شحن مجاني",
+    "freeShippingProgress": "أضف {{amount}} درهم للحصول على شحن مجاني",
     "freeShippingUnlocked": "🎉 لقد حصلت على شحن مجاني!",
     "freeShippingNote": "شحن مجاني للطلبات فوق {{amount}} درهم",
     "orderSummary": "ملخص الطلب",
