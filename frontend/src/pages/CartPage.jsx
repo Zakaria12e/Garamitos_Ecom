@@ -49,6 +49,40 @@ export default function CartPage() {
         Shopping Cart ({state.cart.reduce((s, i) => s + i.qty, 0)} items)
       </h1>
 
+      {/* Free shipping progress */}
+      {!settingsLoading && toFree > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 border border-gray-200 dark:border-gray-800 rounded-lg p-3 flex items-center gap-3"
+        >
+          <Truck size={15} className="text-gray-400 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mb-1.5">
+              Add <span className="font-semibold text-black dark:text-white">{toFree.toFixed(2)} MAD</span> more for free shipping
+            </p>
+            <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-black dark:bg-white rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${Math.min(100, (subtotal / settings.freeShippingAt) * 100)}%` }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              />
+            </div>
+          </div>
+        </motion.div>
+      )}
+      {!settingsLoading && toFree === 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-6 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 rounded-lg p-3 flex items-center gap-2"
+        >
+          <Truck size={15} className="text-green-600 dark:text-green-400" />
+          <p className="text-xs text-green-700 dark:text-green-400 font-medium">🎉 You've unlocked free shipping!</p>
+        </motion.div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart items */}
         <div className="lg:col-span-2 space-y-3">
