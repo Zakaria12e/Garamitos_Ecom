@@ -95,13 +95,13 @@ export default function UsersAdmin() {
           <h2 className="text-sm font-semibold">{t('admin.users.title')}</h2>
           <span className="text-[10px] font-semibold bg-black dark:bg-white text-white dark:text-black px-2 py-0.5 rounded-full">{total}</span>
         </div>
-        <div className="relative">
+        <div className="relative w-full sm:w-56">
           <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             value={search}
             onChange={handleSearch}
             placeholder={t('admin.users.searchPlaceholder')}
-            className="pl-8 pr-3 py-1.5 text-xs border border-gray-200 dark:border-gray-800 rounded-md focus:outline-none focus:border-black dark:focus:border-white w-56 bg-transparent transition-colors"
+            className="pl-8 pr-3 py-1.5 text-xs border border-gray-200 dark:border-gray-800 rounded-md focus:outline-none focus:border-black dark:focus:border-white w-full bg-transparent transition-colors"
           />
         </div>
       </div>
@@ -113,9 +113,9 @@ export default function UsersAdmin() {
             <thead className="border-b border-gray-200 dark:border-gray-800">
               <tr>
                 <th className="text-left px-4 py-3 font-semibold">{t('admin.users.name')}</th>
-                <th className="text-left px-4 py-3 font-semibold">{t('admin.users.email')}</th>
+                <th className="hidden sm:table-cell text-left px-4 py-3 font-semibold">{t('admin.users.email')}</th>
                 <th className="text-left px-4 py-3 font-semibold">{t('admin.users.role')}</th>
-                <th className="text-left px-4 py-3 font-semibold">{t('admin.users.joined')}</th>
+                <th className="hidden sm:table-cell text-left px-4 py-3 font-semibold">{t('admin.users.joined')}</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -124,9 +124,9 @@ export default function UsersAdmin() {
                 Array.from({ length: 6 }).map((_, i) => (
                   <tr key={i}>
                     <td className="px-4 py-3"><div className="flex items-center gap-2"><Skeleton className="w-7 h-7 rounded-full shrink-0" /><Skeleton className="h-3 w-28" /></div></td>
-                    <td className="px-4 py-3"><Skeleton className="h-3 w-40" /></td>
+                    <td className="hidden sm:table-cell px-4 py-3"><Skeleton className="h-3 w-40" /></td>
                     <td className="px-4 py-3"><Skeleton className="h-5 w-16 rounded-full" /></td>
-                    <td className="px-4 py-3"><Skeleton className="h-3 w-20" /></td>
+                    <td className="hidden sm:table-cell px-4 py-3"><Skeleton className="h-3 w-20" /></td>
                     <td className="px-4 py-3"><Skeleton className="h-6 w-6 rounded" /></td>
                   </tr>
                 ))
@@ -143,14 +143,20 @@ export default function UsersAdmin() {
                         <div className="w-7 h-7 rounded-full bg-black dark:bg-white flex items-center justify-center shrink-0">
                           <span className="text-[10px] font-bold text-white dark:text-black">{u.name?.[0]?.toUpperCase()}</span>
                         </div>
-                        <span className="font-medium truncate max-w-[140px]">{u.name}</span>
-                        {u._id === me?._id && (
-                          <span className="text-[9px] font-semibold text-blue-500 border border-blue-300 dark:border-blue-700 px-1.5 py-0.5 rounded-full">you</span>
-                        )}
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-medium truncate max-w-[120px]">{u.name}</span>
+                            {u._id === me?._id && (
+                              <span className="text-[9px] font-semibold text-blue-500 border border-blue-300 dark:border-blue-700 px-1.5 py-0.5 rounded-full shrink-0">you</span>
+                            )}
+                          </div>
+                          {/* Email shown below name on mobile only */}
+                          <p className="sm:hidden text-[10px] text-gray-400 truncate max-w-[150px] mt-0.5">{u.email}</p>
+                        </div>
                       </div>
                     </td>
-                    {/* Email */}
-                    <td className="px-4 py-3 truncate max-w-[180px]">{u.email}</td>
+                    {/* Email — desktop only */}
+                    <td className="hidden sm:table-cell px-4 py-3 truncate max-w-[180px]">{u.email}</td>
                     {/* Role badge + toggle */}
                     <td className="px-4 py-3">
                       <button
@@ -169,8 +175,8 @@ export default function UsersAdmin() {
                         {u.role === 'admin' ? t('admin.users.roleAdmin') : t('admin.users.roleUser')}
                       </button>
                     </td>
-                    {/* Joined */}
-                    <td className="px-4 py-3 text-sm">{new Date(u.createdAt).toLocaleDateString()}</td>
+                    {/* Joined — desktop only */}
+                    <td className="hidden sm:table-cell px-4 py-3 text-sm">{new Date(u.createdAt).toLocaleDateString()}</td>
                     {/* Delete */}
                     <td className="px-4 py-3">
                       <button
