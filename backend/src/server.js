@@ -15,6 +15,7 @@ import userRoutes     from './routes/users.js'
 import settingsRoutes  from './routes/settings.js'
 import reviewRoutes    from './routes/reviews.js'
 import categoryRoutes  from './routes/categories.js'
+import salesRoutes     from './routes/sales.js'
 
 
 await connectDB()
@@ -70,6 +71,7 @@ app.use('/api/users',    userRoutes)
 app.use('/api/settings',    settingsRoutes)
 app.use('/api/categories',  categoryRoutes)
 app.use('/api/products/:productId/reviews', reviewRoutes)
+app.use('/api/sales', salesRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
