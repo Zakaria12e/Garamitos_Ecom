@@ -111,6 +111,15 @@ export const categoriesApi = {
   delete: (id)         => request(`/categories/${id}`, { method: 'DELETE' }),
 }
 
+// ── Sales ──────────────────────────────────────────────────
+export const salesApi = {
+  active: ()           => request('/sales/active'),
+  list:   ()           => request('/sales'),
+  create: (body)       => request('/sales',      { method: 'POST',   body }),
+  update: (id, body)   => request(`/sales/${id}`, { method: 'PUT',    body }),
+  delete: (id)         => request(`/sales/${id}`, { method: 'DELETE' }),
+}
+
 // ── Shipping / Site Settings ───────────────────────────────
 export const settingsApi = {
   get:  ()     => request('/settings'),
