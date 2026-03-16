@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AppProvider } from './context/AppContext'
+import { SaleProvider } from './context/SaleContext'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import HomePage from './pages/HomePage'
@@ -33,6 +34,7 @@ export default function App() {
   const pageKey = '/' + location.pathname.split('/')[1]
   return (
     <AppProvider>
+      <SaleProvider>
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1">
@@ -55,6 +57,7 @@ export default function App() {
         <Footer />
         <Analytics />
       </div>
+      </SaleProvider>
     </AppProvider>
   )
 }

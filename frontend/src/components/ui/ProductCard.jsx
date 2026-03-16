@@ -3,11 +3,17 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Heart, BarChart2, ShoppingCart, Star } from 'lucide-react'
 import { useApp } from '../../context/AppContext'
+import { useSale } from '../../context/SaleContext'
 import { useTranslation } from 'react-i18next'
 
 export default function ProductCard({ product }) {
   const { state, dispatch } = useApp()
+  const { activeSale } = useSale()
   const { t } = useTranslation()
+
+  const salePrice = activeSale
+    ? Math.round(product.price * (1 - activeSale.discount / 100) * 100) / 100
+    : null
   const inWishlist = state.wishlist.some(i => i.id === product.id)
   const inCompare = state.compareList.some(i => i.id === product.id)
   const inCart = state.cart.some(i => i.id === product.id)
@@ -16,7 +22,11 @@ export default function ProductCard({ product }) {
     <div className="group border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-600 transition-colors bg-white dark:bg-black">
       <Link to={`/product/${product.id}`} className="block relative aspect-square overflow-hidden bg-gray-50 dark:bg-gray-950">
         <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-        {product.originalPrice > product.price && (
+        {activeSale ? (
+          <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
+            -{activeSale.discount}%
+          </span>
+        ) : product.originalPrice > product.price && (
           <span className="absolute top-2 left-2 bg-black dark:bg-white text-white dark:text-black text-[10px] font-semibold px-2 py-0.5 rounded">
             -{Math.round((1 - product.price / product.originalPrice) * 100)}%
           </span>
@@ -40,9 +50,18 @@ export default function ProductCard({ product }) {
           <span className="text-[10px] text-gray-400">({product.reviews})</span>
         </div>
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-sm font-semibold">{product.price} {t('common.currency')}</span>
-          {product.originalPrice > product.price && (
-            <span className="text-xs text-gray-400 line-through">{product.originalPrice} {t('common.currency')}</span>
+          {salePrice ? (
+            <>
+              <span className="text-sm font-semibold text-red-500">{salePrice} {t('common.currency')}</span>
+              <span className="text-xs text-gray-400 line-through">{product.price} {t('common.currency')}</span>
+            </>
+          ) : (
+            <>
+              <span className="text-sm font-semibold">{product.price} {t('common.currency')}</span>
+              {product.originalPrice > product.price && (
+                <span className="text-xs text-gray-400 line-through">{product.originalPrice} {t('common.currency')}</span>
+              )}
+            </>
           )}
         </div>
         <div className="flex items-center gap-1.5">
