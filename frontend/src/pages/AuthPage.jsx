@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Shield, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { useTranslation } from 'react-i18next'
 
 const Field = ({ label, type = 'text', show, onToggle, ...props }) => (
   <div>
@@ -30,6 +31,7 @@ export default function AuthPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { login, register, user } = useAuth()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   useEffect(() => { if (user) navigate('/') }, [user])
@@ -44,7 +46,7 @@ export default function AuthPage() {
       if (mode === 'login') {
         await login(form.email, form.password)
       } else {
-        if (!form.name.trim()) { setError('Name is required'); setLoading(false); return }
+        if (!form.name.trim()) { setError(t('auth.nameRequired')); setLoading(false); return }
         await register(form.name, form.email, form.password)
       }
       navigate('/')
@@ -68,19 +70,19 @@ export default function AuthPage() {
             <Shield size={20} className="text-white dark:text-black" />
           </div>
           <h1 className="text-xl font-bold">
-            {mode === 'login' ? 'Welcome back' : 'Create account'}
+            {mode === 'login' ? t('auth.welcomeBack') : t('auth.createAccount')}
           </h1>
           <p className="text-xs text-gray-500 mt-1">
-            {mode === 'login' ? 'Sign in to your SecureVault account' : 'Join SecureVault today'}
+            {mode === 'login' ? t('auth.signInSubtitle') : t('auth.joinSubtitle')}
           </p>
         </div>
 
         <form onSubmit={submit} className="space-y-4">
           {mode === 'register' && (
-            <Field label="Full Name" value={form.name} onChange={set('name')} placeholder="John Doe" autoFocus />
+            <Field label={t('auth.fullName')} value={form.name} onChange={set('name')} placeholder="John Doe" autoFocus />
           )}
-          <Field label="Email Address" type="email" value={form.email} onChange={set('email')} placeholder="john@example.com" autoFocus={mode === 'login'} />
-          <Field label="Password" show={showPw} onToggle={() => setShowPw(v => !v)} value={form.password} onChange={set('password')} placeholder="••••••••" />
+          <Field label={t('auth.emailAddress')} type="email" value={form.email} onChange={set('email')} placeholder="john@example.com" autoFocus={mode === 'login'} />
+          <Field label={t('auth.password')} show={showPw} onToggle={() => setShowPw(v => !v)} value={form.password} onChange={set('password')} placeholder="••••••••" />
 
           {error && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xs text-red-500 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-lg px-3 py-2">
@@ -93,18 +95,18 @@ export default function AuthPage() {
             disabled={loading}
             className="w-full bg-black dark:bg-white text-white dark:text-black py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Please wait…' : mode === 'login' ? 'Sign In' : 'Create Account'}
+            {loading ? t('auth.pleaseWait') : mode === 'login' ? t('auth.signIn') : t('auth.createAccountBtn')}
           </button>
         </form>
 
         {/* Toggle mode */}
         <p className="text-center text-xs text-gray-500 mt-6">
-          {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
+          {mode === 'login' ? t('auth.noAccount') : t('auth.haveAccount')}{' '}
           <button
             onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError('') }}
             className="font-semibold text-black dark:text-white hover:underline"
           >
-            {mode === 'login' ? 'Sign up' : 'Sign in'}
+            {mode === 'login' ? t('auth.signUp') : t('auth.signIn')}
           </button>
         </p>
       </motion.div>
