@@ -31,8 +31,10 @@ export default function ProductCard({ product }) {
             -{Math.round((1 - product.price / product.originalPrice) * 100)}%
           </span>
         )}
-        {product.stock <= 5 && (
-          <span className="absolute top-2 right-2 bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded">Low Stock</span>
+        {product.stock === 0 ? (
+          <span className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded">{t('product.outOfStock')}</span>
+        ) : product.stock <= 5 && (
+          <span className="absolute top-2 right-2 bg-orange-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded">Low Stock</span>
         )}
       </Link>
       <div className="p-3">
@@ -67,11 +69,18 @@ export default function ProductCard({ product }) {
         <div className="flex items-center gap-1.5">
           <motion.button
             whileTap={{ scale: 0.95 }}
+            disabled={product.stock === 0}
             onClick={() => dispatch({ type: 'ADD_TO_CART', product: salePrice ? { ...product, price: salePrice } : product })}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded text-xs font-medium transition-colors ${inCart ? 'bg-gray-100 dark:bg-gray-900 text-gray-500' : 'bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200'}`}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+              product.stock === 0
+                ? 'bg-gray-100 dark:bg-gray-900 text-gray-400'
+                : inCart
+                ? 'bg-gray-100 dark:bg-gray-900 text-gray-500'
+                : 'bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200'
+            }`}
           >
             <ShoppingCart size={11} />
-            {inCart ? 'In Cart' : 'Add'}
+            {product.stock === 0 ? t('product.outOfStock') : inCart ? 'In Cart' : 'Add'}
           </motion.button>
           <motion.button whileTap={{ scale: 0.85 }}
             onClick={() => dispatch({ type: 'TOGGLE_WISHLIST', product })}
