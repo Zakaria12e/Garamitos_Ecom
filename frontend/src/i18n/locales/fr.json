@@ -142,7 +142,8 @@
       "categories": "Catégories",
       "orders": "Commandes",
       "shipping": "Livraison",
-      "users": "Utilisateurs"
+      "users": "Utilisateurs",
+      "sales": "Ventes Flash"
     },
     "dashboard": {
       "title": "Tableau de bord",

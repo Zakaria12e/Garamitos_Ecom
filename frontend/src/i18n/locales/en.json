@@ -142,7 +142,8 @@
       "categories": "Categories",
       "orders": "Orders",
       "shipping": "Shipping",
-      "users": "Users"
+      "users": "Users",
+      "sales": "Flash Sales"
     },
     "dashboard": {
       "title": "Dashboard",
