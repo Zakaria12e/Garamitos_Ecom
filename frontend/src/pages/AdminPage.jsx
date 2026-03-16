@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Navigate, Link, Routes, Route, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Package, ShoppingBag, Settings, Tag, Users, ChevronLeft, Zap } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingBag, Settings, Tag, Users, ChevronLeft, Zap, RotateCcw } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +12,7 @@ import ShippingAdmin    from '../components/admin/ShippingAdmin'
 import CategoriesAdmin  from '../components/admin/CategoriesAdmin'
 import UsersAdmin       from '../components/admin/UsersAdmin'
 import SalesAdmin       from '../components/admin/SalesAdmin'
+import ReturnsAdmin     from '../components/admin/ReturnsAdmin'
 
 export default function AdminPage() {
   const { user, loading } = useAuth()
@@ -27,6 +28,7 @@ export default function AdminPage() {
     { to: '/admin/shipping',   label: t('admin.nav.shipping'),   icon: Settings },
     { to: '/admin/users',      label: t('admin.nav.users'),      icon: Users },
     { to: '/admin/sales',      label: t('admin.nav.sales'),      icon: Zap },
+    { to: '/admin/returns',    label: 'Returns',                 icon: RotateCcw },
   ]
 
   if (loading) return (
@@ -160,6 +162,7 @@ export default function AdminPage() {
               <Route path="shipping"   element={<ShippingAdmin />} />
               <Route path="users"      element={<UsersAdmin />} />
               <Route path="sales"      element={<SalesAdmin />} />
+              <Route path="returns"    element={<ReturnsAdmin />} />
             </Routes>
           </motion.div>
         </AnimatePresence>
