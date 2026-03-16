@@ -45,7 +45,7 @@ const orderSchema = new mongoose.Schema(
     },
     returnReason: {
       type: String,
-      enum: ['No Answer', 'Refused', 'Unreachable', 'Wrong Address', null],
+      enum: ['No Answer', 'Refused', 'Unreachable', 'Wrong Address'],
       default: null,
     },
     statusHistory: [
