@@ -40,8 +40,13 @@ const orderSchema = new mongoose.Schema(
     total:        { type: Number, required: true },
     status: {
       type: String,
-      enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'],
+      enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled', 'Returned'],
       default: 'Processing',
+    },
+    returnReason: {
+      type: String,
+      enum: ['No Answer', 'Refused', 'Unreachable', 'Wrong Address', null],
+      default: null,
     },
     statusHistory: [
       {
