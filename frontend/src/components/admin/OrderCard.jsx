@@ -3,21 +3,38 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, ChevronDown, ChevronUp, User, MapPin, CreditCard, Box, Printer } from 'lucide-react'
 import { ordersApi } from '../../lib/api'
 import { printInvoice } from '../../lib/printInvoice'
-import { STATUS_COLORS, ALLOWED_TRANSITIONS } from '../../constants/admin'
+import { STATUS_COLORS, ALLOWED_TRANSITIONS, RETURN_REASONS } from '../../constants/admin'
 import { useTranslation } from 'react-i18next'
 
 export default function OrderCard({ order, onStatusChange }) {
   const { t } = useTranslation()
-  const [expanded, setExpanded] = useState(false)
-  const [status, setStatus]     = useState(order.status)
-  const [saving, setSaving]     = useState(false)
+  const [expanded, setExpanded]         = useState(false)
+  const [status, setStatus]             = useState(order.status)
+  const [saving, setSaving]             = useState(false)
+  const [pendingStatus, setPending]     = useState(null)
+  const [returnReason, setReturnReason] = useState('No Answer')
 
   const handleStatus = async (val) => {
+    if (val === 'Returned') { setPending(val); return }
     setSaving(true)
     try {
       await ordersApi.updateStatus(order._id, val)
       setStatus(val)
       onStatusChange?.(order._id, val)
+    } catch (err) {
+      alert(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const confirmReturned = async () => {
+    setSaving(true)
+    try {
+      await ordersApi.updateStatus(order._id, 'Returned', '', returnReason)
+      setStatus('Returned')
+      onStatusChange?.(order._id, 'Returned')
+      setPending(null)
     } catch (err) {
       alert(err.message)
     } finally {
@@ -51,9 +68,16 @@ export default function OrderCard({ order, onStatusChange }) {
             </button>
           )}
           <span className="text-sm font-bold">{t('common.currency')} {order.total.toFixed(2)}</span>
-          <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${STATUS_COLORS[status] || STATUS_COLORS.Processing}`}>
-            {t(`orders.${status}`, status)}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${STATUS_COLORS[status] || STATUS_COLORS.Processing}`}>
+              {t(`orders.${status}`, status)}
+            </span>
+            {status === 'Returned' && order.returnReason && (
+              <span className="text-[10px] px-2 py-0.5 rounded bg-orange-50 dark:bg-orange-950/50 text-orange-500 border border-orange-200 dark:border-orange-800">
+                {order.returnReason}
+              </span>
+            )}
+          </div>
           {ALLOWED_TRANSITIONS[status]?.length > 0 && (
             <div className="relative">
               <select
@@ -72,6 +96,25 @@ export default function OrderCard({ order, onStatusChange }) {
           )}
         </div>
       </div>
+
+      {/* Return reason picker */}
+      <AnimatePresence>
+        {pendingStatus === 'Returned' && (
+          <motion.div initial={{ opacity:0, y:-6 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-6 }}
+            className="px-4 py-3 border-t border-orange-200 dark:border-orange-900 bg-orange-50 dark:bg-orange-950/30 flex items-center gap-3 flex-wrap">
+            <span className="text-xs font-medium text-orange-700 dark:text-orange-400">Return reason:</span>
+            <select value={returnReason} onChange={e => setReturnReason(e.target.value)}
+              className="text-xs border border-orange-200 dark:border-orange-800 rounded px-2 py-1 bg-white dark:bg-black focus:outline-none">
+              {RETURN_REASONS.map(r => <option key={r} value={r}>{r}</option>)}
+            </select>
+            <button onClick={confirmReturned} disabled={saving}
+              className="text-xs bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded font-medium disabled:opacity-50 flex items-center gap-1">
+              {saving && <Loader2 size={10} className="animate-spin" />} Confirm
+            </button>
+            <button onClick={() => setPending(null)} className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">Cancel</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {expanded && (

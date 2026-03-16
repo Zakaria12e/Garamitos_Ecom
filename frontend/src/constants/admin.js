@@ -3,6 +3,7 @@ export const STATUS_COLORS = {
   Shipped:    'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400',
   Delivered:  'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400',
   Cancelled:  'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-400',
+  Returned:   'bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400',
 }
 
 export const EMPTY_PRODUCT_FORM = {
@@ -17,12 +18,15 @@ export const EMPTY_PROMO_FORM = {
   label: '', isActive: true, usageLimit: '',
 }
 
-export const ORDER_STATUSES = ['Processing', 'Shipped', 'Delivered', 'Cancelled']
+export const ORDER_STATUSES = ['Processing', 'Shipped', 'Delivered', 'Cancelled', 'Returned']
+
+export const RETURN_REASONS = ['No Answer', 'Refused', 'Unreachable', 'Wrong Address']
 
 // Which statuses can be transitioned to from the current one
 export const ALLOWED_TRANSITIONS = {
   Processing: ['Shipped', 'Cancelled'],
-  Shipped:    ['Delivered', 'Cancelled'],
+  Shipped:    ['Delivered', 'Returned', 'Cancelled'],
   Delivered:  [],
   Cancelled:  [],
+  Returned:   [],
 }
