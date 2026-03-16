@@ -32,7 +32,13 @@ router.get('/', protect, adminOnly, async (req, res, next) => {
 // POST /api/sales — admin, create sale
 router.post('/', protect, adminOnly, async (req, res, next) => {
   try {
-    const sale = await Sale.create(req.body)
+    const body = { ...req.body }
+    if (body.endDate) {
+      const d = new Date(body.endDate)
+      d.setHours(23, 59, 59, 999)
+      body.endDate = d
+    }
+    const sale = await Sale.create(body)
     res.status(201).json({ success: true, sale })
   } catch (err) {
     next(err)
@@ -42,7 +48,13 @@ router.post('/', protect, adminOnly, async (req, res, next) => {
 // PUT /api/sales/:id — admin, update sale
 router.put('/:id', protect, adminOnly, async (req, res, next) => {
   try {
-    const sale = await Sale.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const body = { ...req.body }
+    if (body.endDate) {
+      const d = new Date(body.endDate)
+      d.setHours(23, 59, 59, 999)
+      body.endDate = d
+    }
+    const sale = await Sale.findByIdAndUpdate(req.params.id, body, { new: true })
     if (!sale) return res.status(404).json({ success: false, message: 'Sale not found.' })
     res.json({ success: true, sale })
   } catch (err) {

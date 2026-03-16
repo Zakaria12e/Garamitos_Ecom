@@ -9,7 +9,7 @@ export function SaleProvider({ children }) {
   useEffect(() => {
     salesApi.active()
       .then(d => setActiveSale(d.sale || null))
-      .catch(() => setActiveSale(null))
+      .catch(err => { console.error('[SaleContext]', err); setActiveSale(null) })
   }, [])
 
   return (
