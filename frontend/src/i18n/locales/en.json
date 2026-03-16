@@ -116,7 +116,9 @@
     "Processing": "Processing",
     "Shipped": "Shipped",
     "Delivered": "Delivered",
-    "Cancelled": "Cancelled"
+    "Cancelled": "Cancelled",
+    "guestCheckout": "Ordered without an account?",
+    "trackOrder": "Track your order by email"
   },
   "admin": {
     "panel": "Admin Panel",
@@ -251,6 +253,17 @@
       "description": "Description",
       "active": "Active"
     }
+  },
+  "guestOrders": {
+    "title": "Track Your Order",
+    "subtitle": "Enter the email address you used when placing your order.",
+    "emailPlaceholder": "Email address used at checkout",
+    "search": "Search",
+    "noOrders": "No orders found",
+    "noOrdersDesc": "No orders were found for this email address.",
+    "found": "{{count}} order(s) found for {{email}}",
+    "error": "Something went wrong. Please try again.",
+    "haveAccount": "Have an account?"
   },
   "footer": {
     "tagline": "Your one-stop shop for construction materials, hardware, and droguerie supplies.",

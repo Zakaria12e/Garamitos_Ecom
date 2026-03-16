@@ -116,7 +116,9 @@
     "Processing": "En traitement",
     "Shipped": "Expédié",
     "Delivered": "Livré",
-    "Cancelled": "Annulé"
+    "Cancelled": "Annulé",
+    "guestCheckout": "Commandé sans compte ?",
+    "trackOrder": "Suivre votre commande par e-mail"
   },
   "admin": {
     "panel": "Panneau admin",
@@ -251,6 +253,17 @@
       "description": "Description",
       "active": "Actif"
     }
+  },
+  "guestOrders": {
+    "title": "Suivre votre commande",
+    "subtitle": "Entrez l'adresse e-mail utilisée lors de votre commande.",
+    "emailPlaceholder": "Adresse e-mail utilisée à la commande",
+    "search": "Rechercher",
+    "noOrders": "Aucune commande trouvée",
+    "noOrdersDesc": "Aucune commande n'a été trouvée pour cette adresse e-mail.",
+    "found": "{{count}} commande(s) trouvée(s) pour {{email}}",
+    "error": "Une erreur est survenue. Veuillez réessayer.",
+    "haveAccount": "Vous avez un compte ?"
   },
   "footer": {
     "tagline": "Votre référence en matériaux de construction, quincaillerie et produits de droguerie.",

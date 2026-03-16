@@ -221,6 +221,10 @@ export default function OrdersPage() {
       <Link to="/login" className="inline-flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-md text-sm font-medium">
         {t('nav.login')}
       </Link>
+      <p className="text-xs text-gray-400 mt-6 mb-2">{t('orders.guestCheckout')}</p>
+      <Link to="/track-order" className="text-xs font-medium underline underline-offset-2 hover:text-black dark:hover:text-white transition-colors">
+        {t('orders.trackOrder')}
+      </Link>
     </div>
   )
 
