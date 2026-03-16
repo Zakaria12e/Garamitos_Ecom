@@ -69,9 +69,10 @@ export const ordersApi = {
     return request(`/orders?${qs}`)
   },
   get:         (id)    => request(`/orders/${id}`),
-  updateStatus:(id, status, note) => request(`/orders/${id}/status`, { method: 'PUT', body: { status, note } }),
+  updateStatus:(id, status, note, returnReason) => request(`/orders/${id}/status`, { method: 'PUT', body: { status, note, returnReason } }),
   stats:       ()      => request('/orders/admin/stats'),
   revenue:     (period = 'month') => request(`/orders/admin/revenue?period=${period}`),
+  returnStats: ()      => request('/orders/admin/return-stats'),
 }
 
 // ── Promo ──────────────────────────────────────────────────
