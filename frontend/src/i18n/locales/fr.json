@@ -428,11 +428,6 @@
       "saved": "Mot de passe mis à jour !",
       "mismatch": "Les nouveaux mots de passe ne correspondent pas.",
       "error": "Échec du changement de mot de passe."
-    },
-    "preferences": {
-      "title": "Préférences",
-      "description": "Choisissez votre langue préférée",
-      "language": "Langue"
     }
   }
 }
