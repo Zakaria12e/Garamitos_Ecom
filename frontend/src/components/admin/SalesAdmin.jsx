@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, Plus, Pencil, Trash2, MoreVertical, AlertTriangle, Tag, CalendarRange } from 'lucide-react'
 import { Skeleton } from '../ui/Skeleton'
 import { salesApi } from '../../lib/api'
+import { useSale } from '../../context/SaleContext'
 
 const EMPTY_FORM = { title: '', description: '', discount: '', startDate: '', endDate: '', isActive: true }
 
@@ -105,6 +106,7 @@ function toInputDate(iso) {
 }
 
 export default function SalesAdmin() {
+  const { refreshSale } = useSale()
   const [sales, setSales]           = useState([])
   const [loading, setLoading]       = useState(true)
   const [showForm, setShowForm]     = useState(false)
@@ -150,6 +152,7 @@ export default function SalesAdmin() {
         setSales(prev => [res.sale, ...prev])
       }
       setShowForm(false)
+      refreshSale()
     } catch (err) {
       setError(err.message)
     } finally {
@@ -161,11 +164,13 @@ export default function SalesAdmin() {
     await salesApi.delete(deleteTarget._id)
     setSales(prev => prev.filter(s => s._id !== deleteTarget._id))
     setDelete(null)
+    refreshSale()
   }
 
   const toggleActive = async (sale) => {
     const res = await salesApi.update(sale._id, { isActive: !sale.isActive })
     setSales(prev => prev.map(s => s._id === sale._id ? res.sale : s))
+    refreshSale()
   }
 
   return (
