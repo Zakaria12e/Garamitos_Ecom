@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -23,7 +23,18 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [langMenuOpen, setLangMenuOpen] = useState(false)
+  const userMenuRef = useRef(null)
+  const langMenuRef = useRef(null)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) setUserMenuOpen(false)
+      if (langMenuRef.current && !langMenuRef.current.contains(e.target)) setLangMenuOpen(false)
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   useEffect(() => setMounted(true), [])
 
@@ -79,7 +90,7 @@ export default function Header() {
             <AnimatePresence>{state.wishlist.length > 0 && <motion.span initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 dark:bg-red-600 text-white dark:text-white text-[9px] font-bold rounded-full flex items-center justify-center">{state.wishlist.length}</motion.span>}</AnimatePresence>
           </Link>
 
-          <div className="relative">
+          <div className="relative" ref={langMenuRef}>
             <motion.button whileTap={{ scale: 0.9 }} onClick={() => { setLangMenuOpen(o => !o); setUserMenuOpen(false) }} className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
               <Globe size={15} />
             </motion.button>
@@ -111,7 +122,7 @@ export default function Header() {
             <AnimatePresence>{cartCount > 0 && <motion.span initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} className="absolute top-0.5 right-0.5 w-4 h-4 bg-black dark:bg-white text-white dark:text-black text-[9px] font-bold rounded-full flex items-center justify-center">{cartCount}</motion.span>}</AnimatePresence>
           </Link>
 
-          <div className="relative">
+          <div className="relative" ref={userMenuRef}>
             {user ? (
               <button onClick={() => { setUserMenuOpen(o => !o); setLangMenuOpen(false) }} className="flex items-center gap-1.5 p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
                 <div className="w-6 h-6 bg-black dark:bg-white rounded-full flex items-center justify-center">
