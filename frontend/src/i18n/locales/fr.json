@@ -14,7 +14,21 @@
     "logout": "Déconnexion",
     "myOrders": "Mes commandes",
     "settings": "Paramètres",
-    "adminPanel": "Panneau admin"
+    "adminPanel": "Panneau admin",
+    "welcomeBack": "Bon retour",
+    "createAccount": "Créer un compte",
+    "signInSubtitle": "Connectez-vous à votre compte Garamitos",
+    "joinSubtitle": "Rejoignez Garamitos aujourd'hui",
+    "fullName": "Nom complet",
+    "emailAddress": "Adresse e-mail",
+    "password": "Mot de passe",
+    "pleaseWait": "Veuillez patienter…",
+    "signIn": "Se connecter",
+    "createAccountBtn": "Créer un compte",
+    "noAccount": "Pas encore de compte ?",
+    "haveAccount": "Déjà un compte ?",
+    "signUp": "S'inscrire",
+    "nameRequired": "Le nom est obligatoire"
   },
   "product": {
     "addToCart": "Ajouter au panier",

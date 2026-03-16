@@ -14,7 +14,21 @@
     "logout": "تسجيل الخروج",
     "myOrders": "طلباتي",
     "settings": "الإعدادات",
-    "adminPanel": "لوحة التحكم"
+    "adminPanel": "لوحة التحكم",
+    "welcomeBack": "مرحباً بعودتك",
+    "createAccount": "إنشاء حساب",
+    "signInSubtitle": "سجّل دخولك إلى حساب Garamitos",
+    "joinSubtitle": "انضم إلى Garamitos اليوم",
+    "fullName": "الاسم الكامل",
+    "emailAddress": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "pleaseWait": "يرجى الانتظار…",
+    "signIn": "تسجيل الدخول",
+    "createAccountBtn": "إنشاء حساب",
+    "noAccount": "ليس لديك حساب؟",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "signUp": "سجّل الآن",
+    "nameRequired": "الاسم مطلوب"
   },
   "product": {
     "addToCart": "أضف إلى السلة",
