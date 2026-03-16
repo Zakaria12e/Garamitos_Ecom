@@ -47,7 +47,7 @@ function SaleMenu({ onEdit, onDelete }) {
         <MoreVertical size={13} className="text-gray-400" />
       </button>
       {open && (
-        <div className="absolute end-0 top-7 z-20 w-32 bg-black border border-gray-700 rounded-xl shadow-lg overflow-hidden">
+        <div className="absolute end-0 top-7 z-50 w-32 bg-black border border-gray-700 rounded-xl shadow-lg overflow-hidden">
           <button onClick={() => { onEdit(); setOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-white/10 transition-colors">
             <Pencil size={11} /> Edit
           </button>
@@ -254,7 +254,7 @@ export default function SalesAdmin() {
           <p className="text-xs text-gray-400">No sales yet. Create your first flash sale!</p>
         </div>
       ) : (
-        <div className="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
+        <div className="border border-gray-200 dark:border-gray-800 rounded-xl">
           {sales.map((sale, i) => {
             const st = getSaleStatus(sale)
             return (
