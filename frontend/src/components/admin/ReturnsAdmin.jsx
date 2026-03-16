@@ -63,7 +63,7 @@ export default function ReturnsAdmin() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {[
           { label: 'Total Shipped', value: totalShipped, icon: TrendingUp, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20' },
           { label: 'Returned', value: totalReturned, icon: RotateCcw, color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-900/20' },
@@ -75,13 +75,18 @@ export default function ReturnsAdmin() {
           <motion.div
             key={label}
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-            className="border border-gray-200 dark:border-gray-800 rounded-xl p-5"
+            className={`border border-gray-200 dark:border-gray-800 rounded-xl p-5
+              ${label === 'Global Rate'
+                ? 'col-span-2 sm:col-span-1 flex flex-col items-center justify-center text-center'
+                : ''}`}
           >
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-3 ${bg}`}>
               <Icon size={18} className={color} />
             </div>
             <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-1">{label}</p>
-            <p className="text-2xl font-bold">{loading ? '—' : value}</p>
+            <p className={`font-bold ${label === 'Global Rate' ? `text-3xl ${color}` : 'text-2xl'}`}>
+              {loading ? '—' : value}
+            </p>
           </motion.div>
         ))}
       </div>
@@ -89,7 +94,7 @@ export default function ReturnsAdmin() {
       {/* Reason breakdown */}
       <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">Return Reasons</p>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {RETURN_REASONS.map(r => (
             <div key={r} className="border border-gray-100 dark:border-gray-800 rounded-xl p-4">
               <span className={`inline-block text-[10px] font-medium px-2 py-0.5 rounded-full mb-3 ${REASON_COLORS[r]}`}>{r}</span>
@@ -101,7 +106,8 @@ export default function ReturnsAdmin() {
 
       {/* City table */}
       <div className="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
-        <div className="px-5 py-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 grid grid-cols-[1fr_80px_80px_1fr] gap-4">
+        {/* Table header — hidden on mobile */}
+        <div className="hidden sm:grid px-5 py-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 grid-cols-[1fr_80px_80px_1fr] gap-4">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">City</span>
           <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 text-center">Shipped</span>
           <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 text-center">Returned</span>
@@ -110,11 +116,9 @@ export default function ReturnsAdmin() {
 
         {loading ? (
           Array(4).fill(0).map((_, i) => (
-            <div key={i} className="px-5 py-4 grid grid-cols-[1fr_80px_80px_1fr] gap-4 border-t border-gray-100 dark:border-gray-900 first:border-t-0">
+            <div key={i} className="px-5 py-4 border-t border-gray-100 dark:border-gray-900 first:border-t-0 space-y-2 sm:space-y-0 sm:grid sm:grid-cols-[1fr_80px_80px_1fr] sm:gap-4 sm:items-center">
               <Skeleton className="h-3 w-24" />
-              <Skeleton className="h-3 w-8 mx-auto" />
-              <Skeleton className="h-3 w-8 mx-auto" />
-              <Skeleton className="h-3 w-full" />
+              <Skeleton className="h-3 w-full sm:w-8 sm:mx-auto" />
             </div>
           ))
         ) : stats.length === 0 ? (
@@ -127,11 +131,18 @@ export default function ReturnsAdmin() {
             <motion.div
               key={row.city}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.04 }}
-              className="px-5 py-4 grid grid-cols-[1fr_80px_80px_1fr] gap-4 items-center border-t border-gray-100 dark:border-gray-900 first:border-t-0"
+              className="px-5 py-4 border-t border-gray-100 dark:border-gray-900 first:border-t-0
+                         flex flex-col gap-2
+                         sm:grid sm:grid-cols-[1fr_80px_80px_1fr] sm:gap-4 sm:items-center sm:flex-none"
             >
-              <span className="text-sm font-medium truncate">{row.city}</span>
-              <span className="text-sm text-gray-500 text-center">{row.total}</span>
-              <span className="text-sm font-semibold text-orange-500 text-center">{row.returned}</span>
+              {/* Mobile: city + badges row */}
+              <div className="flex items-center justify-between sm:contents">
+                <span className="text-sm font-medium truncate">{row.city}</span>
+                <div className="flex items-center gap-2 sm:contents">
+                  <span className="text-xs text-gray-500 sm:text-center">{row.total}</span>
+                  <span className="text-xs font-semibold text-orange-500 sm:text-center">{row.returned}</span>
+                </div>
+              </div>
               <RateBar rate={row.returnRate} />
             </motion.div>
           ))
