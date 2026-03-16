@@ -41,13 +41,15 @@ export default function OrderCard({ order, onStatusChange }) {
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
-          <button
-            onClick={() => printInvoice(order)}
-            title="Print Invoice"
-            className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-400 hover:text-black dark:hover:text-white transition-colors"
-          >
-            <Printer size={14} />
-          </button>
+          {status !== 'Cancelled' && (
+            <button
+              onClick={() => printInvoice(order)}
+              title="Print Invoice"
+              className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+            >
+              <Printer size={14} />
+            </button>
+          )}
           <span className="text-sm font-bold">{t('common.currency')} {order.total.toFixed(2)}</span>
           <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${STATUS_COLORS[status] || STATUS_COLORS.Processing}`}>
             {t(`orders.${status}`, status)}
