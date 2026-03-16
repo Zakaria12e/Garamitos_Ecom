@@ -335,8 +335,8 @@ router.get('/:id', protect, adminOnly, async (req, res, next) => {
 // PUT /api/orders/:id/status (admin)
 router.put('/:id/status', protect, adminOnly, async (req, res, next) => {
   try {
-    const { status, note } = req.body
-    const allowed = ['Processing', 'Shipped', 'Delivered', 'Cancelled']
+    const { status, note, returnReason } = req.body
+    const allowed = ['Processing', 'Shipped', 'Delivered', 'Cancelled', 'Returned']
 
     if (!allowed.includes(status)) {
       return res.status(400).json({ success: false, message: 'Invalid status value.' })
@@ -346,10 +346,47 @@ router.put('/:id/status', protect, adminOnly, async (req, res, next) => {
     if (!order) return res.status(404).json({ success: false, message: 'Order not found.' })
 
     order.status = status
+    if (status === 'Returned') {
+      const validReasons = ['No Answer', 'Refused', 'Unreachable', 'Wrong Address']
+      order.returnReason = validReasons.includes(returnReason) ? returnReason : 'No Answer'
+    } else {
+      order.returnReason = null
+    }
     order.statusHistory.push({ status, note: note || '', changedAt: new Date() })
     await order.save()
 
     res.json({ success: true, order })
+  } catch (err) {
+    next(err)
+  }
+})
+
+// GET /api/orders/admin/return-stats — return rate per city
+router.get('/admin/return-stats', protect, adminOnly, async (req, res, next) => {
+  try {
+    const stats = await Order.aggregate([
+      { $match: { status: { $in: ['Shipped', 'Delivered', 'Returned'] } } },
+      {
+        $group: {
+          _id:      '$shipping.city',
+          total:    { $sum: 1 },
+          returned: { $sum: { $cond: [{ $eq: ['$status', 'Returned'] }, 1, 0] } },
+          reasons:  { $push: { $cond: [{ $eq: ['$status', 'Returned'] }, '$returnReason', '$$REMOVE'] } },
+        },
+      },
+      {
+        $project: {
+          city:       '$_id',
+          total:      1,
+          returned:   1,
+          returnRate: { $round: [{ $multiply: [{ $divide: ['$returned', '$total'] }, 100] }, 1] },
+          reasons:    1,
+        },
+      },
+      { $sort: { returnRate: -1 } },
+    ])
+
+    res.json({ success: true, stats })
   } catch (err) {
     next(err)
   }
