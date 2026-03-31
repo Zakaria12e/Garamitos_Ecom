@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import Lenis from 'lenis'
 import { Analytics } from '@vercel/analytics/react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -31,6 +32,18 @@ const PageWrapper = ({ children }) => (
 
 export default function App() {
   const location = useLocation()
+
+  /* ── Lenis smooth scroll ── */
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.25,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    })
+    const raf = time => { lenis.raf(time); requestAnimationFrame(raf) }
+    requestAnimationFrame(raf)
+    return () => lenis.destroy()
+  }, [])
   const pageKey = '/' + location.pathname.split('/')[1]
   return (
     <AppProvider>
