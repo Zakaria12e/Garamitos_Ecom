@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useMotionValue, useTransform } from 'framer-motion'
-import { ArrowRight, BadgeCheck, Truck, RotateCcw, Star, ChevronDown, Wrench, Droplets, Zap, Paintbrush, Building2, TreePine, SlidersHorizontal, ShieldCheck, Package } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ArrowRight, BadgeCheck, Truck, RotateCcw, ChevronDown, Wrench, Droplets, Zap, Paintbrush, Building2, TreePine, SlidersHorizontal, ShieldCheck } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { productsApi, reviewsApi, normaliseProduct } from '../lib/api'
 import { useSettings } from '../context/SettingsContext'
@@ -56,136 +56,6 @@ function GridBeams() {
     </div>
   )
 }
-
-/* 3-D tilt card — follows cursor on desktop, neutral on touch */
-function TiltCard({ children }) {
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const rotateX = useTransform(y, [-32, 32], [7, -7])
-  const rotateY = useTransform(x, [-32, 32], [-7, 7])
-  return (
-    <motion.div
-      style={{ rotateX, rotateY, transformPerspective: 700 }}
-      whileHover={{ scale: 1.06 }}
-      transition={{ scale: { type: 'spring', stiffness: 380, damping: 22 } }}
-      onMouseMove={e => {
-        const r = e.currentTarget.getBoundingClientRect()
-        x.set(e.clientX - r.left - r.width  / 2)
-        y.set(e.clientY - r.top  - r.height / 2)
-      }}
-      onMouseLeave={() => { x.set(0); y.set(0) }}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-/* ══════════════════════════════════════════
-    TOOL CONSTELLATION — ambient hero art
-    Icons orbit at different radii/speeds,
-    zero stats, zero text, pure craft.
-══════════════════════════════════════════ */
-const LEFT_TOOLS = [
-  { Icon: Wrench,     r: 72, dur: 28, cw: true,  phase: 0.00 },
-  { Icon: Droplets,   r: 46, dur: 17, cw: false, phase: 0.22 },
-  { Icon: Zap,        r: 90, dur: 38, cw: true,  phase: 0.45 },
-  { Icon: Paintbrush, r: 58, dur: 23, cw: false, phase: 0.67 },
-  { Icon: Package,    r: 30, dur: 20, cw: true,  phase: 0.85 },
-]
-
-const RIGHT_TOOLS = [
-  { Icon: SlidersHorizontal, r: 68, dur: 32, cw: false, phase: 0.10 },
-  { Icon: ShieldCheck,       r: 46, dur: 19, cw: true,  phase: 0.35 },
-  { Icon: Building2,         r: 88, dur: 26, cw: false, phase: 0.58 },
-  { Icon: TreePine,          r: 30, dur: 14, cw: true,  phase: 0.75 },
-  { Icon: Wrench,            r: 78, dur: 34, cw: true,  phase: 0.92 },
-]
-
-/*
-  Nested-rotation trick (GPU-friendly):
-    outer div  → rotates, carries the icon around the orbit
-    inner div  → counter-rotates so the icon stays upright
-    innermost  → breathes opacity
-*/
-function OrbitRing({ Icon, r, dur, cw, phase, breatheOffset }) {
-  const sweep = cw ? 360 : -360
-  const sharedTrans = { duration: dur, repeat: Infinity, ease: 'linear', delay: -(dur * phase) }
-
-  return (
-    <motion.div
-      className="absolute top-1/2 left-1/2"
-      style={{ width: 0, height: 0 }}
-      animate={{ rotate: sweep }}
-      transition={sharedTrans}
-    >
-      <div style={{ position: 'absolute', left: r, top: 0, transform: 'translate(-50%, -50%)' }}>
-        <motion.div animate={{ rotate: -sweep }} transition={sharedTrans}>
-          <motion.div
-            animate={{ opacity: [0.18, 0.55, 0.18] }}
-            transition={{ duration: 3.5 + breatheOffset, repeat: Infinity, ease: 'easeInOut', delay: breatheOffset * 0.6 }}
-          >
-            <Icon size={13} strokeWidth={1.2} className="text-zinc-400 dark:text-zinc-600" />
-          </motion.div>
-        </motion.div>
-      </div>
-    </motion.div>
-  )
-}
-
-const CONSTELLATION_SIZE = 220
-const CC = CONSTELLATION_SIZE / 2  // center coordinate
-
-function ToolConstellation({ tools, side }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.4, duration: 2 }}
-      className={`absolute pointer-events-none z-10 hidden xl:block
-                  top-1/2 -translate-y-1/2
-                  ${side === 'left' ? 'left-4 xl:left-8 2xl:left-20' : 'right-4 xl:right-8 2xl:right-20'}`}
-      style={{ width: CONSTELLATION_SIZE, height: CONSTELLATION_SIZE }}
-    >
-      {/* SVG orbit trail rings + center crosshair */}
-      <svg
-        viewBox={`0 0 ${CONSTELLATION_SIZE} ${CONSTELLATION_SIZE}`}
-        className="absolute inset-0 w-full h-full"
-        aria-hidden
-      >
-        {tools.map(({ r }, i) => (
-          <circle
-            key={i}
-            cx={CC} cy={CC} r={r}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="0.55"
-            strokeDasharray="2 11"
-            className="text-zinc-200 dark:text-zinc-800"
-          />
-        ))}
-        <line x1={CC - 6} y1={CC} x2={CC + 6} y2={CC} stroke="currentColor" strokeWidth="0.6" className="text-zinc-300 dark:text-zinc-700" />
-        <line x1={CC} y1={CC - 6} x2={CC} y2={CC + 6} stroke="currentColor" strokeWidth="0.6" className="text-zinc-300 dark:text-zinc-700" />
-        <circle cx={CC} cy={CC} r="1.5" fill="currentColor" className="text-zinc-300 dark:text-zinc-700" />
-      </svg>
-
-      {/* Orbiting icons */}
-      <div className="absolute inset-0">
-        {tools.map(({ Icon, r, dur, cw, phase }, i) => (
-          <OrbitRing
-            key={i}
-            Icon={Icon}
-            r={r}
-            dur={dur}
-            cw={cw}
-            phase={phase}
-            breatheOffset={i * 0.75}
-          />
-        ))}
-      </div>
-    </motion.div>
-  )
-}
-
 
 function ProductSkeleton() {
   return (
@@ -340,9 +210,6 @@ export default function HomePage() {
           </motion.div>
 
         </div>{/* end content div */}
-
-        <ToolConstellation tools={LEFT_TOOLS}  side="left"  />
-        <ToolConstellation tools={RIGHT_TOOLS} side="right" />
 
         {/* Scroll cue */}
         <motion.div
