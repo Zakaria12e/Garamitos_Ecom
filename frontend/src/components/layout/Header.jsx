@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, Heart, Globe, Sun, Moon, Search, Shield, Menu, X, User, LogOut, Settings, LayoutDashboard } from 'lucide-react'
+import { ShoppingCart, Heart, Globe, Sun, Moon, Shield, Menu, X, User, LogOut, Settings, LayoutDashboard } from 'lucide-react'
 import { useApp } from '../../context/AppContext'
 import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from 'react-i18next'
@@ -19,7 +19,6 @@ export default function Header() {
   const { state } = useApp()
   const { user, logout } = useAuth()
   const { t, i18n } = useTranslation()
-  const [search, setSearch] = useState('')
   const [mobileOpen, setMobileOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [langMenuOpen, setLangMenuOpen] = useState(false)
@@ -38,16 +37,15 @@ export default function Header() {
 
   useEffect(() => setMounted(true), [])
 
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   const cartCount = state.cart.reduce((s, i) => s + i.qty, 0)
   const isDark = mounted && resolvedTheme === 'dark'
-
-  const handleSearch = (e) => {
-    e.preventDefault()
-    if (search.trim()) {
-      navigate('/catalog?search=' + encodeURIComponent(search.trim()))
-      setSearch('')
-    }
-  }
 
   const handleLogout = () => {
     logout()
@@ -56,7 +54,7 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800">
+    <header className={`sticky top-0 z-50 backdrop-blur-md transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-black/80 shadow-[0_1px_24px_-4px_rgba(0,0,0,0.10)] dark:shadow-[0_1px_24px_-4px_rgba(0,0,0,0.55)]' : 'bg-white/60 dark:bg-black/60'}`}>
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-4">
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <motion.div whileHover={{ scale: 1.1 }} className="w-7 h-7 bg-black dark:bg-white rounded flex items-center justify-center">
@@ -73,14 +71,7 @@ export default function Header() {
           )}
         </nav>
 
-        <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xs ml-auto">
-          <div className="relative w-full">
-            <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('header.search')} className="w-full pl-8 pr-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-900 rounded-md border border-transparent focus:border-gray-300 dark:focus:border-gray-700 focus:outline-none transition-colors" />
-          </div>
-        </form>
-
-        <div className="flex items-center gap-1 ml-auto md:ml-0">
+        <div className="flex items-center gap-1 ml-auto">
           <motion.button whileTap={{ scale: 0.9 }} onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')} className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
             {mounted ? (isDark ? <Sun size={15} /> : <Moon size={15} />) : <Moon size={15} />}
           </motion.button>
@@ -170,11 +161,7 @@ export default function Header() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div initial={{opacity:0,height:0}} animate={{opacity:1,height:'auto'}} exit={{opacity:0,height:0}}
-            className="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black px-4 py-3 flex flex-col gap-3 overflow-hidden">
-            <form onSubmit={handleSearch} className="relative">
-              <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input value={search} onChange={e => setSearch(e.target.value)} placeholder={t('header.search')} className="w-full pl-8 pr-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-900 rounded-md border border-transparent focus:outline-none" />
-            </form>
+            className="md:hidden bg-white/80 dark:bg-black/80 backdrop-blur-md px-4 py-3 flex flex-col gap-3 overflow-hidden">
             {[[t('nav.catalog'), '/catalog'], [t('nav.orders'), '/orders'], ...(user?.role === 'admin' ? [[t('nav.admin'), '/admin']] : [])].map(([label, path]) => (
               <Link key={path} to={path} onClick={() => setMobileOpen(false)} className="text-sm text-gray-600 dark:text-gray-400">{label}</Link>
             ))}
