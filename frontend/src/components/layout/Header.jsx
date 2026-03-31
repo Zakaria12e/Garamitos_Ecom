@@ -65,7 +65,7 @@ export default function Header() {
           <span className="font-semibold text-sm tracking-tight">Garamitos</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-5 ml-4">
+        <nav className="hidden md:flex items-center gap-5 ms-4">
           <Link to="/catalog" className="text-xs text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">{t('nav.catalog')}</Link>
           <Link to="/orders" className="text-xs text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">{t('nav.orders')}</Link>
           {user?.role === 'admin' && (
@@ -73,7 +73,7 @@ export default function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-1 ml-auto">
+        <div className="flex items-center gap-1 ms-auto">
           <motion.button whileTap={{ scale: 0.9 }} onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')} className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
             {mounted ? (isDark ? <Sun size={15} /> : <Moon size={15} />) : <Moon size={15} />}
           </motion.button>
