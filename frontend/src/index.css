@@ -13,3 +13,119 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 }
+
+/* ── Hero grid background ── */
+.hero-grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+.dark .hero-grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ── Gradient heading: black→gray / white→gray ── */
+.gradient-heading {
+  background: linear-gradient(180deg, #0a0a0a 10%, #828282 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.dark .gradient-heading {
+  background: linear-gradient(180deg, #ffffff 10%, #7a7a7a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Scrolling marquee ── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+/* ── Vertical grid light beams ── */
+@keyframes beam-y {
+  0%   { transform: translateY(-520px); }
+  100% { transform: translateY(calc(100vh + 520px)); }
+}
+
+/* Light mode — soft warm silver drop, visible but elegant */
+.beam-y {
+  position: absolute;
+  width: 1px;
+  height: 520px;
+  animation: beam-y linear infinite;
+  background: linear-gradient(
+    180deg,
+    transparent          0%,
+    rgba(0,0,0,0)        10%,
+    rgba(0,0,0,0.06)     40%,
+    rgba(0,0,0,0.14)     65%,
+    rgba(0,0,0,0.06)     85%,
+    transparent          100%
+  );
+}
+
+/* Dark mode — clean white glow, premium e-com feel */
+.dark .beam-y {
+  background: linear-gradient(
+    180deg,
+    transparent            0%,
+    rgba(255,255,255,0)    10%,
+    rgba(255,255,255,0.06) 40%,
+    rgba(255,255,255,0.22) 65%,
+    rgba(255,255,255,0.06) 85%,
+    transparent            100%
+  );
+  box-shadow: 0 0 8px 1px rgba(255,255,255,0.08);
+}
+
+/* ── Aceternity Spotlight ── */
+@keyframes spotlight {
+  0%   { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+}
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
+}
+
+/* ── Aceternity InfiniteMovingCards scroll ── */
+@keyframes scroll {
+  to { transform: translate(calc(-50% - 0.5rem)); }
+}
+.animate-scroll {
+  animation: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
+}
+
+/* ── Card shine sweep ── */
+@keyframes card-shine {
+  0%   { transform: translateX(-120%) skewX(-12deg); }
+  100% { transform: translateX(350%)  skewX(-12deg); }
+}
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+.card-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.07) 50%,
+    transparent 100%
+  );
+  animation: card-shine 3.5s ease-in-out infinite;
+  animation-delay: 2s;
+  pointer-events: none;
+}
