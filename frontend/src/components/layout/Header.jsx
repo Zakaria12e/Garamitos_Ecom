@@ -54,7 +54,9 @@ export default function Header() {
   }
 
   return (
-    <header className={`sticky top-0 z-50 backdrop-blur-md transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-black/80 shadow-[0_1px_24px_-4px_rgba(0,0,0,0.10)] dark:shadow-[0_1px_24px_-4px_rgba(0,0,0,0.55)]' : 'bg-white/60 dark:bg-black/60'}`}>
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-black/80 transition-all duration-300">
+      {/* Bottom fade — bleeds into page, no hard border */}
+      <div className="absolute bottom-0 inset-x-0 h-8 translate-y-full pointer-events-none bg-gradient-to-b from-white/60 dark:from-black/60 to-transparent" />
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-4">
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <motion.div whileHover={{ scale: 1.1 }} className="w-7 h-7 bg-black dark:bg-white rounded flex items-center justify-center">
