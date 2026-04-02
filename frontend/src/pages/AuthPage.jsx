@@ -23,6 +23,11 @@ const Field = ({ label, type = 'text', show, onToggle, ...props }) => (
   </div>
 )
 
+const DEMO_ACCOUNTS = [
+  { label: 'Customer Demo', email: 'demo@garamitos.com', password: 'demo1234' },
+  { label: 'Admin Demo',    email: 'admin@garamitos.com', password: 'admin1234' },
+]
+
 export default function AuthPage() {
   const [params] = useSearchParams()
   const [mode, setMode] = useState(params.get('mode') === 'register' ? 'register' : 'login')
@@ -64,6 +69,25 @@ export default function AuthPage() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-sm"
       >
+        {/* Demo accounts */}
+        {mode === 'login' && (
+          <div className="mb-6 p-3 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+            <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider text-center mb-2">Portfolio Demo — click to fill</p>
+            <div className="flex gap-2">
+              {DEMO_ACCOUNTS.map(({ label, email, password }) => (
+                <button
+                  key={email}
+                  type="button"
+                  onClick={() => setForm(f => ({ ...f, email, password }))}
+                  className="flex-1 text-xs py-1.5 px-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors font-medium"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
           <div className="w-10 h-10 bg-black dark:bg-white rounded-lg flex items-center justify-center mb-3">
