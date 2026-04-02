@@ -2,9 +2,19 @@ import 'dotenv/config'
 import mongoose from 'mongoose'
 import { connectDB } from '../src/config/db.js'
 import Product from '../src/models/Product.js'
+import Category from '../src/models/Category.js'
 import PromoCode from '../src/models/PromoCode.js'
 import User from '../src/models/User.js'
 
+const CATEGORIES = [
+  { name: 'Surveillance Cameras', sortOrder: 1 },
+  { name: 'Drones',               sortOrder: 2 },
+  { name: 'Audio Equipment',      sortOrder: 3 },
+  { name: 'Smart Home',           sortOrder: 4 },
+  { name: 'Security Systems',     sortOrder: 5 },
+]
+
+// category field holds the category name — replaced with ObjectId after categories are created
 const PRODUCTS = [
   {
     name: 'Axis P3245-V Network Camera',
@@ -290,12 +300,20 @@ async function seed() {
   console.log('  Clearing existing data...')
   await Promise.all([
     Product.deleteMany({}),
+    Category.deleteMany({}),
     PromoCode.deleteMany({}),
     User.deleteMany({ email: { $in: ['admin@garamitos.com', 'demo@garamitos.com'] } }),
   ])
 
+  console.log(' Seeding categories...')
+  const categories = await Category.insertMany(CATEGORIES)
+  const catMap = Object.fromEntries(categories.map(c => [c.name, c._id]))
+  console.log(`    ${categories.length} categories inserted`)
+
   console.log(' Seeding products...')
-  const products = await Product.insertMany(PRODUCTS)
+  const products = await Product.insertMany(
+    PRODUCTS.map(p => ({ ...p, category: catMap[p.category] }))
+  )
   console.log(`    ${products.length} products inserted`)
 
   console.log('  Seeding promo codes...')
