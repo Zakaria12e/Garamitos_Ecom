@@ -3,6 +3,8 @@ import User from '../models/User.js'
 import Order from '../models/Order.js'
 import { protect, adminOnly } from '../middleware/auth.js'
 
+const DEMO_EMAILS = ['demo@garamitos.com', 'admin@garamitos.com']
+
 const router = express.Router()
 
 // GET /api/users  (admin)
@@ -47,8 +49,13 @@ router.put('/:id/role', protect, adminOnly, async (req, res, next) => {
     if (!['user', 'admin'].includes(role)) {
       return res.status(400).json({ success: false, message: 'Invalid role.' })
     }
-    const user = await User.findByIdAndUpdate(req.params.id, { role }, { new: true }).select('-password')
+    const user = await User.findById(req.params.id).select('-password')
     if (!user) return res.status(404).json({ success: false, message: 'User not found.' })
+    if (DEMO_EMAILS.includes(user.email)) {
+      return res.status(403).json({ success: false, message: 'Demo accounts cannot be modified.' })
+    }
+    user.role = role
+    await user.save()
     res.json({ success: true, user })
   } catch (err) {
     next(err)
@@ -60,6 +67,10 @@ router.delete('/:id', protect, adminOnly, async (req, res, next) => {
   try {
     if (req.params.id === req.user._id.toString()) {
       return res.status(400).json({ success: false, message: 'Cannot delete your own account.' })
+    }
+    const target = await User.findById(req.params.id)
+    if (target && DEMO_EMAILS.includes(target.email)) {
+      return res.status(403).json({ success: false, message: 'Demo accounts cannot be deleted.' })
     }
     await User.findByIdAndDelete(req.params.id)
     res.json({ success: true, message: 'User deleted.' })
