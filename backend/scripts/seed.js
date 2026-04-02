@@ -306,7 +306,7 @@ async function seed() {
   ])
 
   console.log(' Seeding categories...')
-  const categories = await Category.insertMany(CATEGORIES)
+  const categories = await Promise.all(CATEGORIES.map(c => new Category(c).save()))
   const catMap = Object.fromEntries(categories.map(c => [c.name, c._id]))
   console.log(`    ${categories.length} categories inserted`)
 

@@ -21,7 +21,8 @@
       "WebFetch(domain:codepen.io)",
       "WebFetch(domain:www.codewithrandom.com)",
       "Bash(git checkout:*)",
-      "Bash(rm -f frontend/src/components/ui/spotlight.jsx frontend/src/components/ui/infinite-moving-cards.jsx)"
+      "Bash(rm -f frontend/src/components/ui/spotlight.jsx frontend/src/components/ui/infinite-moving-cards.jsx)",
+      "Bash(npm run:*)"
     ]
   }
 }
