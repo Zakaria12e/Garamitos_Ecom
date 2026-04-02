@@ -291,7 +291,7 @@ async function seed() {
   await Promise.all([
     Product.deleteMany({}),
     PromoCode.deleteMany({}),
-    User.deleteMany({ role: 'admin' }),
+    User.deleteMany({ email: { $in: ['admin@garamitos.com', 'demo@garamitos.com'] } }),
   ])
 
   console.log(' Seeding products...')
@@ -302,14 +302,13 @@ async function seed() {
   const promos = await PromoCode.insertMany(PROMO_CODES)
   console.log(`    ${promos.length} promo codes inserted`)
 
-  console.log(' Creating admin user...')
-  const admin = await User.create({
-    name: 'Admin',
-    email: 'admin@securevault.com',
-    password: 'admin123',
-    role: 'admin',
-  })
-  console.log(`    Admin created: ${admin.email} / admin123`)
+  console.log(' Creating demo users...')
+  await Promise.all([
+    User.create({ name: 'Demo Admin', email: 'admin@garamitos.com', password: 'admin1234', role: 'admin' }),
+    User.create({ name: 'Demo Customer', email: 'demo@garamitos.com', password: 'demo1234', role: 'user' }),
+  ])
+  console.log('    admin@garamitos.com / admin1234')
+  console.log('    demo@garamitos.com  / demo1234')
 
   console.log('\n Seed complete!')
   await mongoose.disconnect()
