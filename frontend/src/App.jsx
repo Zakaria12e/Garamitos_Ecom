@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Lenis from 'lenis'
 import { Analytics } from '@vercel/analytics/react'
 import { Routes, Route, useLocation } from 'react-router-dom'
@@ -18,6 +18,25 @@ import WishlistPage  from './pages/WishlistPage'
 import CheckoutPage  from './pages/CheckoutPage'
 import OrdersPage    from './pages/OrdersPage'
 import GuestOrdersPage from './pages/GuestOrdersPage'
+
+const DemoBanner = () => {
+  const [visible, setVisible] = useState(() => sessionStorage.getItem('demoBannerDismissed') !== '1')
+  if (!visible) return null
+  return (
+    <div className="bg-black dark:bg-white text-white dark:text-black text-xs text-center py-2 px-4 flex items-center justify-center gap-3">
+      <span>
+        <span className="font-semibold">Portfolio Demo</span>
+        {' '}— data may reset periodically.{' '}
+        <a href="/login" className="underline underline-offset-2 hover:opacity-70">Try demo accounts →</a>
+      </span>
+      <button
+        onClick={() => { sessionStorage.setItem('demoBannerDismissed', '1'); setVisible(false) }}
+        className="ml-2 opacity-60 hover:opacity-100 transition-opacity leading-none"
+        aria-label="Dismiss"
+      >✕</button>
+    </div>
+  )
+}
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -49,6 +68,7 @@ export default function App() {
     <AppProvider>
       <SaleProvider>
       <div className="min-h-screen flex flex-col">
+        <DemoBanner />
         <Header />
         <main className="flex-1">
           <AnimatePresence mode="wait">
